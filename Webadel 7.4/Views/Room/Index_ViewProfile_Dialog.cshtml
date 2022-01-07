@@ -1,0 +1,191 @@
+﻿@model Webadel7.Controllers.RoomController.Index_ViewProfile_Dialog_Model
+@{ Layout = null; }
+
+<script type="text/javascript">
+    $("#viewProfileModal #sendUserMail").click(function () {
+        SendUserMail($(this).closest(".modal-dialog").attr("id"));
+        $("#viewProfileModal").modal("hide");
+    });
+
+    $("#viewProfileModal #editUser").click(function () {
+        EditUser($(this).closest(".modal-dialog").attr("id"));
+        $("#viewProfileModal").modal("hide");
+    });
+
+    $("#ips ul li").click(function () {
+        $(this).removeClass("clickable").load("/Room/GetIPUsers?ip=" + $(this).data("ip"));
+    });
+
+    var autolookupMax = 10;
+    $("#ips ul li").each(function () {
+        if (autolookupMax-- <= 0) return;
+        $(this).removeClass("clickable").load("/Room/GetIPUsers?ip=" + $(this).data("ip"));
+    });
+
+    var _updateDelay = null; // this prevents the callback from being fired everytime the user types a letter in a textbox
+    $("#notes textarea").on("keyup change", function () {
+        $(this).css("border-color", "#f88");
+        if (_updateDelay != null) clearTimeout(_updateDelay);
+
+        _updateDelay = setTimeout(function () {
+            $.post("/Room/UpdateUserNotes", $("#notes form").serialize(), function () {
+                $("#notes textarea").css("border-color", "");
+            });
+        }, 800);
+    });
+</script>
+
+<style type="text/css">
+    #ips li.clickable { text-decoration: underline; cursor: pointer; }
+    .nav-pills li.active a.aidesOnly { background-color: #a94442; }
+</style>
+
+<div class="modal-dialog" id="@Model.User.Id">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+                @Model.User.Username
+                @if (Model.User.Trusted) {<span class="badge">Trusted</span>}
+                @if (!Model.User.IsActiveUser) {<span class="badge">Inactive</span>}
+                @if (Model.User.Aide) {<span class="badge">Aide</span>}
+                @if (Model.User.CoSysop) {<span class="badge">CoSysop</span>}
+                @if (Model.User.SysOp) {<span class="badge">Sysop</span>}
+                @if (Model.User.Profile.IsBirthday) {<span class="badge">Birthday</span>}
+                @if (Model.User.Twit && !MvcApplication.CurrentUser.Twit) {<span class="badge">Twit</span>}
+            </h4>
+        </div>
+        <div class="modal-body">
+
+            <div role="tabpanel">
+                <ul class="nav nav-pills" role="tablist">
+                    <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+                    <li role="presentation"><a href="#attitude" aria-controls="attitude" role="tab" data-toggle="tab">Attitude</a></li>
+                    @if (MvcApplication.CurrentUser.Aide) {
+                        <li role="presentation"><a href="#ips" aria-controls="ips" role="tab" data-toggle="tab" class="aidesOnly">IPs</a></li>
+                        <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab" class="aidesOnly">Notes</a></li>
+                        <li role="presentation">
+                            <a href="#plonks" aria-controls="plonks" role="tab" data-toggle="tab" class="aidesOnly">
+                                Plonked
+                                <span class="badge ">@Model.User.PlonkedBy.Count</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="profile">
+                        <table class="table table-noborder">
+                            <tr>
+                                <td>Since</td>
+                                <td>@Model.User.Created.ToShortDateString()</td>
+                            </tr>
+                            @if (Model.User.PrevousAliases.Count > 0) {
+                                <tr>
+                                    <td>A.K.A.</td>
+                                    <td>@string.Join(", ", Model.User.PrevousAliases)</td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.User.Profile.Email)) {
+                                <tr><td>Email</td><td><a href="mailto:@Model.User.Profile.Email">@Model.User.Profile.Email</a></td></tr>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.User.Profile.Pronouns)) {
+                                <tr><td>Pronouns</td><td>@Model.User.Profile.Pronouns</td></tr>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.User.Profile.Location)) {
+                                <tr><td>Location</td><td><a href="https://maps.google.com/maps?q=@Model.User.Profile.Location" target="_blank">@Model.User.Profile.Location</a></td></tr>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.User.Profile.Website)) {
+                                <tr><td>Website</td><td><a href="@Model.User.Profile.Website" target="_blank">@Model.User.Profile.Website</a></td></tr>
+                            }
+                            @if (Model.User.Profile.Birthdate.HasValue) {
+                                <tr>
+                                    <td>Birthdate</td>
+                                    <td>
+                                        @Model.User.Profile.Birthdate.Value.ToString(Model.User.Profile.BirthdayHasYear ? "MMMM d, yyyy" : "MMMM d")
+                                        @if (Model.User.Profile.BirthdayHasYear) {
+                                            <span>(@Model.User.Profile.Age.Value.ToString("N3"))</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.User.Profile.Bio)) {
+                                <tr><td>Bio</td><td class="bio">@Html.Raw(Model.User.Profile.Bio)</td></tr>
+                            }
+                        </table>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane " id="attitude">
+                        <table class="table table-noborder">
+                            <tr>
+                                <td>Overall</td>
+                                <td>@(Model.Ups - Model.Downs) (+@Model.Ups / -@Model.Downs)</td>
+                            </tr>
+                            <tr>
+                                <td>Favorite User(s)</td>
+                                @if (Model.FavoriteUsers.Count == 0) {
+                                    <td>None</td>
+                                } else {
+                                    <td>@string.Join(", ", Model.FavoriteUsers.Select(o => o.Username))</td>
+                                }
+                            </tr>
+                            <tr style="display: xnone;">
+                                @* I'm worried people are babies *@
+                                <td>Least Favorite</td>
+                                @if (Model.LeastFavoriteUsers.Count == 0) {
+                                    <td>None</td>
+                                } else {
+                                    <td>@string.Join(", ", Model.LeastFavoriteUsers.Select(o => o.Username))</td>
+                                }
+                            </tr>
+                        </table>
+                        <p class="text-muted">Attitude values result from votes that this user has made.</p>
+                    </div>
+
+                    @if (MvcApplication.CurrentUser.Aide) {
+                        <div role="tabpanel" class="tab-pane " id="ips">
+                            <p class="text-danger">Restricted tab available to aides only.</p>
+
+                            <ul>
+                                @foreach (string ip in Model.User.GetIPs()) {
+                                    <li class="clickable" data-ip="@ip">@ip</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane " id="notes">
+                            <p class="text-danger">Restricted tab available to aides only.</p>
+
+                            <form class="" style="margin-top: 10px;">
+                                <input type="hidden" name="userId" value="@Model.User.Id" />
+                                <textarea class="form-control" name="notes" id="notes">@Model.User.Notes</textarea>
+                            </form>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane " id="plonks">
+                            <p class="text-danger">Restricted tab available to aides only.</p>
+
+                            @if (Model.User.PlonkedBy.Count > 0) {
+                                <p>Plonked by:</p>
+                                <ul>
+                                    @foreach (Webadel7.User plonker in Model.User.PlonkedBy) {
+                                        <li>@plonker.Username</li>
+                                    }
+                                </ul>
+                            } else {
+                                <p>Not plonked by anyone.</p>
+                            }
+                        </div>}
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="btn-group btn-group-sm pull-right">
+                @if (Model.CanEdit) {
+                    <button type="button" class="btn btn-warning" id="editUser">Edit</button>}
+                <button type="button" class="btn btn-default" id="sendUserMail">Send Mail</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

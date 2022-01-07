@@ -1,0 +1,66 @@
+﻿/* avoid using any typographic or color styles here; those should be handled entirely by the bootstrap themes [jj 13Aug28] */
+
+/* offset content below the fixed navbar */
+body { padding: 20px 0 70px 0; }
+/* fix safari's annoying tendency to slightly zoom in */
+body { -webkit-text-size-adjust: 100%; }
+
+/* the "skip to" dropdown is so long that we need to do this to enable the eu to scroll down the list of rooms - maybe there's a better way to display this? */
+#jump { max-height: 300px; overflow: auto; }
+
+/* I don't know why we need to specify these styles. this should be in the default bootstrap CSS. */
+.dropdown-submenu { position: relative; }
+    .dropdown-submenu > .dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; -webkit-border-radius: 0 6px 6px 6px; -moz-border-radius: 0 6px 6px 6px; border-radius: 0 6px 6px 6px; }
+    .dropdown-submenu:hover > .dropdown-menu { display: block; }
+    .dropdown-submenu > a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #cccccc; margin-top: 5px; margin-right: -10px; }
+    .dropdown-submenu:hover > a:after { border-left-color: #ffffff; }
+    .dropdown-submenu.pull-left { float: none; }
+        .dropdown-submenu.pull-left > .dropdown-menu { left: -100%; margin-left: 10px; -webkit-border-radius: 6px 0 6px 6px; -moz-border-radius: 6px 0 6px 6px; border-radius: 6px 0 6px 6px; }
+
+/* display the themes submenu to the left side of the nav dropdown; otherwise it floats off the edge of the page */
+/* no longer displaying the themeMenu; left this here for reference [jj 13Sep2]
+.dropdown-submenu .dropdown-menu.themeMenu { left: -140px; right: 300px; top: 0px; } */
+
+#messageButtons button { padding: 1px 15px 1px 15px; }
+#mobileControlButtons button { padding: 1px 15px 1px 15px; }
+
+.table.table-noborder tbody tr td { border: 0; }
+
+/* messages */
+#messages { margin: 20px 0 0 0; }
+.message { margin: 0 0 20px 0; word-wrap: break-word; }
+    .message.selected { /* I can't think of any CSS treatment to indicate selected messages that do not rely on changing a color! [jj 13Sep6] */ }
+.messageheader { font-weight: bold; font-size: .9em; margin: 0 0 2px 0; }
+span.code { font-family: Courier; margin: 0 0 0 10px; }
+.user { cursor: pointer; }
+.roomLink { cursor: pointer; }
+.message .attachments a { margin-right: 10px; }
+.message .cut { display: none; }
+img.thumbnail { width: 84px; }
+.spoiler { color: #000; background-color: #000; border-radius: 2px; }
+    .spoiler a { color: #000; }
+
+img { image-orientation: from-image; }
+
+/* keep iframes (et al, esp. youtube iframes) inside the messages column */
+iframe, object, embed { max-width: 100%; }
+
+/* post box and message preview */
+#post textarea { }
+#messagePreview { margin: -5px -5px 0 -5px; padding: 5px 5px 0 5px; border-radius: 5px; }
+
+/* right-hand room list (for large displays) */
+#roomList { opacity: .3; }
+
+/* reorder room list */
+#sortRoomsModal li { cursor: crosshair; }
+
+/* room info modal */
+#roomInfoModal .badge { margin-right: 5px; }
+
+@media (max-width: 768px) {
+    .profiler-results { display: none; }
+}
+
+.plonk { display: none; }
+.showPlonk { opacity: .3; cursor: pointer; }

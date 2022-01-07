@@ -1,0 +1,41 @@
+﻿@model Webadel7.Room
+@{ Layout = null; }
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">@Model.Name</h4>
+        </div>
+        <div class="modal-body">
+
+            <p>
+                @if (Model.Private) {<span class="badge xpull-right">Private</span>}
+                @if (Model.Hidden) {<span class="badge xpull-right">Hidden</span>}
+                @if (Model.Permanent) {<span class="badge xpull-right">Permanent</span>}
+                @if (Model.RequiresTrust) {<span class="badge xpull-right">Requires Trust</span>}
+                @if (Model.Anonymous) {<span class="badge xpull-right">Anonymous</span>}
+            </p>
+
+            <p>@Html.Raw(Model.Info)</p>
+
+            <p>
+                <b>Moderators:</b>
+                @string.Join(", ", Model.Moderators.Select(o => Webadel7.User.Load(o).Username))
+            </p>
+
+            @if (Model.Private) {
+                <p>
+                    <b>Invitees:</b>
+                    @string.Join(", ", Model.Invitees.Select(o => Webadel7.User.Load(o).Username))
+                </p>
+            }
+
+            @if (Model.Forgetters.Count > 0) {<p>Room forgotten by @Model.Forgetters.Count users.</p>}
+
+            @if (Model.Id != SystemConfig.MailRoomId) {
+                <p><a href="/archive/@(Model.Id).txt" target="_blank">Download Archive</a></p>
+            }
+        </div>
+    </div>
+</div>

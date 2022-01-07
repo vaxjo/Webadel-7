@@ -1,0 +1,18 @@
+﻿@model List<Webadel7.Resource>
+@{ ViewBag.Title = "Display Resources"; }
+
+<h2>Display Resources</h2>
+
+<table class="table">
+    <thead><tr><th>Filename<br />Content Type</th><th>Message Id<br />User</th><th>Uploaded</th></tr></thead>
+    @foreach (Webadel7.Resource at in Model.OrderByDescending(o => o.Uploaded)) {
+        <tr>
+            <td>
+                <a href="/Res/@at.Filename">@at.Filename</a><br />
+                @(at.FileInfo.Exists ? (at.FileInfo.Length / 1024) + " kb" : "not found"), @at.ContentType @(at.IsImage ? "(Image)" : "")
+            </td>
+            <td>@at.MessageId<br />@(at.MessageId.HasValue ? at.Message.Author.Username : "") </td>
+            <td>@at.Uploaded</td>
+        </tr>
+    }
+</table>

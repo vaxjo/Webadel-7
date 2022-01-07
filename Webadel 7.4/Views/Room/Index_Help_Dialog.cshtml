@@ -1,0 +1,113 @@
+﻿@{ Layout = null; }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".helpnav li").click(function () {
+            $(".helpnav li").removeClass("active");
+            $(".sec").hide();
+            $(this).addClass("active");
+            $("#sec-" + $(this).data("sec")).show();
+        });
+        $(".helpnav li:first").click();
+    });
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Help</h4>
+        </div>
+        <div class="modal-body">
+
+            <ul class="nav nav-pills helpnav" style="margin-bottom: 20px;">
+                <li data-sec="ks" class="active"><a href="#">Keyboard Shortcuts</a></li>
+                <li data-sec="mf"><a href="#">Message Formatting</a></li>
+                <li data-sec="about"><a href="#">About</a></li>
+            </ul>
+
+            <div class="sec" id="sec-ks" style="display: none;">
+                <p>These keyboard shortcuts should work as long as no input controls have focus.</p>
+
+                <dl class="dl-horizontal">
+                    <dt>g</dt>
+                    <dd>Goto next room</dd>
+                    <dt>s</dt>
+                    <dd>Skip to next room</dd>
+                    <dt>u</dt>
+                    <dd>Ungoto previous room</dd>
+                    <dt>a</dt>
+                    <dd>Show all messages</dd>
+                    <dt>n</dt>
+                    <dd>Show only new messages</dd>
+                    <dt>m</dt>
+                    <dd>Show more messages <small>- shows the previous five messages</small></dd>
+                    <dt>e</dt>
+                    <dd>Enter a message <small>- puts focus in the postbox</small></dd>
+                    <dt>l</dt>
+                    <dd>Log out</dd>
+                    <dt>?</dt>
+                    <dd>Show this help screen</dd>
+                    <dt>.s</dt>
+                    <dd>Search messages</dd>
+                    <dt>.i</dt>
+                    <dd>Show room info</dd>
+                    <dt>.u</dt>
+                    <dd>Show user list</dd>
+                    <dt><span style="background-color: #000; color: #000;">&nbsp; &nbsp;</span></dt>
+                    <dd><span style="background-color: #000; color: #000;">&nbsp; &nbsp; &nbsp; &nbsp;</span> <small>- REDACTED</small></dd>
+                </dl>
+
+                <p>These text-editing keyboard shortcuts should work in all multi-row text areas.</p>
+
+                <dl class="dl-horizontal">
+                    <dt>ctrl-b</dt>
+                    <dd>Wrap the currently selected text in an html <b>bold</b> tag.</dd>
+                    <dt>ctrl-i</dt>
+                    <dd>...in an html <i>italic</i> tag.</dd>
+                    <dt>ctrl-u</dt>
+                    <dd>...in an html <u>underline</u> tag.</dd>
+                    <dt>ctrl-s</dt>
+                    <dd>...in an html <s>strikethrough</s> tag.</dd>
+                    <dt>ctrl-l</dt>
+                    <dd>...in an html anchor (link) tag.</dd>
+                    <dt>ctrl-p</dt>
+                    <dd>...in &lt;pre&gt; tags to prevent formatting (e.g. when you want to post "code").</dd>
+                    <dt>ctrl-enter</dt>
+                    <dd>Preview your message.</dd>
+                    <dt>shift-ctrl-enter</dt>
+                    <dd>Post your message.</dd>
+                </dl>
+            </div>
+
+            <div class="sec" id="sec-mf" style="display: none;">
+                <p>In addition to HTML tags there are a couple of features you might want to know about when composing your messages.</p>
+                <ul>
+                    <li>Start a line with a greater than sign ("&gt;") to auto-italizice quoted text. </li>
+                    <li>Don't try to format &lt;img&gt; tags because they will be re-formatted on a per-user basis.</li>
+                    <li>A YouTube link on its own line will have an inline viewing icon automatically added. No need to embed youtube videos.</li>
+                    <li>All URLs will automatically be turned into links. No need to write HTML anchor tags unless you want the display text to be different than the url.</li>
+                </ul>
+            </div>
+
+            <div class="sec" id="sec-about" style="display: none;">
+
+                <dl class="dl-horizontal">
+                    <dt>Webadel</dt>
+                    <dd>@(ViewBag.Version)</dd>
+                    <dt>System Uptime</dt>
+                    <dd>@Webadel7.MvcApplication.UpTime.TotalHours.ToString("F2") Hours</dd>
+                    <dt>Messages</dt>
+                    <dd>@Webadel7.Message.TotalMessages.ToString("N0")</dd>
+                    <dt title="Average Message Length">AML</dt>
+                    <dd>@Webadel7.Message.AML.ToString("F2")</dd>
+                </dl>
+
+                <p>Re-imagined by <a href="mailto:jarrin@jarrin.net">jarrin</a>, based on my fuzzy memories of Citadel-86.</p>
+
+                <p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=2903593" target="_blank"><img border="0" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"></a></p>
+            </div>
+
+        </div>
+    </div>
+</div>

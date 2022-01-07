@@ -1,0 +1,70 @@
+﻿@model Webadel7.UserProfile
+@{ Layout = null; }
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Profile</h4>
+        </div>
+        <div class="modal-body">
+            <form role="form">
+
+                <p>Enter as much or as little information about yourself as you want. Everyone will be able to see this.</p>
+
+                <div class="form-group">
+                    <label for="email" class="xsr-only">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="@Model.Email" placeholder="Email" />
+                </div>
+                <div class="form-group">
+                    <label for="pronouns" class="xsr-only">Pronouns</label>
+                    <input type="text" id="pronouns" name="pronouns" class="form-control" value="@Model.Pronouns" placeholder="Pronouns" />
+                </div>
+                <div class="form-group">
+                    <label for="location" class="xsr-only">Location</label>
+                    <input type="text" id="location" name="location" class="form-control" value="@Model.Location" placeholder="Location" />
+                </div>
+                <div class="form-group">
+                    <label for="website" class="xsr-only">Website</label>
+                    <input type="text" id="website" name="website" class="form-control" value="@Model.Website" placeholder="Website" />
+                </div>
+                <div class="form-group">
+                    <label for="bio" class="xsr-only">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control mousetrap" rows="6" placeholder="Bio">@Model.Bio</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="birthdate_month" class="xsr-only">Birthdate</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <select class="form-control" id="birthdate_month" name="birthdate_month">
+                                <option value="">No</option>
+                                @for (int i = 1; i <= 12; i++) {
+                                    <option value="@i" @(Model.Birthdate.HasValue && Model.Birthdate.Value.Month == i ? "selected" : "" )>@(new DateTime(1900,i,1).ToString("MMMM"))</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="birthdate_day" name="birthdate_day">
+                                <option value="">Nah</option>
+                                @for (int i = 1; i <= 31; i++) {
+                                    <option value="@i" @(Model.Birthdate.HasValue && Model.Birthdate.Value.Day == i ? "selected" : "" )>@i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="birthdate_year" name="birthdate_year">
+                                <option value="">Nope</option>
+                                @for (int i = DateTime.Now.Year; i > 1900; i--) {
+                                    <option value="@i" @(Model.Birthdate.HasValue && Model.Birthdate.Value.Year == i ? "selected" : "")>@i</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="save">Save</button>
+        </div>
+    </div>
+</div>

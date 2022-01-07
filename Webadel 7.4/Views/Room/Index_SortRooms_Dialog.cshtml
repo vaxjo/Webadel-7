@@ -1,0 +1,27 @@
+﻿@model List<Webadel7.UserRoom>
+@{ Layout = null; }
+
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">Sort Room List</h4>
+		</div>
+		<div class="modal-body">
+	
+		<p>Click and drag to reorder the room list. When finished, scroll all the way down to the bottom and click "Finished".</p>
+
+		<p class="visible-xs visible-sm">This might not work on mobile devices. If so you'll need to log in with computer.</p>
+
+		<ul class="list-group">
+			@foreach (Webadel7.UserRoom ur in Model) { <li class="list-group-item" style="padding: 4px 15px 4px 15px;" id="@ur.RoomId">@ur.Room.Name</li> }
+		</ul>
+		
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" id="finished">Finished</button>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

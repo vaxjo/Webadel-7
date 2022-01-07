@@ -1,0 +1,9 @@
+﻿@model List<Webadel7.UserRoom>
+@{ Layout = null; }
+
+@foreach (Webadel7.Room r in Model.Where(o => !o.Forgotten).Select(o => o.Room)) {<li><a id="@r.Id" href="#">@r.Name</a></li>}
+@if (Model.Any(o => o.Forgotten)) {
+    <li class="divider" role="presentation"></li>
+    <li role="presentation" class="dropdown-header">Forgotten</li>
+    foreach (Webadel7.Room r in Model.Where(o => o.Forgotten).Select(o => o.Room)) { <li><a id="@r.Id" href="#">@r.Name</a></li>}
+}

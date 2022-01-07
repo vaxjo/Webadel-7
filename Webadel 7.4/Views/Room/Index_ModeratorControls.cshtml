@@ -1,0 +1,27 @@
+﻿@model List<Webadel7.UserRoom>
+@{ Layout = null; }
+
+<div class="well well-sm">
+    <form class="form-inline" role="form">
+        Move the marked messages to
+        <div class="form-group">
+            <label class="sr-only" for="action">Action</label>
+            <select class="form-control input-sm" id="moveRoomId">
+                <option value="">Nowhere (Delete Them)</option>
+                <option value="new">New Room (Create)</option>
+                <optgroup label="Rooms">
+                    @foreach (Webadel7.UserRoom r in Model) {
+                        <option value="@r.RoomId">@r.Room.Name</option>
+                    }
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="form-group" style="display: none;">
+            <label class="sr-only" for="newRoomName">New Room Name</label>
+            <input type="text" class="form-control input-sm" id="newRoomName" maxlength="20" placeholder="New Room Name">
+        </div>
+
+        <button type="button" class="btn btn-default btn-sm" id="move">Process</button>
+    </form>
+</div>

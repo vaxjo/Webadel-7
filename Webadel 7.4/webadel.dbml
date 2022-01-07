@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DB_121619_webadel" EntityNamespace="Webadel7.DB" ContextNamespace="Webadel7.DB" Class="WebadelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=tcp:s15.winhost.com;Initial Catalog=DB_121619_webadel;Integrated Security=False;User ID=DB_121619_webadel_user" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Webadel" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Door" Member="Doors">
+    <Type Name="Door">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="doorUrl" Type="System.String" DbType="VarChar(256) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="data" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="token" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="tokenExpiration" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="lastUpdated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="User_Door" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Message" Member="Messages">
+    <Type Name="Message">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Message_OriginalRoom" Member="Message_OriginalRoom" ThisKey="id" OtherKey="messageId" Type="Message_OriginalRoom" Cardinality="One" />
+      <Association Name="Message_Resource" Member="Resources" ThisKey="id" OtherKey="messageId" Type="Resource" />
+      <Association Name="Message_Upload" Member="Uploads" ThisKey="id" OtherKey="messageId" Type="Upload" />
+      <Association Name="Message_Vote" Member="Votes" ThisKey="id" OtherKey="messageId" Type="Vote" />
+      <Association Name="Room_Message" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="User_Message" Member="User" ThisKey="recipientId" OtherKey="id" Type="User" IsForeignKey="true" />
+      <Association Name="User_Message1" Member="User1" ThisKey="authorId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Message_OriginalRoom" Member="Message_OriginalRooms">
+    <Type Name="Message_OriginalRoom">
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="originalRoomName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Message_OriginalRoom" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User_IP" Member="User_IPs">
+    <Type Name="User_IP">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ip" Type="System.String" DbType="VarChar(15) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="User_User_IP" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Resource" Member="Resources">
+    <Type Name="Resource">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="filename" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="contentType" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="uploaded" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Resource" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Upload" Member="Uploads">
+    <Type Name="Upload">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="filename" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="data" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="contentType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Upload" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Banishment" Member="Banishments">
+    <Type Name="Banishment">
+      <Column Name="ip" Type="System.String" DbType="VarChar(15) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="expiration" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vote" Member="Votes">
+    <Type Name="Vote">
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vote" Member="vote1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="datetime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Vote" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AuthToken" Member="AuthTokens">
+    <Type Name="AuthToken">
+      <Column Name="tokenId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="lastUse" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="User_AuthToken" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Autosave" Member="Autosaves">
+    <Type Name="Autosave">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="message" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Room_Autosave" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="User_Autosave" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Room" Member="Rooms">
+    <Type Name="Room">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="info" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="private" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="anonymous" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="requiresTrust" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="hidden" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="[permanent]" Member="permanent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Room_Message" Member="Messages" ThisKey="id" OtherKey="roomId" Type="Message" />
+      <Association Name="Room_Autosave" Member="Autosaves" ThisKey="id" OtherKey="roomId" Type="Autosave" />
+      <Association Name="Room_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="roomId" Type="UserRoom" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserRoom" Member="UserRooms">
+    <Type Name="UserRoom">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="hasAccess" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="forgotten" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="nsfw" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="moderator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="noticed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="sort" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="pointer" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pointerLast" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="forgottenExpiration" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="Room_UserRoom" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="User_UserRoom" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User_PrevAlias" Member="User_PrevAlias">
+    <Type Name="User_PrevAlia">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="alias" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="changed" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Association Name="User_User_PrevAlia" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Plonk" Member="Plonks">
+    <Type Name="Plonk">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="plonkedUserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="User_Plonk" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserProfile" Member="UserProfiles">
+    <Type Name="UserProfile">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="bio" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="website" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="pronouns" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="birthdate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="User_UserProfile" Member="User" ThisKey="id" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="trusted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="aide" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="cosysop" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="attachmentDisplay" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="enableSwipe" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="enablePredictiveText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="lastActivity" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="notes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="twit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="miscDictionary" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Association Name="User_Door" Member="Doors" ThisKey="id" OtherKey="userId" Type="Door" />
+      <Association Name="User_Message" Member="Messages" ThisKey="id" OtherKey="recipientId" Type="Message" />
+      <Association Name="User_Message1" Member="Messages1" ThisKey="id" OtherKey="authorId" Type="Message" />
+      <Association Name="User_User_IP" Member="User_IPs" ThisKey="id" OtherKey="userId" Type="User_IP" />
+      <Association Name="User_Vote" Member="Votes" ThisKey="id" OtherKey="userId" Type="Vote" />
+      <Association Name="User_AuthToken" Member="AuthTokens" ThisKey="id" OtherKey="userId" Type="AuthToken" />
+      <Association Name="User_Autosave" Member="Autosaves" ThisKey="id" OtherKey="userId" Type="Autosave" />
+      <Association Name="User_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="userId" Type="UserRoom" />
+      <Association Name="User_User_PrevAlia" Member="User_PrevAlias" ThisKey="id" OtherKey="userId" Type="User_PrevAlia" />
+      <Association Name="User_Plonk" Member="Plonks" ThisKey="id" OtherKey="userId" Type="Plonk" />
+      <Association Name="User_UserProfile" Member="UserProfile" ThisKey="id" OtherKey="id" Type="UserProfile" Cardinality="One" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">
+    <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="GetUserRoomsResult">
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetUserMessages" Method="GetUserMessages" IsComposable="true">
+    <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="includePlonks" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="GetUserMessagesResult">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="isNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="originalRoomName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetNumNewMessages" Method="GetNumNewMessages" IsComposable="true">
+    <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="includePlonks" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="GetNumNewMessagesResult">
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="numNew" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sort" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetLastMessages" Method="GetLastMessages" IsComposable="true">
+    <ElementType Name="GetLastMessagesResult">
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="messageDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

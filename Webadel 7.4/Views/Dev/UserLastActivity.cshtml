@@ -1,0 +1,28 @@
+﻿@model List<Webadel7.DB.User>
+@{ ViewBag.Title = "User Last Activity"; }
+
+<h2>User Last Activity</h2>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Last Activity (db)</th>
+            <th>Timespan (db) (minutes)</th>
+            <th>Last Activity (cache)</th>
+            <th>Timespan (cache) (minutes)</th>
+            <th>delta</th>
+        </tr>
+    </thead>
+
+    @foreach (var u in Model.OrderByDescending(o => o.lastActivity)) {
+        <tr>
+            <td>@u.username</td>
+            <td>@u.lastActivity</td>
+            <td>@MvcApplication.Now.Subtract(u.lastActivity).TotalMinutes.ToString("F1")</td>
+            <td>@Webadel7.User.Load(u.id).LastActivity</td>
+            <td>@MvcApplication.Now.Subtract(Webadel7.User.Load(u.id).LastActivity).TotalMinutes.ToString("F1")</td>
+            <td>@u.lastActivity.Subtract(Webadel7.User.Load(u.id).LastActivity).TotalMinutes.ToString("F1")</td>
+        </tr>
+    }
+</table>

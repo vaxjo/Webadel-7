@@ -1,0 +1,103 @@
+﻿@model Webadel7.User
+@{ Layout = null; }
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Account Settings</h4>
+        </div>
+        <div class="modal-body">
+
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label for="username" class="control-label col-sm-3">Username</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="username" name="username" class="form-control" maxlength="20" value="@Model.Username" data-original="@Model.Username" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="control-label col-sm-3">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" id="email" name="email" class="form-control" value="@Model.Email" />
+                        <p class="help-block">This email address is never displayed to other users. It is used to send you copies of Webadel mail and, perhaps, for other system-specific reasons.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="attachmentDisplay" class="control-label col-sm-3">Images</label>
+                    <div class="col-sm-4">
+                        <select id="attachmentDisplay" name="attachmentDisplay" class="form-control" data-original="@Model.AttachmentDisplay">
+                            <option value="Thumbnail" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Thumbnail ? "selected=selected" : "")>Thumbnails</option>
+                            <option value="Full" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Full ? "selected=selected" : "")>Full Size</option>
+                            <option value="Text" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Text ? "selected=selected" : "")>Text Only</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 help-block">
+                        Select how you'd like to display images that users have attached to their posts.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="enableSwipe" class="control-label col-sm-3">Swipe to Goto</label>
+                    <div class="col-sm-4">
+                        <select id="enableSwipe" name="enableSwipe" class="form-control" data-original="@Model.EnableSwipe">
+                            <option value="True" @(Model.EnableSwipe ? "selected=selected" : "" )>Enabled</option>
+                            <option value="False" @(!Model.EnableSwipe ? "selected=selected" : "" )>Disabled</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 help-block">
+                        When enabled you can (in mobile devices) swipe left to Goto, swipe right to Ungoto and two-finger swipe left to Skip.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="enablePredictiveText" class="control-label col-sm-3">Predictive Text</label>
+                    <div class="col-sm-4">
+                        <select id="enablePredictiveText" name="enablePredictiveText" class="form-control" data-original="@Model.EnableSwipe">
+                            <option value="True" @(Model.EnablePredictiveText ? "selected=selected" : "")>Enabled</option>
+                            <option value="False" @(!Model.EnablePredictiveText ? "selected=selected" : "")>Disabled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="theme" class="control-label col-sm-3">Theme</label>
+                    <div class="col-sm-4">
+                        <select id="theme" name="theme" class="form-control">
+                            <optgroup label="Light">
+                                <option value="cerulean">Cerulean</option>
+                                <option value="cosmo">Cosmo</option>
+                                <option value="">Default</option>
+                                <option value="flatly">Flatly</option>
+                                <option value="journal">Journal</option>
+                                <option value="lumen">Lumen</option>
+                                <option value="readable">Readable</option>
+                                <option value="sandstone">Sandstone</option>
+                                <option value="simplex">Simplex</option>
+                                <option value="spacelab">Spacelab</option>
+                                <option value="united">United</option>
+                                <option value="yeti">Yeti</option>
+                            </optgroup>
+                            <optgroup label="Dark">
+                                <option value="cyborg">Cyborg</option>
+                                <option value="darkly">Darkly</option>
+                                <option value="slate">Slate</option>
+                                <option value="superhero">Superhero</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 help-block">
+                        Theme settings are stored on your device, so you can have different themes for each device (mobile phone, tablet, desktop computer) that you use to log into Webadel.
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="save">Save</button>
+        </div>
+    </div>
+</div>
+

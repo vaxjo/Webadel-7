@@ -1,0 +1,52 @@
+﻿@model List<Webadel7.User>
+@{ Layout = null;
+    bool isAide = MvcApplication.CurrentUser.Aide || MvcApplication.CurrentUser.CoSysop; }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#userListModal table").tablesorter({
+            sortList: [[1, 0]], textExtraction: function (node) {
+                // if a TD element has a data-sortval then use that as the sorting value
+                return ($(node).data("sortval") == null ? $(node).text() : $(node).data("sortval"));
+            }
+        });
+
+        $("#userListModal #showInactive").click(function () {
+            $("#userListModal .inactive").removeClass("inactive");
+        });
+    });
+</script>
+
+<style>
+    #userListModal table th { cursor: pointer; }
+    #userListModal .inactive { display: none; }
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">User List</h4>
+        </div>
+
+        <div class="modal-body">
+            <table class="table table-condensed ">
+                <thead><tr><th>User</th><th>Last Activity</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (Webadel7.User user in Model.Where(o => isAide || o.IsActiveUser)) {
+                        <tr id="@user.Id" class="@(user.IsActiveUser ? "" : "inactive")">
+                            <td class="user" id="@user.Id">@user.Username</td>
+                            <td data-sortval="@MvcApplication.Now.Subtract(user.LastActivity).TotalMinutes">@Webadel7.Banishment.NiceTimeSpanDisplay(MvcApplication.Now.Subtract(user.LastActivity))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (isAide) {
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="showInactive">Show Inactive Users</button>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,84 @@
+﻿@model Webadel7.Room
+@{ Layout = null; }
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">@(Model.Id == Guid.Empty ? "Create" : "Edit") Room</h4>
+        </div>
+        <div class="modal-body">
+            <form role="form">
+                <input type="hidden" name="roomId" value="@(Model.Id != Guid.Empty ? Model.Id.ToString() : "")" />
+
+                <div class="form-group">
+                    <label for="name" class="xsr-only">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" value="@Model.Name" maxlength="20" placeholder="Room Name" />
+                </div>
+                <div class="form-group">
+                    <label for="info" class="xsr-only">Info</label>
+                    <textarea id="info" name="info" class="form-control mousetrap" rows="3" placeholder="Info">@Model.Info</textarea>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="requiresTrust" @(Model.RequiresTrust ? "checked=checked" : "") />
+                        Requires Trust <small>- only trusted users can see this room.</small>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="anonymous" @(Model.Anonymous ? "checked=checked" : "") />
+                        Anonymous <small>- permit users to post anonymously.</small>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="private" name="private" @(Model.Private ? "checked=checked" : "") />
+                        Private <small>- only users you explicitly allow will have access to this room.</small>
+                    </label>
+                </div>
+                @* without a way to find arbitrary rooms this is ridiculous [jj 13Sep18]
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="hidden" @(Model.Hidden ? "checked=checked" : "") />
+                        Hidden <small>- this room is only available to those who know to look for it.</small>
+                      </label>
+                    </div>
+                *@
+                @if (ViewBag.IsCosysop) {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="permanent" @(Model.Permanent ? "checked=checked" : "") />
+                            Permanent <small>- this room will never get culled.</small>
+                        </label>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <label for="moderators" class="xsr-only">Moderators</label>
+                    <select id="moderators" name="moderators" multiple="multiple" class="form-control">
+                        @foreach (var user in Webadel7.User.GetAll(true).Where(o => o.Trusted).OrderByDescending(o => Model.Moderators.Contains(o.Id))) {
+                            <option value="@user.Id" @(Model != null && Model.Moderators.Contains(user.Id) ? "selected=selected" : "")>@user.Username</option>
+
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group" style="@(Model == null || !Model.Private ? "display: none;" : "")">
+                    <label for="invitees" class="xsr-only">Invitees</label>
+                    <select id="invitees" name="invitees" multiple="multiple" class="form-control">
+                        @foreach (var user in Webadel7.User.GetAll(true).OrderByDescending(o => Model.Invitees.Contains(o.Id))) {
+                            <option value="@user.Id" @(Model != null && Model.Invitees.Contains(user.Id) ? "selected=selected" : "")>@user.Username</option>
+
+                        }
+                    </select>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            @if (Model.Id != Guid.Empty) {<button type="button" class="btn btn-danger" id="delete">Delete</button>}
+            <button type="button" class="btn btn-primary" id="save">Save</button>
+        </div>
+    </div>
+</div>

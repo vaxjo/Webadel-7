@@ -1,0 +1,14 @@
+﻿@model List<Webadel7.UserRoom>
+@{ Layout = null; }
+
+<div class="list-group">
+	@foreach (Webadel7.UserRoom r in Model.Where(o => !o.Forgotten)) { 
+		<a class="list-group-item" id="@r.RoomId" href="#"><span class="badge"></span>@r.Room.Name</a> 
+	}
+</div>
+
+<div class="list-group">
+	@foreach (Webadel7.UserRoom r in Model.Where(o => o.Forgotten)) { 
+		<a class="list-group-item forgotten" id="@r.RoomId" title="Forgotten Room" href="#"><span class="badge"></span>@r.Room.Name</a> 
+	}
+</div>

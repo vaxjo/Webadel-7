@@ -1,0 +1,17 @@
+﻿@model List<Webadel7.DB.AuthToken>
+@{ ViewBag.Title = "Display Auth Tokens"; }
+
+<h2>Display Auth Tokens</h2>
+
+<table class="table">
+    <thead><tr><td>User</td><td>User Id</td><td>Last Use</td><td>Age<br />(Days)</td><td>Token</td></tr></thead>
+    @foreach (var at in Model.OrderBy(o => o.lastUse)) {
+        <tr>
+            <td>@Webadel7.User.Load(at.userId).Username</td>
+            <td>@at.userId</td>
+            <td>@at.lastUse</td>
+            <td>@MvcApplication.Now.Subtract(at.lastUse).TotalDays.ToString("F2")</td>
+            <td>@at.tokenId</td>
+        </tr>
+    }
+</table>

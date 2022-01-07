@@ -1,0 +1,6 @@
+﻿@model List<Webadel7.DB.Vote>
+@{ Layout = null; }
+
+@foreach (var v in Model) {
+    <span class="text-nowrap">@v.User.username (@(v.vote1 ? "+1" : "-1"))</span><br />
+}

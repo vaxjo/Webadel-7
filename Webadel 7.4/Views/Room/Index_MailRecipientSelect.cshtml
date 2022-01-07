@@ -1,0 +1,7 @@
+﻿@model List<Webadel7.User>
+@{ Layout = null; }
+
+<option value=""> - Select a Recipient -</option>
+@foreach (Webadel7.User u in Model) {
+    <option value="@u.Id">@u.Username</option>
+}

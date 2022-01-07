@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.625" name="webadel">
+  <DataContextMoniker Name="/WebadelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="05ebd9eb-d0ed-4f72-ad7f-ec165e860992" isExpanded="false" absoluteBounds="1, 4.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Door" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b1b14e1c-acea-4dd1-b9d1-790a1ff58976" absoluteBounds="1.0150000000000001, 5.3350000000000009, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="22e32d57-153c-43c7-8a51-73645e23803b" isExpanded="false" absoluteBounds="3.625, 7, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Message" />
+      <nestedChildShapes>
+        <elementListCompartment Id="175b8be3-4089-4846-9137-a637c6a9e1f5" absoluteBounds="3.64, 7.4600000000000009, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ccb0003a-d8e4-4bbd-a033-9dcaf3f60e07" isExpanded="false" absoluteBounds="1.375, 7.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Message_OriginalRoom" />
+      <nestedChildShapes>
+        <elementListCompartment Id="27302179-dd92-4f7b-8fe0-845fb710f9b0" absoluteBounds="1.3899999999999997, 8.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ecc83bcb-60f8-4c59-8668-55f9b367f86d" isExpanded="false" absoluteBounds="5.75, 3.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/User_IP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9298972a-73ad-492f-a2fe-c57a7487a5ab" absoluteBounds="5.7650000000000006, 4.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.625 : 7.45); (3.375 : 7.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Message/Message_Message_OriginalRoom" />
+      <nodes>
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+        <classShapeMoniker Id="ccb0003a-d8e4-4bbd-a033-9dcaf3f60e07" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="406d253c-bc2c-4372-abbf-7ee1e722e8eb" isExpanded="false" absoluteBounds="1.125, 6.75, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Resource" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc213d7c-28f8-4028-ac0b-b9e81d3dbb7b" absoluteBounds="1.1400000000000001, 7.2100000000000009, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.625 : 7.1); (3.125 : 7.1)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Message/Message_Resource" />
+      <nodes>
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+        <classShapeMoniker Id="406d253c-bc2c-4372-abbf-7ee1e722e8eb" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="4b8e7efe-6ffb-4b77-b4fd-2eac1c2bbb81" isExpanded="false" absoluteBounds="4, 8.25, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Upload" />
+      <nestedChildShapes>
+        <elementListCompartment Id="18aebc37-6a7a-4946-ac9b-4be44e79ecf4" absoluteBounds="4.0150000000000006, 8.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.8125 : 7.45); (4.8125 : 8.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Message/Message_Upload" />
+      <nodes>
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+        <classShapeMoniker Id="4b8e7efe-6ffb-4b77-b4fd-2eac1c2bbb81" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="40ea9881-6081-46e7-a73f-ebe1568abab3" isExpanded="false" absoluteBounds="1.375, 8.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Banishment" />
+      <nestedChildShapes>
+        <elementListCompartment Id="571267d2-448a-4bf5-ab4e-f21e34d79507" absoluteBounds="1.3900000000000001, 9.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ac546065-f118-4e0e-a663-35af2d4e96bf" isExpanded="false" absoluteBounds="1.125, 5.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Vote" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4685b0bb-4f3b-4607-a09a-2c50d09548ca" absoluteBounds="1.1400000000000001, 6.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.625 : 7); (3.125 : 6.325)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Message/Message_Vote" />
+      <nodes>
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+        <classShapeMoniker Id="ac546065-f118-4e0e-a663-35af2d4e96bf" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="3f6bb5c2-f567-49eb-ba44-ac13a4704077" isExpanded="false" absoluteBounds="1.125, 4, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/AuthToken" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9ca42b58-69f7-4b7d-8fed-6dbd7c6727b3" absoluteBounds="1.1400000000000001, 4.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2432f15f-a9a3-410b-9fce-a973a33610ac" isExpanded="false" absoluteBounds="6.375, 7.375, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Autosave" />
+      <nestedChildShapes>
+        <elementListCompartment Id="865ad2a9-89af-4f1f-aadd-f13f82a96049" absoluteBounds="6.3900000000000006, 7.8350000000000009, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cba510c6-1bd9-4695-a3e5-a1d612359856" isExpanded="false" absoluteBounds="5.875, 6.25, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Room" />
+      <nestedChildShapes>
+        <elementListCompartment Id="511d90ec-d672-46eb-b65e-69748f4a32d1" absoluteBounds="5.89, 6.7100000000000009, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.875 : 6.7); (5.625 : 7)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Room/Room_Message" />
+      <nodes>
+        <classShapeMoniker Id="cba510c6-1bd9-4695-a3e5-a1d612359856" />
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.125 : 6.7); (7.125 : 7.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Room/Room_Autosave" />
+      <nodes>
+        <classShapeMoniker Id="cba510c6-1bd9-4695-a3e5-a1d612359856" />
+        <classShapeMoniker Id="2432f15f-a9a3-410b-9fce-a973a33610ac" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="5120b5b3-ab05-4e31-a687-16e74fcf1548" isExpanded="false" absoluteBounds="5.875, 5.5, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/UserRoom" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c198a539-eedf-4770-b731-356fc0157f0b" absoluteBounds="5.8900000000000006, 5.9600000000000009, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.79227420682456 : 6.25); (6.79227420682456 : 5.95)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/Room/Room_UserRoom" />
+      <nodes>
+        <classShapeMoniker Id="cba510c6-1bd9-4695-a3e5-a1d612359856" />
+        <classShapeMoniker Id="5120b5b3-ab05-4e31-a687-16e74fcf1548" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="87a671e3-9b85-42be-90fb-215c12af09d7" isExpanded="false" absoluteBounds="6.125, 4.625, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/User_PrevAlia" />
+      <nestedChildShapes>
+        <elementListCompartment Id="686edeac-99d5-48f4-a5ff-e7ddba770d11" absoluteBounds="6.14, 5.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dff67544-3c0e-41f1-8e5c-8795d9d5a577" isExpanded="false" absoluteBounds="4.25, 2.375, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/Plonk" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d5bfe15d-d755-4c3c-a075-1df0cbd2ed4c" absoluteBounds="4.2650000000000006, 2.835, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9e44b6c7-880d-4be8-9e60-1c9a2b985d07" isExpanded="false" absoluteBounds="2.125, 2.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/UserProfile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1c7bc044-836f-4a43-87af-1a657e7391ea" absoluteBounds="2.14, 3.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4156a725-8bd9-4665-bb34-a91dba682150" isExpanded="false" absoluteBounds="3.75, 4.875, 2, 0.45">
+      <DataClassMoniker Name="/WebadelDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="23328210-9f8d-448a-9638-a7243f43a29f" absoluteBounds="3.765, 5.335, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.75 : 5.1); (3 : 5.1)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Door" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="05ebd9eb-d0ed-4f72-ad7f-ec165e860992" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.015625625 : 5.325); (5.015625625 : 7)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Message" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.203126125 : 5.325); (4.203126125 : 7)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Message1" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.85937575 : 4.875); (4.85937575 : 4.1); (5.75 : 4.1)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_User_IP" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="ecc83bcb-60f8-4c59-8668-55f9b367f86d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.75 : 5.325); (3.125 : 5.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Vote" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="ac546065-f118-4e0e-a663-35af2d4e96bf" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.75 : 4.875); (3.125 : 4.45)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_AuthToken" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="3f6bb5c2-f567-49eb-ba44-ac13a4704077" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.71875 : 5.325); (5.71875 : 7.66875); (6.375 : 7.66875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Autosave" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="2432f15f-a9a3-410b-9fce-a973a33610ac" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.75 : 5.325); (5.875 : 5.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_UserRoom" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="5120b5b3-ab05-4e31-a687-16e74fcf1548" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.75 : 4.975); (6.125 : 4.975)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_User_PrevAlia" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="87a671e3-9b85-42be-90fb-215c12af09d7" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.335937875 : 4.875); (5.335937875 : 2.825)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_Plonk" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="dff67544-3c0e-41f1-8e5c-8795d9d5a577" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.9687525 : 4.875); (3.9687525 : 3.325)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/WebadelDataContext/User/User_UserProfile" />
+      <nodes>
+        <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
+        <classShapeMoniker Id="9e44b6c7-880d-4be8-9e60-1c9a2b985d07" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

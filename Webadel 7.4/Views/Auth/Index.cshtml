@@ -1,0 +1,142 @@
+﻿@model List<Webadel7.Controllers.AuthController.Index_Message>
+@{ ViewBag.Title = "Index"; }
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#password").focus();
+
+            $("#work").click(function () {
+                if ($(this).prop("checked")) $.cookie("isWorkComputer", "true", { expires: 9999, path: "/" });
+                else $.cookie("isWorkComputer", "false", { path: "/" }); // apparently $.removeCookie() doesn't work! [jj 13Sep6]
+            });
+
+            $("#newUserModal #create").click(function () {
+                $.post("/Auth/NewUser", $("#newUserModal form").serialize(), function (data) {
+                    if (data == "") window.location = "/Auth/Index?password=" + escape($("#newUserModal #newPassword").val());
+
+                    $("#newUserModal .form-group").removeClass("has-error");
+                    $("#newUserModal .alert").remove();
+                    if (data.indexOf("usernameempty") >= 0) {
+                        $("#newUserModal #username").parent().addClass("has-error").prepend(CreateAlert("You must enter a username. Duh.", "warning"));
+                    }
+                    if (data.indexOf("usernameexists") >= 0) {
+                        $("#newUserModal #username").parent().addClass("has-error").prepend(CreateAlert("That username has already been taken.", "warning"));
+                    }
+                    if (data.indexOf("passwordempty") >= 0) {
+                        $("#newUserModal #newPassword").parent().addClass("has-error").prepend(CreateAlert("You must enter a password.", "warning"));
+                    }
+                    if (data.indexOf("badpw") >= 0) {
+                        $("#newUserModal #newPassword").parent().addClass("has-error").prepend(CreateAlert("You must choose a better password.", "warning"));
+                    }
+                    if (data.indexOf("pwisusername") >= 0) {
+                        $("#newUserModal #newPassword").parent().addClass("has-error").prepend(CreateAlert("Your password cannot match your username.", "warning"));
+                    }
+                    if (data.indexOf("confirm") >= 0) {
+                        $("#newUserModal #confirmPassword").parent().addClass("has-error").prepend(CreateAlert("Your passwords must match.", "warning"));
+                    }
+                });
+            });
+
+            WhosOnline();
+            setInterval(WhosOnline, 60000);
+        });
+
+        function WhosOnline() {
+            $.get("/Auth/Online", function (data) {
+                $("#whosOnline").html("");
+                for (i = 0; i < data.activity.length; i++)
+                    $("#whosOnline").append("<dt>" + data.activity[i].Username + "</dt><dd>" + data.activity[i].Idle_Display + "</dd>");
+                if (data.activity.length == 0) $("#whosOnline").html("Nobody. It is pitch black.<br><br>You are likely to be eaten by a grue.");
+                $("#activityIndex").val(data.index);
+            });
+        }
+    </script>
+}
+
+<div class="jumbotron">
+    <h1 class="text-center">@Webadel7.SystemConfig.SystemName</h1>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-offset-1 col-md-5 col-lg-offset-2 col-lg-4" style="margin-bottom:20px;">
+        @foreach (Webadel7.Controllers.AuthController.Index_Message msg in Model) {
+            <div class="alert alert-@msg.Type alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> @Html.Raw(msg.Message)
+            </div>
+        }
+
+        <p>
+            Ed's Room is a public message system modeled after the Citadel BBS software of the distant past.
+            All are welcome to login, browse the message base, and participate in discussions.
+        </p>
+
+        <form role="form" method="post" action="/Auth/Index">
+            <div class="form-group @(ViewBag.LoginError != null ? "has-error" : "")">
+                <label for="password" class="control-label sr-only">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <span class="input-group-btn"><button type="submit" class="btn btn-default">Login</button></span>
+                </div>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" id="work" value="true" @(Webadel7.MvcApplication.IsWorkComputer ? "checked=checked" : "") /> Logging in from "Work" </label>
+            </div>
+        </form>
+
+        @if (!Webadel7.Banishment.IsBanished(Request.UserHostAddress)) {
+            <p>If this is your first visit, create a new account to join in (account creation takes only half a minute).</p>
+            <a class="btn btn-primary " data-toggle="modal" href="#newUserModal">Create New Account</a>
+        }
+    </div>
+
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Currently Online</h3></div>
+            <div class="panel-body"><dl class="dl-horizontal" id="whosOnline"></dl></div>
+            <div class="panel-footer">Activity Index: <b><span id="activityIndex">@Webadel7.SystemActivity.ActivityIndex.ToString("F2")</span></b></div>
+        </div>
+    </div>
+</div>
+
+<p class="text-center">
+    <script type="text/javascript" src="//counter.websiteout.net/js/2/0/0/0"></script>
+</p>
+
+<div id="newUserModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">New User</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>You must choose a username and a good password.</p>
+                <form role="form">
+                    <div class="form-group">
+                        <label for="username" class="sr-only ">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" maxlength="20" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword" class="sr-only">Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="sr-only ">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                    </div>
+                    <p>Everything from here on down is optional.</p>
+                    <div class="form-group">
+                        <label for="email" class="sr-only " data-toggle="tooltip" title="first tooltip">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="create">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

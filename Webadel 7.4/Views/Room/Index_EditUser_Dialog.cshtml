@@ -1,0 +1,50 @@
+﻿@model Webadel7.User
+@{ Layout = null; }
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit <small>@Model.Username</small></h4>
+        </div>
+        <div class="modal-body">
+
+            <form role="form">
+                <input type="hidden" name="userId" value="@Model.Id" />
+                <div class="form-group">
+                    <label for="username" class="xsr-only">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" value="@Model.Username" maxlength="19" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label for="email" class="xsr-only">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="@Model.Email" placeholder="Email" />
+                </div>
+                <div class="form-group">
+                    <label for="password" class="xsr-only">Password</label>
+                    <input type="text" id="password" name="password" class="form-control" value="" autocomplete="off" placeholder="Password" />
+                    <span class="help-block">Leave this blank to preserve the existing password.</span>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" name="trusted" @(Model.Trusted ? "checked=checked" : "" ) /> Trusted <small>- can view rooms that require trust.</small></label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="twit" @(Model.Twit ? "checked=checked" : "") /> Twit <small>- their posts can only be seen by themselves.</small></label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="aide" @(Model.Aide ? "checked=checked" : "") /> Aide <small>- can edit all rooms and users.</small></label>
+                </div>
+                @if (ViewBag.IsCoSysop || Request.IsLocal) {
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="cosysop" @(Model.CoSysop ? "checked=checked" : "") /> CoSysop <small>- can't really do anything more than aide right now.</small></label>
+                    </div>
+                }
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="delete">Delete</button>
+            <button type="button" class="btn btn-primary" id="save">Save</button>
+        </div>
+    </div>
+</div>

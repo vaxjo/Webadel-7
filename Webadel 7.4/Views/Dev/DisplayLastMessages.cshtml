@@ -1,0 +1,41 @@
+﻿@model List<Webadel7.Controllers.DevController.LastMessageRoom>
+@{ ViewBag.Title = "Display Last Messages"; }
+
+<style>
+    tr.clash td { background-color: #fbb; }
+</style>
+
+<h2>Display Last Messages</h2>
+<p>Ignoring Mail, there are @(Model.Where(o => o.LastMessageId_Cached != o.LastMessageId_FromDB).Count()) clash(es).</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 280px;">Room</th>
+            <th>Last Message (from cache)</th>
+            <th>Last Message (from db)</th>
+        </tr>
+    </thead>
+    @foreach (var r in Model) {
+        <tr class="@(r.LastMessageId_Cached != r.LastMessageId_FromDB ? "clash" : "")">
+            <td>@r.Room.Name<br /><small>@r.Room.Id</small></td>
+            <td>
+                @r.LastMessageId_Cached<br />
+                @if (r.LastMessageId_Cached.HasValue) {
+                    @(new Webadel7.Message(r.LastMessageId_Cached.Value, false).Date)<br />
+                } else {
+                    <i>None</i>
+                }
+                @*<small>@(new Webadel7.Message(ViewBag.CurrentUser.GetMostRecentMessageId(ur.RoomId), false).Body)</small>*@
+            </td>
+            <td>
+                @r.LastMessageId_FromDB<br />
+                @if (r.LastMessageId_FromDB.HasValue) {
+                    @(new Webadel7.Message(r.LastMessageId_FromDB.Value, false).Date)<br />
+                } else {
+                    <i>None</i>
+                }
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,22 @@
+﻿@model List<Webadel7.User>
+@{ ViewBag.Title = "Display Resources"; }
+
+<h2>Plonks</h2>
+
+<table class="table">
+    <thead><tr><th>User</th><th>Plonked By</th></tr></thead>
+    @foreach (Webadel7.User user in Model.Where(o => o.PlonkedBy.Count > 0)) {
+        <tr>
+            <td>
+                @user.Username
+            </td>
+            <td>@string.Join(", ", user.PlonkedBy.Select(o => o.Username))</td>
+        </tr>
+    }
+</table>
+
+@if (Model.Count(o => o.PlonkedBy.Count > 0) == 0) {
+    <div class="alert alert-info">
+        No one plonked by anyone. Strange.
+    </div>
+}

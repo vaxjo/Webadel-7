@@ -1,0 +1,33 @@
+﻿@model Webadel7.User
+@{ Layout = null; }
+
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="">Plonked Users</label>
+        <div class="col-sm-9 form-control-static">
+            @foreach (Webadel7.User plonkedUser in MvcApplication.CurrentUser.PlonkedUsers) {
+                <p>
+                    @plonkedUser.Username
+                    <span class="glyphicon unplonk glyphicon-remove-sign text-danger" style="cursor:pointer;" data-id="@plonkedUser.Id" aria-hidden="true"></span>
+                </p>
+            }
+
+            @if (MvcApplication.CurrentUser.PlonkedUsers.Count == 0) {
+                <p>No plonked users.</p>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="plonkUser">Plonk User</label>
+        <div class="col-sm-5">
+            <select class="form-control" id="plonkUser">
+                <option value=""></option>
+                @foreach (Webadel7.User user in Webadel7.User.GetAll(true)) {
+                    if (user.Id == Webadel7.SystemConfig.AnonymousId || user.Id == Webadel7.SystemConfig.SysopId) { continue; }
+                    <option value="@user.Id">@user.Username</option>
+                }
+            </select>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,22 @@
+﻿@model List<Webadel7.DB.User>
+@{ ViewBag.Title = "User Last Activity"; }
+
+<h2>User Last Activity</h2>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <td></td>
+            <th>User</th>
+            <th>Last Activity (db)</th>
+        </tr>
+    </thead>
+
+    @foreach (var u in Model.OrderByDescending(o => o.lastActivity)) {
+        <tr>
+            <td><a href="/Dev/SimulateUser?userId=@u.id">Simulate</a></td>
+            <td>@u.username</td>
+            <td>@u.lastActivity</td>
+        </tr>
+    }
+</table>
