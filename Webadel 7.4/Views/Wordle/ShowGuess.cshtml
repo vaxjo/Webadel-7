@@ -1,0 +1,19 @@
+﻿@model Webadel7.Controllers.WordleController.Check_Model
+@{ Layout = null; }
+
+@if (Model.IsCorrect) {
+    <script type="text/javascript">
+
+        var tries = $("#guesses > .guess").length;
+
+        $("form#wordle").hide();
+        $("#success #tries").text(tries);
+        $("#success").show();
+    </script>
+}
+
+<div class="guess">
+    @foreach (var guess in Model.Guesses) {
+        <span class="@guess.State">@guess.Letter</span>
+    }
+</div>

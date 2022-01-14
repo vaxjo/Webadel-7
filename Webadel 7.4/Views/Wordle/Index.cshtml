@@ -1,0 +1,90 @@
+﻿@{ ViewBag.Title = "Wordle"; }
+
+
+@section Scripts {
+    <script type="text/javascript">
+        var _timer;
+
+        $(document).ready(function () {
+            $("form#wordle").submit(function (e) {
+                e.preventDefault();
+
+                var word = $("form#wordle #word").val();
+                if (word.length != 5) return;
+
+                $.get("/Wordle/CheckGuess?word=" + word, function (data) {
+                    if (data.ResultCode != 0) {
+                        alert(data.Message);
+
+                    } else {
+                        _timer = setTimeout(function () { $("#waiting").show(); }, 200);
+
+                        $.get("/Wordle/ShowGuess?word=" + word, function (data) {
+                            $("#guesses").append(data)
+                            $("form#wordle #word").val("").focus();
+
+                            clearTimeout(_timer);
+                            $("#waiting").hide();
+
+                            $.get("/Wordle/GetIncorrectLetters?word=" + word, function (data) {
+                                for (var i = 0; i < data.length; i++) $("#alphabet #letter-" + data[i]).addClass("incorrect");
+                            });
+                        });
+                    }
+                });
+            });
+
+            $("form#wordle #word").focus();
+        });
+    </script>
+}
+
+<style>
+    #guesses .guess { display: flex; justify-content: center; margin-bottom: 5px; }
+        #guesses .guess span { border: 1px solid #000; padding: 20px; margin: 2px; width: 50px; }
+            #guesses .guess span.Correct { background-color: lightgreen; }
+            #guesses .guess span.Incorrect { background-color: darkgray; }
+            #guesses .guess span.WrongPlace { background-color: orange; }
+
+    #waiting { width: 50%; margin: 0 auto; display: none; }
+
+    #wordle { margin-top: 25px; }
+        #wordle input { font-size: 30px; width: 200px; text-align: center; text-transform: uppercase; }
+
+    #alphabet { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 40px; font-size: 20px; }
+        #alphabet span { border: 1px solid #aaa; padding: 8px; margin: 5px; }
+            #alphabet span.incorrect { background-color: darkgray; }
+
+    #success { margin-top: 20px; display: none; }
+</style>
+
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 text-center">
+        <h2 style="margin-bottom:30px;">@Webadel7.SystemConfig.SystemName Wordle</h2>
+
+        <div id="guesses"></div>
+
+        <div id="waiting" class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div>
+        </div>
+
+        <form id="wordle">
+            <input id="word" type="text" maxlength="5" />
+        </form>
+
+        <div id="success" class="alert alert-success">
+            <p>Congratulations! You got the word in <span id="tries">433</span> tries.</p>
+            <p>New word tomorrow.</p>
+        </div>
+
+        <div id="alphabet">
+            @for (int i = 65; i < 91; i++) {
+                <span id="letter-@((char)i)">@((char)i)</span>
+            }
+
+        </div>
+    </div>
+</div>
+
+@* don't do anything with it, but make sure we have one *@
+@{ Wordle.GetTodaysWord(); }
