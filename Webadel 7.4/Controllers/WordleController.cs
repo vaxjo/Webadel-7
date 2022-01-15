@@ -62,11 +62,6 @@ namespace Webadel7.Controllers {
             return Myriads.CallbackResult.Success;
         }
 
-        public JsonResult GetIncorrectLetters(string word) {
-            var model = new Check_Model(word);
-            return Json(model.Guesses.Where(o => o.State == Check_Model.States.Incorrect).Select(o => o.Letter).ToArray(), JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult ShowGuess(string word) {
             var model = new Check_Model(word);
             return View(model);
