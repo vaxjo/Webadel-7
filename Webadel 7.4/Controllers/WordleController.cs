@@ -74,8 +74,12 @@ namespace Webadel7 {
         public static string GetTodaysWord() {
             FileInfo wordleFile = new FileInfo(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/wordle.txt"));
 
-            if (!wordleFile.Exists || wordleFile.CreationTime.Date != DateTime.Now.Date) {
+            //if (!wordleFile.Exists) throw new Exception("not exists");
+            //if (wordleFile.CreationTime.Date != DateTime.Now.Date) throw new Exception("wrong date - "+ wordleFile.CreationTime.Date +" - "+ DateTime.Now.Date);
+
+            if (!wordleFile.Exists || wordleFile.LastWriteTime.Date != DateTime.Now.Date) {
                 // pick a new word
+                //wordleFile.Delete();
                 File.WriteAllText(wordleFile.FullName, GetRandomWord());
             }
 
