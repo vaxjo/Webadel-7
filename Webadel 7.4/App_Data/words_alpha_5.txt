@@ -12889,6 +12889,7 @@ sloth
 slots
 slour
 slows
+slphs
 slubs
 slued
 sluer
@@ -13713,6 +13714,7 @@ swots
 swoun
 swung
 swure
+sysop
 taata
 tabac
 tabby
