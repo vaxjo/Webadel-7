@@ -20,20 +20,31 @@ namespace Webadel7.Controllers {
 
             public bool IsCorrect => Guesses.All(o => o.State == States.Correct);
 
-            public Check_Model(string word) {
+            public Check_Model(string testWord) {
                 Guesses = new List<LetterGuess>();
 
-                var todaysWord = Wordle.GetTodaysWord();
+                var goalWord = Wordle.GetTodaysWord();
 
+                // populate guesses with test word letters, all incorrect by default
+                Guesses = testWord.ToUpper().ToList().Select(o => new LetterGuess { Letter = o, State = States.Incorrect }).ToList();
+
+                // first, find all correct letters (incorrect letters from the goal word go into a list of leftovers)
                 int i = 0;
-                foreach (char letter in word.ToUpper().ToList()) {
-                    LetterGuess lg = new LetterGuess { Letter = letter, State = States.Incorrect };
+                List<char> leftovers = new List<char>();
+                foreach (LetterGuess lg in Guesses) {
+                    if (lg.Letter == goalWord[i]) lg.State = States.Correct;
+                    else leftovers.Add(goalWord[i]);
 
-                    if (letter == todaysWord[i]) lg.State = States.Correct;
-                    else if (todaysWord.ToArray().Contains(letter)) lg.State = States.WrongPlace;
-
-                    Guesses.Add(lg);
                     i++;
+                }
+
+                // then look at the non-correct letters again
+                foreach (LetterGuess lg in Guesses.Where(o => o.State != States.Correct)) {
+                    // if the letter is in the list of leftovers, then it's just in the wrong place; also remove the leftover letter from its list
+                    if (leftovers.Contains(lg.Letter)) {
+                        lg.State = States.WrongPlace;
+                        leftovers.Remove(lg.Letter);
+                    }
                 }
             }
 
@@ -74,12 +85,8 @@ namespace Webadel7 {
         public static string GetTodaysWord() {
             FileInfo wordleFile = new FileInfo(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/wordle.txt"));
 
-            //if (!wordleFile.Exists) throw new Exception("not exists");
-            //if (wordleFile.CreationTime.Date != DateTime.Now.Date) throw new Exception("wrong date - "+ wordleFile.CreationTime.Date +" - "+ DateTime.Now.Date);
-
             if (!wordleFile.Exists || wordleFile.LastWriteTime.Date != DateTime.Now.Date) {
                 // pick a new word
-                //wordleFile.Delete();
                 File.WriteAllText(wordleFile.FullName, GetRandomWord());
             }
 
@@ -97,7 +104,7 @@ namespace Webadel7 {
                 word = allWords[rnd.Next(allWords.Count)];
             } while (!IsValidWord(word) && iter++ < 1000);
 
-            if (iter >= 1000) throw new Exception("Gave up after 1000 tries!");
+            if (iter >= 1000) throw new Exception("Gave up after 1000 tries!"); // this should never happen, but we don't want it to get stuck in an inifite loop if it does
 
             return word;
         }
