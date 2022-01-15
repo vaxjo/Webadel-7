@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /Webadel 7.4/ConnectionStrings.config
 /Webadel 7.4/Smtp.config
 /Webadel 7.4/App_Data/Resources
+/Webadel 7.4/App_Data/wordle.txt
+
