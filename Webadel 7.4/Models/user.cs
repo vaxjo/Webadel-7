@@ -231,6 +231,10 @@ namespace Webadel7 {
             return GetAll(false).SingleOrDefault(o => o.Id == id);
         }
 
+        public static User Get(string email) {
+            return GetAll(false).SingleOrDefault(o => (o.Email ?? "").ToLower() == email.ToLower());
+        }
+
         public static User Load(string password) {
             DB.WebadelDataContext dc = new DB.WebadelDataContext();
 
@@ -273,6 +277,36 @@ namespace Webadel7 {
             Myriads.Cache.Remove("Users");
             Myriads.Cache.Remove("UserRooms");
             return User.Load(dbUser.id);
+        }
+
+        /// <summary> Create a one-time login token in case user has forgotten pw. </summary>
+        public string CreateLoginToken() {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+
+            DB.LoginToken newLoginToken = new DB.LoginToken { expiration = DateTime.Now.AddMinutes(30), userId = Id, token = Guid.NewGuid().ToString("N") };
+
+            dc.LoginTokens.InsertOnSubmit(newLoginToken);
+            dc.SubmitChanges();
+
+            return newLoginToken.token;
+        }
+
+        /// <summary> Return the user associated with this token (if it exists and is not expired). </summary>
+        public static User GetUserForToken(string loginToken) {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+
+            // remove expired tokens
+            dc.LoginTokens.DeleteAllOnSubmit(dc.LoginTokens.Where(o => o.expiration < DateTime.Now));
+            dc.SubmitChanges();
+
+            var u = dc.LoginTokens.SingleOrDefault(o => o.token == loginToken);
+            if (u == null) return null;
+
+            // remove token after it's used
+            dc.LoginTokens.DeleteOnSubmit(u);
+            dc.SubmitChanges();
+
+            return User.Load(u.userId);
         }
 
         public override string ToString() {

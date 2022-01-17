@@ -1,124 +1,156 @@
 ﻿using System;
+using System.Net.Mail;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Webadel7.Controllers {
-	public class AuthController : WebadelController {
-		public struct Index_Message { public string Type, Message; }
+    public class AuthController : WebadelController {
+        public struct Index_Message { public string Type, Message; }
 
-		public ActionResult Index(string password) {
-			List<Index_Message> messages = new List<Index_Message>();
+        public ActionResult Index(string password) {
+            List<Index_Message> messages = new List<Index_Message>();
 
-			if (!string.IsNullOrWhiteSpace(password) && !Banishment.IsBanished(Request.UserHostAddress)) {
-				User user = Webadel7.User.Load(password);
-				if (user != null) return LoginUser(user);
+            if (!string.IsNullOrWhiteSpace(password) && !Banishment.IsBanished(Request.UserHostAddress)) {
+                User user = Webadel7.User.Load(password);
+                if (user != null) return LoginUser(user);
 
-				int failedAttempts = WebadelAuthorize.AddFailedLoginAttempt();
-				messages.Add(new Index_Message() { Message = "Invalid password, please try again.", Type = "danger" });
-				if (failedAttempts > 5) {
-					Banishment.Ban(Request.UserHostAddress, TimeSpan.FromSeconds(Math.Pow(failedAttempts - 5, 2)));
-					Room.PostToAide("Client [" + Request.UserHostAddress + "] has accumulated " + failedAttempts + " failed login attempts.");
-				}
-				ViewBag.LoginError = true;
-			}
+                int failedAttempts = WebadelAuthorize.AddFailedLoginAttempt();
+                messages.Add(new Index_Message() { Message = "Invalid password, please try again.", Type = "danger" });
+                if (failedAttempts > 5) {
+                    Banishment.Ban(Request.UserHostAddress, TimeSpan.FromSeconds(Math.Pow(failedAttempts - 5, 2)));
+                    Room.PostToAide("Client [" + Request.UserHostAddress + "] has accumulated " + failedAttempts + " failed login attempts.");
+                }
+                ViewBag.LoginError = true;
+            }
 
-			if (Request["lostsession"] != null) messages.Add(new Index_Message() { Message = "Session lost, please re-login.", Type = "warning" });
-			if (Request["logout"] != null) messages.Add(new Index_Message() { Message = "You have been logged out.", Type = "success" });
+            if (Request["lostsession"] != null) messages.Add(new Index_Message() { Message = "Session lost, please re-login.", Type = "warning" });
+            if (Request["logout"] != null) messages.Add(new Index_Message() { Message = "You have been logged out.", Type = "success" });
+            if (Request["invalidlogintoken"] != null) messages.Add(new Index_Message() { Message = "Invalid login token.", Type = "warning" });
 
-			if (Banishment.IsBanished(Request.UserHostAddress)) {
-				if (Banishment.BanishedDuration(Request.UserHostAddress) == TimeSpan.MaxValue) messages.Add(new Index_Message() { Message = "Your IP has been permanently banished. You must have been very naughty. <a href='mailto:sysop@edsroom.com' class='alert-link'>Appeal?</a>", Type = "danger" });
-				else messages.Add(new Index_Message() { Message = "Your IP has been temporarily banished. Try again in " + Banishment.NiceTimeSpanDisplay(Banishment.BanishedDuration(Request.UserHostAddress)) + ". <a href='mailto:sysop@edsroom.com' class='alert-link'>Appeal?</a>", Type = "danger" });
-			}
+            if (Banishment.IsBanished(Request.UserHostAddress)) {
+                if (Banishment.BanishedDuration(Request.UserHostAddress) == TimeSpan.MaxValue) messages.Add(new Index_Message() { Message = "Your IP has been permanently banished. You must have been very naughty. <a href='mailto:sysop@edsroom.com' class='alert-link'>Appeal?</a>", Type = "danger" });
+                else messages.Add(new Index_Message() { Message = "Your IP has been temporarily banished. Try again in " + Banishment.NiceTimeSpanDisplay(Banishment.BanishedDuration(Request.UserHostAddress)) + ". <a href='mailto:sysop@edsroom.com' class='alert-link'>Appeal?</a>", Type = "danger" });
+            }
 
-			return View(messages);
-		}
+            return View(messages);
+        }
 
-		public ActionResult LoginUser(Webadel7.User user) {
-			AuthToken authToken = AuthToken.New(user.Id);
+        public ActionResult LoginUser(Webadel7.User user) {
+            AuthToken authToken = AuthToken.New(user.Id);
 
-			// the previous code will actually make multiple, duplicate cookies
-			// - or maybe not. it's hard to say what firefox is doing with these cookies
-			//	Response.Cookies.Add(new HttpCookie(MvcApplication.AuthToken_CookieName, authToken.Token.ToString()) { Expires = MvcApplication.Now.AddDays(9999) });
-			Response.Cookies[MvcApplication.AuthToken_CookieName].Value = authToken.Token.ToString();
-			Response.Cookies[MvcApplication.AuthToken_CookieName].Expires = MvcApplication.Now.AddDays(9999);
+            // the previous code will actually make multiple, duplicate cookies
+            // - or maybe not. it's hard to say what firefox is doing with these cookies
+            //	Response.Cookies.Add(new HttpCookie(MvcApplication.AuthToken_CookieName, authToken.Token.ToString()) { Expires = MvcApplication.Now.AddDays(9999) });
+            Response.Cookies[MvcApplication.AuthToken_CookieName].Value = authToken.Token.ToString();
+            Response.Cookies[MvcApplication.AuthToken_CookieName].Expires = MvcApplication.Now.AddDays(9999);
 
-			AuthToken.Add(authToken);
+            AuthToken.Add(authToken);
 
-			user.RecordIP(Request.UserHostAddress);
-			SystemActivity.Update(user.Id);
-			WebadelAuthorize.ClearFailedLoginAttempt();
+            user.RecordIP(Request.UserHostAddress);
+            SystemActivity.Update(user.Id);
+            WebadelAuthorize.ClearFailedLoginAttempt();
 
-			return Redirect("/");
-		}
+            return Redirect("/");
+        }
 
-		public Myriads.JsonNetResult NewUser(string username, string newPassword, string confirmPassword, string email) {
-			if (username == null) return JsonNet("usernameempty"); // if this happens, an invalid request was made outside of the modal context (perhaps a crawler?)
+        public ActionResult LoginToken(string token) {
+            var user = Webadel7.User.GetUserForToken(token);
+            if (user == null) return Redirect("/Auth/Index?invalidlogintoken=true");
 
-			List<string> errors = new List<string>();
+            Room.PostToAide(user.Username + " logged in with a one-time login token.");
 
-			if (Banishment.IsBanished(Request.UserHostAddress)) errors.Add("banished");
-			if (string.IsNullOrWhiteSpace(username)) errors.Add("usernameempty");
-			if (string.IsNullOrWhiteSpace(newPassword)) errors.Add("passwordempty");
+            return LoginUser(user);
+        }
 
-			if (newPassword != confirmPassword) errors.Add("confirm");
-			if (username.Trim() == newPassword.Trim()) errors.Add("pwisusername");
+        public Myriads.JsonNetResult NewUser(string username, string newPassword, string confirmPassword, string email) {
+            if (username == null) return JsonNet("usernameempty"); // if this happens, an invalid request was made outside of the modal context (perhaps a crawler?)
 
-			if (Webadel7.User.GetAll().Any(o => o.Username.ToLower() == username.ToLower())) errors.Add("usernameexists");
+            List<string> errors = new List<string>();
 
-			User conflictUser = Webadel7.User.Load(newPassword);
-			if (conflictUser != null) errors.Add("badpw");
+            if (Banishment.IsBanished(Request.UserHostAddress)) errors.Add("banished");
+            if (string.IsNullOrWhiteSpace(username)) errors.Add("usernameempty");
+            if (string.IsNullOrWhiteSpace(newPassword)) errors.Add("passwordempty");
 
-			if (errors.Count > 0) return JsonNet(string.Join(",", errors));
+            if (newPassword != confirmPassword) errors.Add("confirm");
+            if (username.Trim() == newPassword.Trim()) errors.Add("pwisusername");
 
-			Webadel7.User newUser = Webadel7.User.NewUser(username, newPassword, email);
-			newUser.RecordIP(Request.UserHostAddress);
-			Room.PostToAide("New user (" + newUser + ") created.");
+            if (Webadel7.User.GetAll().Any(o => o.Username.ToLower() == username.ToLower())) errors.Add("usernameexists");
 
-			Room mail = Room.Load(SystemConfig.MailRoomId);
-			mail.Post(System.IO.File.ReadAllText(Server.MapPath("~/App_Data/newUserMail.htm")), SystemConfig.SysopId, newUser.Id);
+            User conflictUser = Webadel7.User.Load(newPassword);
+            if (conflictUser != null) errors.Add("badpw");
 
-			return JsonNet(""); // return empty on success
-		}
+            if (errors.Count > 0) return JsonNet(string.Join(",", errors));
 
-		// this is polled frequently
-		public Myriads.JsonNetResult GetUpdate(Guid? roomId) {
-			if (CurrentUser == null) return JsonNet(new { error = "nosession" });
+            Webadel7.User newUser = Webadel7.User.NewUser(username, newPassword, email);
+            newUser.RecordIP(Request.UserHostAddress);
+            Room.PostToAide("New user (" + newUser + ") created.");
 
-			Dictionary<Guid, int> numNew = CurrentUser.GetNumNewMessages();
+            Room mail = Room.Load(SystemConfig.MailRoomId);
+            mail.Post(System.IO.File.ReadAllText(Server.MapPath("~/App_Data/newUserMail.htm")), SystemConfig.SysopId, newUser.Id);
 
-			List<Guid> forgottenRooms = UserRoom.GetAll(CurrentUser.Id).Where(o => o.Forgotten).Select(o => o.RoomId).ToList();
-			int totalNew = numNew.Where(o => !forgottenRooms.Contains(o.Key)).Sum(o => o.Value);
+            return JsonNet(""); // return empty on success
+        }
 
-			UserRoom.UnexpireForgotten();
+        public Myriads.CallbackResult CreateLoginToken(string email) {
+            if (string.IsNullOrWhiteSpace(email)) return Myriads.CallbackResult.Get(100, "You've gotta enter an email address.");
 
-			return JsonNet(new {
-				error = "",
-				newMessages = numNew,
-				totalNew = totalNew,
-				lastSystemChange = MvcApplication.LastSystemChange.Ticks,
-				mostRecentMessage = (roomId.HasValue ? CurrentUser.GetMostRecentMessageId(roomId.Value) : (Guid?)null)
-			});
-		}
+            Webadel7.User user = Webadel7.User.Get(email);
+            if (user == null) return Myriads.CallbackResult.Get(200, "Email not found.");
 
-		public Myriads.JsonNetResult Online() {
-			return JsonNet(new {
-				index = SystemActivity.ActivityIndex.ToString("F2"),
-				activity = SystemActivity.ActivityItems.OrderBy(o => o.Idle)
-			});
-		}
+            string loginToken = user.CreateLoginToken();
 
-		public ActionResult Logout() {
-			if (CurrentUser != null) SystemActivity.Remove(CurrentUser.Id);
+            // send email
+            try {
+                SmtpClient smtp = new SmtpClient();
+                var m = new MailMessage("noreply@edsroom.com", email, SystemConfig.SystemName + " One-Time Login Link", "<p>Someone asked to create a one-time login link for you. I hope it was you.</p><p><a href='" + Request.Url.Scheme + "://" + Request.Url.Authority + "/Auth/LoginToken?token=" + loginToken + "'>Login</a></p>") { IsBodyHtml = true };
+                smtp.Send(m);
+            } catch (Exception e) {
+                Room.PostToSystem("Error trying to send email to [" + email + "]: " + e.Message);
+                return Myriads.CallbackResult.Get(300, "Error sending email.");
+            }
 
-			// remove auth token [jj 13Oct24]
-			HttpCookie authCookie = Request.Cookies[MvcApplication.AuthToken_CookieName];
-			if (authCookie != null && !string.IsNullOrWhiteSpace(authCookie.Value))
-				AuthToken.Remove(new Guid(authCookie.Value));
+            return Myriads.CallbackResult.Get(0, "An email containing a one-time login link has been dispatched.");
+        }
 
-			Response.Cookies.Add(new HttpCookie(MvcApplication.AuthToken_CookieName, "") { Expires = MvcApplication.Now.AddMinutes(-1) });
-			return Redirect("/Auth/Index?logout=true");
-		}
-	}
+        // this is polled frequently
+        public Myriads.JsonNetResult GetUpdate(Guid? roomId) {
+            if (CurrentUser == null) return JsonNet(new { error = "nosession" });
+
+            Dictionary<Guid, int> numNew = CurrentUser.GetNumNewMessages();
+
+            List<Guid> forgottenRooms = UserRoom.GetAll(CurrentUser.Id).Where(o => o.Forgotten).Select(o => o.RoomId).ToList();
+            int totalNew = numNew.Where(o => !forgottenRooms.Contains(o.Key)).Sum(o => o.Value);
+
+            UserRoom.UnexpireForgotten();
+
+            return JsonNet(new {
+                error = "",
+                newMessages = numNew,
+                totalNew = totalNew,
+                lastSystemChange = MvcApplication.LastSystemChange.Ticks,
+                mostRecentMessage = (roomId.HasValue ? CurrentUser.GetMostRecentMessageId(roomId.Value) : (Guid?)null)
+            });
+        }
+
+        public Myriads.JsonNetResult Online() {
+            return JsonNet(new {
+                index = SystemActivity.ActivityIndex.ToString("F2"),
+                activity = SystemActivity.ActivityItems.OrderBy(o => o.Idle)
+            });
+        }
+
+        public ActionResult Logout() {
+            if (CurrentUser != null) SystemActivity.Remove(CurrentUser.Id);
+
+            // remove auth token [jj 13Oct24]
+            HttpCookie authCookie = Request.Cookies[MvcApplication.AuthToken_CookieName];
+            if (authCookie != null && !string.IsNullOrWhiteSpace(authCookie.Value))
+                AuthToken.Remove(new Guid(authCookie.Value));
+
+            Response.Cookies.Add(new HttpCookie(MvcApplication.AuthToken_CookieName, "") { Expires = MvcApplication.Now.AddMinutes(-1) });
+            return Redirect("/Auth/Index?logout=true");
+        }
+    }
 }

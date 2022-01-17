@@ -38,6 +38,15 @@
                 });
             });
 
+            $("#loginTokenModal form").submit(function (e) {
+                e.preventDefault();
+
+                $.post("/Auth/CreateLoginToken", $("#loginTokenModal form").serialize(), function (data) {
+                    if (data.ResultCode == 0) $("#loginTokenModal").modal("hide");
+                    alert(data.Message);
+                });
+            });
+
             WhosOnline();
             setInterval(WhosOnline, 60000);
         });
@@ -68,7 +77,7 @@
 
         <p>
             Ed's Room is a public message system modeled after the Citadel BBS software of the distant past.
-            All are welcome to login, browse the message base, and participate in discussions.
+            All are welcome to login, browse the message base, and participate in discussions. At your own risk.
         </p>
 
         <form role="form" method="post" action="/Auth/Index">
@@ -86,7 +95,12 @@
 
         @if (!Webadel7.Banishment.IsBanished(Request.UserHostAddress)) {
             <p>If this is your first visit, create a new account to join in (account creation takes only half a minute).</p>
-            <a class="btn btn-primary " data-toggle="modal" href="#newUserModal">Create New Account</a>
+            <p><a class="btn btn-primary " data-toggle="modal" href="#newUserModal">Create New Account</a></p>
+
+            <hr />
+
+            <p>If you've forgotten your password, you can have a one-time login link emailed to you. If you have an email attached to your account, anyway.</p>
+            <p><a class="btn btn-primary " data-toggle="modal" href="#loginTokenModal">Get One-Time Login Link</a></p>
         }
     </div>
 
@@ -138,5 +152,31 @@
                 <button type="button" class="btn btn-primary" id="create">Create</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="loginTokenModal" class="modal fade">
+    <div class="modal-dialog">
+        <form role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">One-Time Login Link</h4>
+                </div>
+                <div class="modal-body">
+
+                    <p>Enter the email address associated with your account.</p>
+
+                    <div class="form-group">
+                        <label for="email" class="sr-only ">Username</label>
+                        <input type="email" class="form-control required" required id="email" name="email" maxlength="20" placeholder="Email Address">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="send">Send</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

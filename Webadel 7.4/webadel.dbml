@@ -186,6 +186,15 @@
       <Association Name="User_User_PrevAlia" Member="User_PrevAlias" ThisKey="id" OtherKey="userId" Type="User_PrevAlia" />
       <Association Name="User_Plonk" Member="Plonks" ThisKey="id" OtherKey="userId" Type="Plonk" />
       <Association Name="User_UserProfile" Member="UserProfile" ThisKey="id" OtherKey="id" Type="UserProfile" Cardinality="One" />
+      <Association Name="User_LoginToken" Member="LoginTokens" ThisKey="id" OtherKey="userId" Type="LoginToken" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoginToken" Member="LoginTokens">
+    <Type Name="LoginToken">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="expiration" Type="System.DateTime" DbType="DateTime2 NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="token" Type="System.String" DbType="VarChar(36) NOT NULL" CanBeNull="false" />
+      <Association Name="User_LoginToken" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">

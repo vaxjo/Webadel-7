@@ -78,6 +78,9 @@ namespace Webadel7.DB
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertLoginToken(LoginToken instance);
+    partial void UpdateLoginToken(LoginToken instance);
+    partial void DeleteLoginToken(LoginToken instance);
     #endregion
 		
 		public WebadelDataContext() : 
@@ -235,6 +238,14 @@ namespace Webadel7.DB
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LoginToken> LoginTokens
+		{
+			get
+			{
+				return this.GetTable<LoginToken>();
 			}
 		}
 		
@@ -3559,6 +3570,8 @@ namespace Webadel7.DB
 		
 		private EntityRef<UserProfile> _UserProfile;
 		
+		private EntitySet<LoginToken> _LoginTokens;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -3610,6 +3623,7 @@ namespace Webadel7.DB
 			this._User_PrevAlias = new EntitySet<User_PrevAlia>(new Action<User_PrevAlia>(this.attach_User_PrevAlias), new Action<User_PrevAlia>(this.detach_User_PrevAlias));
 			this._Plonks = new EntitySet<Plonk>(new Action<Plonk>(this.attach_Plonks), new Action<Plonk>(this.detach_Plonks));
 			this._UserProfile = default(EntityRef<UserProfile>);
+			this._LoginTokens = new EntitySet<LoginToken>(new Action<LoginToken>(this.attach_LoginTokens), new Action<LoginToken>(this.detach_LoginTokens));
 			OnCreated();
 		}
 		
@@ -4092,6 +4106,19 @@ namespace Webadel7.DB
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_LoginToken", Storage="_LoginTokens", ThisKey="id", OtherKey="userId")]
+		public EntitySet<LoginToken> LoginTokens
+		{
+			get
+			{
+				return this._LoginTokens;
+			}
+			set
+			{
+				this._LoginTokens.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -4230,6 +4257,169 @@ namespace Webadel7.DB
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+		
+		private void attach_LoginTokens(LoginToken entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_LoginTokens(LoginToken entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LoginToken")]
+	public partial class LoginToken : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _userId;
+		
+		private System.DateTime _expiration;
+		
+		private string _token;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnuserIdChanging(System.Guid value);
+    partial void OnuserIdChanged();
+    partial void OnexpirationChanging(System.DateTime value);
+    partial void OnexpirationChanged();
+    partial void OntokenChanging(string value);
+    partial void OntokenChanged();
+    #endregion
+		
+		public LoginToken()
+		{
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnuserIdChanging(value);
+					this.SendPropertyChanging();
+					this._userId = value;
+					this.SendPropertyChanged("userId");
+					this.OnuserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_expiration", DbType="DateTime2 NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime expiration
+		{
+			get
+			{
+				return this._expiration;
+			}
+			set
+			{
+				if ((this._expiration != value))
+				{
+					this.OnexpirationChanging(value);
+					this.SendPropertyChanging();
+					this._expiration = value;
+					this.SendPropertyChanged("expiration");
+					this.OnexpirationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_token", DbType="VarChar(36) NOT NULL", CanBeNull=false)]
+		public string token
+		{
+			get
+			{
+				return this._token;
+			}
+			set
+			{
+				if ((this._token != value))
+				{
+					this.OntokenChanging(value);
+					this.SendPropertyChanging();
+					this._token = value;
+					this.SendPropertyChanged("token");
+					this.OntokenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_LoginToken", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.LoginTokens.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.LoginTokens.Add(this);
+						this._userId = value.id;
+					}
+					else
+					{
+						this._userId = default(System.Guid);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
