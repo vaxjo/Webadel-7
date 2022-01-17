@@ -70,10 +70,20 @@ namespace Webadel7 {
                 if (!string.IsNullOrWhiteSpace(recipient.Email)) {
                     try {
                         User author = Webadel7.User.Load(authorId);
+
+                        Dictionary<string, string> replacements = new Dictionary<string, string>();
+                        replacements.Add("systemName", SystemConfig.SystemName);
+                        replacements.Add("senderName", author.Username);
+
+                        MailMessage mail = Myriads.MailTemplate.CreateMailMessage(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Email/mailforward.xml"));
+                        mail.To.Add(recipient.Email);
+                        if (!string.IsNullOrWhiteSpace(author.Email)) mail.ReplyToList.Add(author.Email);
+                        Myriads.MailTemplate.MakeReplacements(mail, replacements);
+                        mail.Body = body;
+
                         SmtpClient smtp = new SmtpClient();
-                        var m = new MailMessage("noreply@edsroom.com", recipient.Email, SystemConfig.SystemName + " mail from " + author.Username, body) { IsBodyHtml = true };
-                        if (!string.IsNullOrWhiteSpace(author.Email)) m.ReplyToList.Add(author.Email);
-                        smtp.Send(m);
+                        smtp.Send(mail);
+
                     } catch (Exception e) {
                         Room.PostToSystem("Error trying to send email: " + e.Message);
                     }

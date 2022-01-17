@@ -179,6 +179,8 @@
     <Content Include="android-chrome-192x192.png" />
     <Content Include="android-chrome-512x512.png" />
     <Content Include="apple-touch-icon.png" />
+    <Content Include="App_Data\Email\mailforward.xml" />
+    <Content Include="App_Data\Email\logintoken.xml" />
     <Content Include="App_Data\newUserMail.htm" />
     <Content Include="App_Data\words_alpha_5.txt" />
     <Content Include="Content\bootstrap-theme.css" />

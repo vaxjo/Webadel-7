@@ -96,16 +96,26 @@ namespace Webadel7.Controllers {
         public Myriads.CallbackResult CreateLoginToken(string email) {
             if (string.IsNullOrWhiteSpace(email)) return Myriads.CallbackResult.Get(100, "You've gotta enter an email address.");
 
-            Webadel7.User user = Webadel7.User.Get(email);
+            User user = Webadel7.User.Get(email);
             if (user == null) return Myriads.CallbackResult.Get(200, "Email not found.");
 
             string loginToken = user.CreateLoginToken();
 
             // send email
             try {
+                Dictionary<string, string> replacements = new Dictionary<string, string>();
+                replacements.Add("systemName", SystemConfig.SystemName);
+                replacements.Add("Request.Url.Scheme", Request.Url.Scheme);
+                replacements.Add("Request.Url.Authority", Request.Url.Authority);
+                replacements.Add("loginToken", loginToken);
+
+                MailMessage mail = Myriads.MailTemplate.CreateMailMessage(Server.MapPath("~/App_Data/Email/logintoken.xml"));
+                mail.To.Add(email);
+                Myriads.MailTemplate.MakeReplacements(mail, replacements);
+                
                 SmtpClient smtp = new SmtpClient();
-                var m = new MailMessage("noreply@edsroom.com", email, SystemConfig.SystemName + " One-Time Login Link", "<p>Someone asked to create a one-time login link for you. I hope it was you.</p><p><a href='" + Request.Url.Scheme + "://" + Request.Url.Authority + "/Auth/LoginToken?token=" + loginToken + "'>Login</a></p>") { IsBodyHtml = true };
-                smtp.Send(m);
+                smtp.Send(mail);
+
             } catch (Exception e) {
                 Room.PostToSystem("Error trying to send email to [" + email + "]: " + e.Message);
                 return Myriads.CallbackResult.Get(300, "Error sending email.");

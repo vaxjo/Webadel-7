@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<EmailTemplate>
+	<From>noreply@edsroom.com</From>
+	<Subject>{systemName} One-Time Login Link</Subject>
+	<Body>
+		<![CDATA[
+		<p>Someone asked to create a one-time login link for you. I hope it was you.</p>
+		<p><a href="{Request.Url.Scheme}://{Request.Url.Authority}/Auth/LoginToken?token={loginToken}">Login</a></p>
+		]]>
+	</Body>
+</EmailTemplate>
