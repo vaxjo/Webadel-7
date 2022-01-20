@@ -13273,6 +13273,7 @@ spole
 spong
 spoof
 spook
+spork
 spool
 spoom
 spoon
@@ -15084,6 +15085,7 @@ vatic
 vaudy
 vault
 vaunt
+vaxjo
 vealy
 veals
 vedda
