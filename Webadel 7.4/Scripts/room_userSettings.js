@@ -3,8 +3,10 @@
     $("#changePwModal").on('shown.bs.modal', function () { $("#currentPassword").focus(); });
     $("#changePwModal #changePw").click(function () { ChangePassword(); });
 
-    $("#sortRoomsModal").on('show.bs.modal', function () { CloseTopNav(); SortRoomList(); });
-    $("#sortRoomsModal").on("click", "#finished", function () { SortRoomList_Finished(); });
+    $("#sortRoomsModal").on('show.bs.modal', function () {
+        CloseTopNav();
+        $("#sortRoomsModal").load("/Room/Index_SortRooms_Dialog");
+    });
 
     $("#profileModal").on('show.bs.modal', function () { CloseTopNav(); Profile(); });
     $("#profileModal").on('shown.bs.modal', function () { $("#email").focus(); });
@@ -72,21 +74,6 @@ function Profile() {
 function Profile_Finished() {
     $.post("/Room/UpdateProfile", $("#profileModal form").serialize(), function () {
         $("#profileModal").modal("hide");
-    });
-}
-
-function SortRoomList() {
-    $("#sortRoomsModal").load("/Room/Index_SortRooms_Dialog", function () {
-        $("#sortRoomsModal ul").sortable({ axis: "y", tolerance: 'pointer', revert: false, forceHelperSize: true });
-    });
-}
-function SortRoomList_Finished() {
-    var roomsIds = "";
-    $("#sortRoomsModal ul li").each(function () { roomsIds += $(this).attr("id") + ","; });
-
-    $.post("/Room/ReorderRooms?roomIds=" + roomsIds, function () {
-        $("#sortRoomsModal").modal("hide");
-        FrequentInterval(); // reload room lists
     });
 }
 

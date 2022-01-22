@@ -1,27 +1,58 @@
 ﻿@model List<Webadel7.UserRoom>
 @{ Layout = null; }
 
+<script>
+    $("#sortRoomsModal ul").sortable({ axis: "y", tolerance: 'pointer', revert: false, forceHelperSize: true, update: function (event, ui) { Update(); } });
+
+    $("#sortRoomsModal .glyphicon-chevron-up").click(function () {
+        var $current = $(this).closest("li");
+        if ($current.prev().length == 0) return; // can't move top one up
+
+        $current.insertBefore($current.prev());
+        Update();
+    });
+
+    $("#sortRoomsModal .glyphicon-chevron-down").click(function () {
+        var $current = $(this).closest("li");
+        if ($current.next().length == 0) return; // can't move bottom one down
+
+        $current.insertAfter($current.next());
+        Update();
+    });
+
+    function Update() {
+        var roomsIds = "";
+        $("#sortRoomsModal ul li").each(function () { roomsIds += $(this).attr("id") + ","; });
+        $.post("/Room/ReorderRooms?roomIds=" + roomsIds);
+        FrequentInterval();
+    }
+</script>
+
 <div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h4 class="modal-title">Sort Room List</h4>
-		</div>
-		<div class="modal-body">
-	
-		<p>Click and drag to reorder the room list. When finished, scroll all the way down to the bottom and click "Finished".</p>
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Sort Room List</h4>
+        </div>
+        <div class="modal-body">
 
-		<p class="visible-xs visible-sm">This might not work on mobile devices. If so you'll need to log in with computer.</p>
+            <p>Click and drag to reorder the room list. Or use the arrows. It's your choice.</p>
 
-		<ul class="list-group">
-			@foreach (Webadel7.UserRoom ur in Model) { <li class="list-group-item" style="padding: 4px 15px 4px 15px;" id="@ur.RoomId">@ur.Room.Name</li> }
-		</ul>
-		
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" id="finished">Finished</button>
-		</div>
-	</div>
-	<!-- /.modal-content -->
+            <ul class="list-group">
+                @foreach (Webadel7.UserRoom ur in Model) {
+                    <li class="list-group-item" style="padding: 4px 15px 4px 15px;" id="@ur.RoomId">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-8">@ur.Room.Name</div>
+                            <div class="col-xs-2 col-sm-2"><span class="glyphicon glyphicon-chevron-up"></span></div>
+                            <div class="col-xs-2 col-sm-2"><span class="glyphicon glyphicon-chevron-down"></span></div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Finished</button>
+        </div>
+    </div>
 </div>
-<!-- /.modal-dialog -->
