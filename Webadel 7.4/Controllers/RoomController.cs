@@ -282,10 +282,11 @@ namespace Webadel7.Controllers {
             return JsonNet(""); // return empty on success
         }
 
-        public EmptyResult ReorderRooms(string roomIds) {
+        public Myriads.CallbackResult ReorderRooms(string roomIds) {
             List<Guid> orderedRoomIds = roomIds.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).Select(o => new Guid(o)).ToList();
             UserRoom.ReorderRooms(CurrentUser.Id, orderedRoomIds);
-            return null;
+
+            return Myriads.CallbackResult.Success;
         }
 
         [ValidateInput(false)]
