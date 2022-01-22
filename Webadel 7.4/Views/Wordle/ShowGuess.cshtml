@@ -3,11 +3,29 @@
 
 @if (Model.IsCorrect) {
     <script type="text/javascript">
-
         var tries = $("#guesses > .guess").length;
+        var today = new Date().getFullYear().toString() + "-" + (new Date().getMonth() + 1).toString() + "-" + new Date().getDate().toString();
+
+        var oldStats = new Array();
+        if ($.cookie("wordle") != undefined) oldStats = JSON.parse($.cookie("wordle"));
+        //console.log("old", oldStats);
+
+        var newStats = new Array();
+        for (var i = 0; i < oldStats.length; i++) {
+            if (oldStats[i].date != today) newStats.push(oldStats[i]);
+        }
+        newStats.push({ date: today, tries: tries });
+
+        $.cookie("wordle", JSON.stringify(newStats));
+        //console.log("new", newStats);
+
+        var totalScore = 0;
+        for (var i = 0; i < newStats.length; i++) totalScore += newStats[i].tries;
 
         $("form#wordle").hide();
         $("#success #tries").text(tries);
+        $("#success #totalGames").text(newStats.length);
+        $("#success #averageScore").text(totalScore / newStats.length);
         $("#success").show();
     </script>
 }

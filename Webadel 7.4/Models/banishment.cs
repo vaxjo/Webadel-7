@@ -54,15 +54,6 @@ namespace Webadel7 {
             Myriads.Cache.Remove("Banishments");
         }
 
-        public static string NiceTimeSpanDisplay(TimeSpan ts) {
-            if ((int)ts.TotalSeconds == 1) return "1 second";
-            if (ts.TotalSeconds < 60) return ts.TotalSeconds.ToString("F0") + " seconds";
-            if ((int)ts.TotalMinutes == 1) return "1 minute";
-            if (ts.TotalMinutes < 60) return ts.TotalMinutes.ToString("F0") + " minutes";
-            if ((int)ts.TotalHours == 1) return "1 hour";
-            if (ts.TotalHours < 24) return ts.TotalHours.ToString("F0") + " hours";
-            if ((int)ts.TotalDays == 1) return "1 day";
-            return ts.TotalDays.ToString("F0") + " days";
-        }
+        public static string NiceTimeSpanDisplay(TimeSpan ts) => Myriads.StopWatch.ApproximateTimeSpanDisplay(ts);
     }
 }

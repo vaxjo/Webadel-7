@@ -62,7 +62,12 @@
 
 <div class="row">
     <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 text-center">
-        <h2 style="margin-bottom:30px;">@Webadel7.SystemConfig.SystemName Wordle</h2>
+        <h2 style="margin-bottom:30px;">
+            @Webadel7.SystemConfig.SystemName Wordle
+            @if (Request.IsLocal) {
+                <small>@Wordle.GetTodaysWord()</small>
+            }
+        </h2>
 
         <div id="guesses"></div>
 
@@ -76,8 +81,10 @@
 
         <div id="success" class="alert alert-success">
             <p>Congratulations! You got the word in <span id="tries">433</span> tries.</p>
-            <p>New word tomorrow.</p>
+            <p>New word in @(Myriads.StopWatch.ApproximateTimeSpanDisplay(TimeSpan.FromHours(24).Subtract(DateTime.Now.TimeOfDay))).</p>
             <p><a href="/" class="btn btn-primary">Ed's Room</a></p>
+            <p>Total number of games played: <span id="totalGames"></span></p>
+            <p>Average score: <span id="averageScore"></span></p>
         </div>
 
         <div id="alphabet">
