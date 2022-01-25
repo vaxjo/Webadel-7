@@ -5824,6 +5824,7 @@ gnawn
 gnaws
 gnide
 gnoff
+gnoll
 gnome
 goads
 goala
