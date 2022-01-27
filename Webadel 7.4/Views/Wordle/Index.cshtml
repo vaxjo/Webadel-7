@@ -14,7 +14,8 @@
 
                 $.get("/Wordle/CheckGuess?word=" + word, function (data) {
                     if (data.ResultCode != 0) {
-                        alert(data.Message);
+                        $("form#wordle #word").addClass("notfound");
+                        $("#wordNotFound").text(data.Message).show();
 
                     } else {
                         _timer = setTimeout(function () { $("#waiting").show(); }, 200);
@@ -31,6 +32,14 @@
             });
 
             $("form#wordle #word").focus();
+
+            $("form#wordle #word").keyup(function () {
+                if ($("form#wordle #word").val().length == 5) return;
+
+                // clear error state
+                $("form#wordle #word").removeClass("notfound");
+                $("#wordNotFound").hide();
+            })
 
             $(".glyphicon-eye-close").click(function () {
                 $(".guess span").addClass("obscure");
@@ -64,6 +73,7 @@
 
     #wordle { margin-top: 25px; }
         #wordle input { font-size: 30px; width: 200px; text-align: center; text-transform: uppercase; }
+            #wordle input.notfound { background-color: red; color: #fff; }
 
     #alphabet { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 40px; font-size: 20px; }
         #alphabet span { border: 1px solid #aaa; padding: 8px; margin: 5px; }
@@ -90,7 +100,8 @@
         </div>
 
         <form id="wordle">
-            <input id="word" type="text" maxlength="5" />
+            <p><input id="word" type="text" maxlength="5" /></p>
+            <div class="alert alert-danger" id="wordNotFound" style="display: none;"></div>
         </form>
 
         <div id="success" class="alert alert-success">
