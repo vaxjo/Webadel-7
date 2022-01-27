@@ -144,7 +144,6 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\baseController.cs" />
     <Compile Include="Controllers\DevController.cs" />
-    <Compile Include="Controllers\WordleController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\PredictController.cs" />
     <Compile Include="Controllers\ResController.cs" />
@@ -182,7 +181,6 @@
     <Content Include="App_Data\Email\mailforward.xml" />
     <Content Include="App_Data\Email\logintoken.xml" />
     <Content Include="App_Data\newUserMail.htm" />
-    <Content Include="App_Data\words_alpha_5.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -290,8 +288,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Smtp.config" />
-    <Content Include="Views\Wordle\Index.cshtml" />
-    <Content Include="Views\Wordle\ShowGuess.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
