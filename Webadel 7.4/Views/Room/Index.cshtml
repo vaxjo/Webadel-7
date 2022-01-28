@@ -17,6 +17,7 @@
 
                 <span class="navbar-brand">
                     <a id="pageTitle" href="#" style="color: inherit;">@ViewBag.PageTitle</a>
+                    <span class="glyphicon glyphicon-info-sign" id="roomInfo" style="cursor: pointer; opacity: .3;"></span>
                 </span>
 
             </div>
@@ -192,16 +193,6 @@
                 </div>
             </div>
         </form>
-
-        <div id="postPostBox" style="margin-top: 60px;">
-            <p class="text-muted">Room Info</p>
-            <p class="roomInfo"></p>
-            <div class="moderatorsGroup">
-                <p class="text-muted">Moderators</p>
-                <p class="moderators"></p>
-            </div>
-            <p><button type="button" class="btn btn-link" id="roomInfo">Room Info</button></p>
-        </div>
 
         @* TODO: only if profile is already empty *@
         @if (DateTime.Now.Subtract(Model.Created).TotalDays < 7 && Model.Profile.IsEmpty) {

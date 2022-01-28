@@ -85,6 +85,7 @@ $(document).ready(function () {
 
     ScrollToTop();
 
+    $("#roomInfo").hover(function () { $("#roomInfo").animate({ opacity: 1 }, "fast"); }, function () { $("#roomInfo").animate({ opacity: .3 }, "fast"); });
     $("#roomInfo").on("click", function () { $("#roomInfoModal").modal("show"); });
 
     // right-hand room list (for large displays)
@@ -234,8 +235,6 @@ function ResetPageDisplay() {
     $("#roomDisplay .alert").not(".persist").remove(); // mostly to remove unwanted "new messages have been posted..."
     $("#roomDisplay").css("opacity", ".3");
     $("#moderatorControls").empty();
-    $("#postPostBox .roomInfo").html("");
-    $("#postPostBox .moderatorsGroup").hide();
     CloseTopNav();
 }
 
@@ -268,13 +267,6 @@ function LoadRoom(roomId, afterLoadCallback) {
         if (data.error == "noroom") { Goto(); return; }
 
         UpdatePageTitle(data.name);
-
-        $("#postPostBox .roomInfo").html(data.info);
-        if (data.moderators != "") {
-            $("#postPostBox .moderatorsGroup").show();
-            $("#postPostBox .moderators").text(data.moderators);
-        }
-
         _canEdit = data.canEdit;
         if (data.isMail) $("#postForm .recipient").parent().show(); else $("#postForm .recipient").val("").parent().hide();
         if (data.isAnonymous) $("#postForm #anonymous").show(); else $("#postForm #anonymous").val("").hide();
