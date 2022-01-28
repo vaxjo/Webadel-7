@@ -185,13 +185,14 @@ namespace Webadel7.Controllers {
         }
 
         public Myriads.JsonNetResult GetRoom(Guid roomId) {
-            // DB.WebadelDataContext dc = new DB.WebadelDataContext();
             UserRoom ur = UserRoom.Load(CurrentUser.Id, roomId);
             if (ur == null) return JsonNet(new { error = "noroom" }); // if the client ends up with a bad room id let's not throw an exception
 
             return JsonNet(new {
                 id = ur.RoomId,
                 name = ur.Room.Name,
+                info = ur.Room.Info,
+                moderators = string.Join(", ", ur.Room.Moderators.Select(o => Webadel7.User.Load(o).Username)),
                 isMail = (ur.RoomId == SystemConfig.MailRoomId),
                 canEdit = ur.Room.CanUserEdit(CurrentUser), // CurrentUser.ModeratingRooms.Contains(ur.RoomId) || CurrentUser.Aide || CurrentUser.CoSysop,
                 isForgotten = ur.Forgotten,
