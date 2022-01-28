@@ -31,6 +31,7 @@
                         <select id="attachmentDisplay" name="attachmentDisplay" class="form-control" data-original="@Model.AttachmentDisplay">
                             <option value="Thumbnail" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Thumbnail ? "selected=selected" : "")>Thumbnails</option>
                             <option value="Full" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Full ? "selected=selected" : "")>Full Size</option>
+                            <option value="Half" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Half ? "selected=selected" : "")>Half Size</option>
                             <option value="Text" @(Model.AttachmentDisplay == Webadel7.User.AttachmentDisplayType.Text ? "selected=selected" : "")>Text Only</option>
                         </select>
                     </div>

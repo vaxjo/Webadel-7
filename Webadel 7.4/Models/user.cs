@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Webadel7 {
     public class User {
-        public enum AttachmentDisplayType { Thumbnail, Full, Text }
+        public enum AttachmentDisplayType { Thumbnail, Full, Half, Text }
 
         public readonly Guid Id;
         public string Username;
