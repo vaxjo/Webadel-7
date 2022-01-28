@@ -435,10 +435,13 @@ function CreateMessageDom(msg) {
         if (msg.attachments[attIndex].isImage) {
             switch (_currentUser.attachmentDisplay) {
                 case "Thumbnail":
-                    attachmentDom = "<a href='Res/" + msg.attachments[attIndex].filename + "' target='_blank'><img src='Res/" + msg.attachments[attIndex].filename + "?width=80' alt='" + msg.attachments[attIndex].filename + "' class='thumbnail' /></a>";
+                    attachmentDom = "<a href='Res/" + msg.attachments[attIndex].filename + "' target='_blank'><img src='Res/" + msg.attachments[attIndex].filename + "?width=120' alt='" + msg.attachments[attIndex].filename + "' class='thumbnail' /></a>";
                     break;
                 case "Full":
                     attachmentDom = "<a href='Res/" + msg.attachments[attIndex].filename + "' target='_blank'><img src='Res/" + msg.attachments[attIndex].filename + "' alt='" + msg.attachments[attIndex].filename + "' class='img-responsive' /></a>";
+                    break;
+                case "Half":
+                    attachmentDom = "<a href='Res/" + msg.attachments[attIndex].filename + "' target='_blank'><img src='Res/" + msg.attachments[attIndex].filename + "' alt='" + msg.attachments[attIndex].filename + "' style='width: 50%;' class='img-responsive' /></a>";
                     break;
                 case "Text":
                     attachmentDom = "<a href='Res/" + msg.attachments[attIndex].filename + "' target='_blank'><button type='button' class='btn-sm btn btn-default'>" + msg.attachments[attIndex].filename + "</button></a>";
