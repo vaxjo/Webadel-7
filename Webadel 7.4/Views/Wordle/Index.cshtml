@@ -45,11 +45,13 @@
                 $(".guess span").addClass("obscure");
                 $(".glyphicon-eye-close").hide();
                 $(".glyphicon-eye-open").show();
+                $("#alphabet").hide();
             });
             $(".glyphicon-eye-open").click(function () {
                 $(".guess span").removeClass("obscure");
                 $(".glyphicon-eye-close").show();
                 $(".glyphicon-eye-open").hide();
+                $("#alphabet").show();
             });
         });
 
