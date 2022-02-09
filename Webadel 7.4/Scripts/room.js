@@ -427,6 +427,10 @@ function CreateMessageDom(msg) {
     body = QuickFormat(body); // convert EOLs to BRs, italicize quotes lines, &c.
     body = ActivateCutTags(body);
     body = ReplaceURLWithHTMLLinks(body);
+
+    // replace all references to grogu with "baby yoda". [jj 22Feb9]
+    body = body.replaceAll("grogu", "baby yoda").replaceAll("Grogu", "Baby Yoda").replaceAll("GROGU", "BABY YODA");
+
     msgDom.find(".body").html(body);
 
     // attachments
