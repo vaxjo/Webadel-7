@@ -429,7 +429,7 @@ function CreateMessageDom(msg) {
     body = ReplaceURLWithHTMLLinks(body);
 
     // replace all references to grogu with "baby yoda". [jj 22Feb9]
-    body = body.replace("grogu", "baby yoda").replace("Grogu", "Baby Yoda");
+    body = body.replaceAll("grogu", "baby yoda").replaceAll("Grogu", "Baby Yoda").replaceAll("GROGU", "BABY YODA");
 
     msgDom.find(".body").html(body);
 
