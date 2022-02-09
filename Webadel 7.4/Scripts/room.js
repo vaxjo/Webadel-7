@@ -5,7 +5,8 @@ var _lastSystemCheck = 0; 	// last time we got a user/room update
 var _intervalDelay = 60000; // default interval between updates
 var _frequentInterval; 		// handle for the FrequentInterval() timeout
 var _previousPopover = null; // handle so that we can limit user popovers to just one at a time
-var _totalNewMessages = 0; // total number of new messages
+var _totalNewMessages = 0;  // total number of new messages
+var _replacements = {};     // arbitrary string replacements (is loaded from ... app_data?)
 
 // used to determine if the page is being viewed or is hidden behind other tabs; we can throttle the frequent updates when this is the case
 var _windowFocused = true;
@@ -201,6 +202,7 @@ function FrequentInterval() {
                 // repeat this routine because we just cleared that DOM element
                 UpdateNewMessageCount(data);
             });
+            $.get("/Content/replacements.json", function (data) { _replacements = data; });
             _lastSystemCheck = data.lastSystemChange;
         }
 
@@ -427,10 +429,7 @@ function CreateMessageDom(msg) {
     body = QuickFormat(body); // convert EOLs to BRs, italicize quotes lines, &c.
     body = ActivateCutTags(body);
     body = ReplaceURLWithHTMLLinks(body);
-
-    // replace all references to grogu with "baby yoda". [jj 22Feb9]
-    body = body.replaceAll("grogu", "baby yoda").replaceAll("Grogu", "Baby Yoda").replaceAll("GROGU", "BABY YODA");
-
+    for (var i in _replacements) body = body.replaceAll(i, _replacements[i]); // arbitrary string replacement from /Content/replacements.json
     msgDom.find(".body").html(body);
 
     // attachments

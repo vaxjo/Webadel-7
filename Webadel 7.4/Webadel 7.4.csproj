@@ -182,6 +182,7 @@
     <Content Include="App_Data\Email\mailforward.xml" />
     <Content Include="App_Data\Email\logintoken.xml" />
     <Content Include="App_Data\newUserMail.htm" />
+    <None Include="Content\replacements.json" />
     <Content Include="App_Data\words_alpha_5.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
