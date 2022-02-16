@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     $("#goto").click(function () { if (_pageReady) Goto(); });
     $("#skip").click(function () { if (_pageReady) Skip(); });
-    $("#jump").on("click", "a", function () { LoadRoom($(this).attr("id")); });
+    $("#showRooms").click(function () { OpenModal("/Room/Index_RoomList_Dialog"); });
     $("#ungoto").click(function () { if (_pageReady) Ungoto(); });
 
     // mobile control buttons

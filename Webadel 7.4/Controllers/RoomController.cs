@@ -24,10 +24,6 @@ namespace Webadel7.Controllers {
             return View(UserRoom.GetAll(CurrentUser.Id));
         }
 
-        public ActionResult Index_JumpMenu() {
-            return View(UserRoom.GetAll(CurrentUser.Id));
-        }
-
         public ActionResult Index_MailRecipientSelect() {
             // all users, sorted in reverse last-login order
             List<User> all = Webadel7.User.GetAll();
@@ -45,6 +41,10 @@ namespace Webadel7.Controllers {
         }
 
         public ActionResult Index_ModeratorControls() {
+            return View(UserRoom.GetAll(CurrentUser.Id));
+        }
+        
+        public ActionResult Index_RoomList_Dialog() {
             return View(UserRoom.GetAll(CurrentUser.Id));
         }
 

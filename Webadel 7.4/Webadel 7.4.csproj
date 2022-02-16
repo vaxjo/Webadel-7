@@ -268,7 +268,6 @@
     <Content Include="Views\Room\Index_AccountSettings_Dialog.cshtml" />
     <Content Include="Views\Room\Index_EditUser_Dialog.cshtml" />
     <Content Include="Views\Room\Index_Help_Dialog.cshtml" />
-    <Content Include="Views\Room\Index_JumpMenu.cshtml" />
     <Content Include="Views\Room\Index_MailRecipientSelect.cshtml" />
     <Content Include="Views\Room\Index_ModeratorControls.cshtml" />
     <Content Include="Views\Room\Index_PlonkSettings_Dialog.cshtml" />
@@ -289,6 +288,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Smtp.config" />
+    <Content Include="Views\Room\Index_RoomList_Dialog.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -196,7 +196,6 @@ function FrequentInterval() {
             //			console.log("data.lastSystemChange: " + data.lastSystemChange);
             //			console.log("_lastSystemCheck: " + _lastSystemCheck);
 
-            $("#jump").load("/Room/Index_JumpMenu");
             $("#postForm #recipientId").load("/Room/Index_MailRecipientSelect");
             $("#roomList").load("/Room/Index_RoomList", function () {
                 // repeat this routine because we just cleared that DOM element
