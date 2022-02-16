@@ -53,10 +53,62 @@
                 $(".glyphicon-eye-open").hide();
                 $("#alphabet").show();
             });
+
+            // copy text results to clipboard
+            $(".glyphicon-share-alt").click(function () {
+                var results = "";
+
+                $("#guesses .guess").each(function () {
+                    $(this).find("span").each(function () {
+                        results += $(this).data("result") + " ";
+                    });
+                    results += "<br>\r\n";
+                });
+
+                results = "Ed's Wordle: " + $("#success #tries").text() + "<br>\r\n" + results;
+
+                //navigator.clipboard.writeText(results);
+                copyTextToClipboard(results);
+            });
         });
 
         function SetAlphaLetter(letter, state) {
             $("#alphabet #letter-" + letter).removeClass("Correct").removeClass("Incorrect").removeClass("WrongPlace").addClass(state);
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                alert("Results copied to clipboard.");
+            } catch (err) {
+                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+        function copyTextToClipboard(text) {
+            if (!navigator.clipboard) {
+                fallbackCopyTextToClipboard(text);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(function () {
+                alert("Results copied to clipboard.");
+            }, function (err) {
+                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+            });
         }
     </script>
 }
@@ -84,6 +136,7 @@
             #alphabet span.WrongPlace { background-color: orange; }
 
     #success { margin-top: 20px; display: none; }
+        #success .glyphicon { cursor: pointer; }
 </style>
 
 <div class="row">
@@ -114,6 +167,7 @@
             <p style="font-size: 2em;">
                 <span class="glyphicon glyphicon-eye-close"></span>
                 <span class="glyphicon glyphicon-eye-open" style="display: none;"> </span>
+                <span class="glyphicon glyphicon-share-alt" style="padding-left:10px;"></span>
             </p>
 
             <p>Total number of games played: <span id="totalGames"></span></p>
@@ -125,8 +179,6 @@
                 <span id="letter-@((char)i)">@((char)i)</span>
             }
         </div>
-
-       
     </div>
 </div>
 

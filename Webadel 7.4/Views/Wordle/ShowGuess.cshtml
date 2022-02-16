@@ -49,6 +49,13 @@
 
 <div class="guess">
     @foreach (var guess in Model.Guesses) {
-        <span class="@guess.State">@guess.Letter</span>
+        string resultCode = "";
+        switch (guess.State) {
+            case Webadel7.Controllers.WordleController.Check_Model.States.Correct: resultCode = "&#129001;"; break;
+            case Webadel7.Controllers.WordleController.Check_Model.States.Incorrect: resultCode = "&#129003;"; break;
+            case Webadel7.Controllers.WordleController.Check_Model.States.WrongPlace: resultCode = "&#129000;"; break;
+        }
+
+        <span class="@guess.State" data-result="@resultCode">@guess.Letter</span>
     }
 </div>
