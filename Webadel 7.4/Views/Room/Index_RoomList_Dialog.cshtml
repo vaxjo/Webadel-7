@@ -1,0 +1,31 @@
+﻿@model List<Webadel7.UserRoom>
+@{ Layout = null; }
+
+<script>
+    $("#modal .list-group-item").click(function () {
+        CloseModal();
+        LoadRoom($(this).attr("id"));
+    });
+</script>
+
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Rooms List</h4>
+        </div>
+        <div class="modal-body">
+            <div class="list-group">
+                @foreach (Webadel7.UserRoom r in Model.Where(o => !o.Forgotten)) {
+                    <a class="list-group-item" id="@r.RoomId" href="#"><span class="badge"></span>@r.Room.Name</a>
+                }
+            </div>
+
+            <div class="list-group">
+                @foreach (Webadel7.UserRoom r in Model.Where(o => o.Forgotten)) {
+                    <a class="list-group-item forgotten" id="@r.RoomId" title="Forgotten Room" href="#"><span class="badge"></span>@r.Room.Name</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

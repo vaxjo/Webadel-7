@@ -5,9 +5,6 @@ body { padding: 20px 0 70px 0; }
 /* fix safari's annoying tendency to slightly zoom in */
 body { -webkit-text-size-adjust: 100%; }
 
-/* the "skip to" dropdown is so long that we need to do this to enable the eu to scroll down the list of rooms - maybe there's a better way to display this? */
-#jump { max-height: 300px; overflow: auto; }
-
 /* I don't know why we need to specify these styles. this should be in the default bootstrap CSS. */
 .dropdown-submenu { position: relative; }
     .dropdown-submenu > .dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; -webkit-border-radius: 0 6px 6px 6px; -moz-border-radius: 0 6px 6px 6px; border-radius: 0 6px 6px 6px; }
