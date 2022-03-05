@@ -293,6 +293,7 @@
     <Content Include="Views\Room\Index_RoomList_Dialog.cshtml" />
     <Content Include="Views\Wordle\Index.cshtml" />
     <Content Include="Views\Wordle\ShowGuess.cshtml" />
+    <Content Include="Views\Wordle\GetActualUse.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

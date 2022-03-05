@@ -26,7 +26,11 @@
         $("#success #tries").text(tries);
         $("#success #totalGames").text(newStats.length);
         $("#success #averageScore").text(totalScore / newStats.length);
-        $("#success").show();
+
+        $.get("/Wordle/GetActualUse", function (data) {
+            $("#success #actualUse").html(data);
+            $("#success").show();
+        });
     </script>
 }
 

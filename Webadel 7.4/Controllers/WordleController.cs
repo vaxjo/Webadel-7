@@ -66,6 +66,19 @@ namespace Webadel7.Controllers {
             var model = new Check_Model(word);
             return View(model);
         }
+
+        public ActionResult GetActualUse() {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+            Random rnd = new Random();
+
+            string word = Wordle.GetTodaysWord();
+
+            List<DB.Message> candidates = dc.Messages.Where(o => o.roomId != SystemConfig.MailRoomId && !o.Room.@private).Where(o => o.body.ToUpper().Contains(word)).ToList();
+            if (candidates.Count == 0) return Content(""); // then where did the word come from?!
+
+            ViewBag.Word = word;
+            return View(candidates[rnd.Next(candidates.Count)]);
+        }
     }
 }
 
