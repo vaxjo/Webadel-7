@@ -149,6 +149,7 @@
     <Compile Include="Controllers\ResController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\webadelAuthorize.cs" />
+    <Compile Include="Controllers\WordleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
