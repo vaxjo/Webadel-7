@@ -1,0 +1,188 @@
+﻿@{ ViewBag.Title = "Wordle"; }
+
+
+@section Scripts {
+    <script type="text/javascript">
+        var _timer;
+
+        $(document).ready(function () {
+            $("form#wordle").submit(function (e) {
+                e.preventDefault();
+
+                var word = $("form#wordle #word").val();
+                if (word.length != 5) return;
+
+                $.get("/Wordle/CheckGuess?word=" + word, function (data) {
+                    if (data.ResultCode != 0) {
+                        $("form#wordle #word").addClass("notfound");
+                        $("#wordNotFound").text(data.Message).show();
+
+                    } else {
+                        _timer = setTimeout(function () { $("#waiting").show(); }, 200);
+
+                        $.get("/Wordle/ShowGuess?word=" + word, function (data) {
+                            $("#guesses").append(data)
+                            $("form#wordle #word").val("").focus();
+
+                            clearTimeout(_timer);
+                            $("#waiting").hide();
+                        });
+                    }
+                });
+            });
+
+            $("form#wordle #word").focus();
+
+            $("form#wordle #word").keyup(function () {
+                if ($("form#wordle #word").val().length == 5) return;
+
+                // clear error state
+                $("form#wordle #word").removeClass("notfound");
+                $("#wordNotFound").hide();
+            })
+
+            $(".glyphicon-eye-close").click(function () {
+                $(".guess span").addClass("obscure");
+                $(".glyphicon-eye-close").hide();
+                $(".glyphicon-eye-open").show();
+                $("#alphabet").hide();
+            });
+            $(".glyphicon-eye-open").click(function () {
+                $(".guess span").removeClass("obscure");
+                $(".glyphicon-eye-close").show();
+                $(".glyphicon-eye-open").hide();
+                $("#alphabet").show();
+            });
+
+            // copy text results to clipboard
+            $(".glyphicon-share-alt").click(function () {
+                var results = "";
+
+                $("#guesses .guess").each(function () {
+                    $(this).find("span").each(function () {
+                        results += $(this).data("result");
+                    });
+                    results += "<br>\r\n";
+                });
+
+                results = "Ed's Wordle: " + $("#success #tries").text() + "<br>\r\n" + results;
+
+                //navigator.clipboard.writeText(results);
+                copyTextToClipboard(results);
+            });
+        });
+
+        function SetAlphaLetter(letter, state) {
+            $("#alphabet #letter-" + letter).removeClass("Correct").removeClass("Incorrect").removeClass("WrongPlace").addClass(state);
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                alert("Results copied to clipboard.");
+            } catch (err) {
+                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+        function copyTextToClipboard(text) {
+            if (!navigator.clipboard) {
+                fallbackCopyTextToClipboard(text);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(function () {
+                alert("Results copied to clipboard.");
+            }, function (err) {
+                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+            });
+        }
+    </script>
+}
+
+<style>
+    #guesses .guess { display: flex; justify-content: center; margin-bottom: 5px; }
+        #guesses .guess span { border: 1px solid #000; padding: 20px; margin: 2px; width: 50px; color: #000; }
+            #guesses .guess span.Correct { background-color: lightgreen; }
+                #guesses .guess span.Correct.obscure { color: lightgreen; }
+            #guesses .guess span.Incorrect { background-color: darkgray; }
+                #guesses .guess span.Incorrect.obscure { color: darkgray; }
+            #guesses .guess span.WrongPlace { background-color: orange; }
+                #guesses .guess span.WrongPlace.obscure { color: orange; }
+
+    #waiting { width: 50%; margin: 0 auto; display: none; }
+
+    #wordle { margin-top: 25px; }
+        #wordle input { font-size: 30px; width: 200px; text-align: center; text-transform: uppercase; }
+            #wordle input.notfound { background-color: red; color: #fff; }
+
+    #alphabet { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 40px; font-size: 20px; }
+        #alphabet span { border: 1px solid #aaa; padding: 8px; margin: 5px; }
+            #alphabet span.Incorrect { background-color: darkgray; }
+            #alphabet span.Correct { background-color: lightgreen; }
+            #alphabet span.WrongPlace { background-color: orange; }
+
+    #success { margin-top: 20px; display: none; }
+        #success .glyphicon { cursor: pointer; }
+</style>
+
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 text-center">
+        <h2 style="margin-bottom:30px;">
+            @Webadel7.SystemConfig.SystemName Wordle
+            @if (Request.IsLocal) {
+                <small>@Wordle.GetTodaysWord()</small>
+            }
+        </h2>
+
+        <div id="guesses"></div>
+
+        <div id="waiting" class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div>
+        </div>
+
+        <form id="wordle">
+            <p><input id="word" type="text" maxlength="5" /></p>
+            <div class="alert alert-danger" id="wordNotFound" style="display: none;"></div>
+        </form>
+
+        <div id="success" class="alert alert-success">
+            <p>Congratulations! You got the word in <span id="tries">433</span> tries.</p>
+            <p>New word in @(Myriads.StopWatch.ApproximateTimeSpanDisplay(TimeSpan.FromHours(24).Subtract(DateTime.Now.TimeOfDay))).</p>
+
+            <p><a href="/" class="btn btn-primary">Ed's Room</a></p>
+            <p style="font-size: 2em;">
+                <span class="glyphicon glyphicon-eye-close"></span>
+                <span class="glyphicon glyphicon-eye-open" style="display: none;"> </span>
+                <span class="glyphicon glyphicon-share-alt" style="padding-left:10px;"></span>
+            </p>
+
+            <p>Total number of games played: <span id="totalGames"></span></p>
+            <p>Average score: <span id="averageScore"></span></p>
+            
+            <div id="actualUse" style="text-align:left;"></div>
+        </div>
+
+        <div id="alphabet">
+            @for (int i = 65; i < 91; i++) {
+                <span id="letter-@((char)i)">@((char)i)</span>
+            }
+        </div>
+    </div>
+</div>
+
+@* don't do anything with it, but make sure we have one *@
+@{ Wordle.GetTodaysWord(); }

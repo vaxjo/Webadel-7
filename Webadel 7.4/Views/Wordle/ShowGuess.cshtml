@@ -1,0 +1,65 @@
+﻿@model Webadel7.Controllers.WordleController.Check_Model
+@{ Layout = null; }
+
+@if (Model.IsCorrect) {
+    <script type="text/javascript">
+        var tries = $("#guesses > .guess").length;
+        var today = new Date().getFullYear().toString() + "-" + (new Date().getMonth() + 1).toString() + "-" + new Date().getDate().toString();
+
+        var oldStats = new Array();
+        if ($.cookie("wordle") != undefined) oldStats = JSON.parse($.cookie("wordle"));
+        //console.log("old", oldStats);
+
+        var newStats = new Array();
+        for (var i = 0; i < oldStats.length; i++) {
+            if (oldStats[i].date != today) newStats.push(oldStats[i]);
+        }
+        newStats.push({ date: today, tries: tries });
+
+        $.cookie("wordle", JSON.stringify(newStats));
+        //console.log("new", newStats);
+
+        var totalScore = 0;
+        for (var i = 0; i < newStats.length; i++) totalScore += newStats[i].tries;
+
+        $("form#wordle").hide();
+        $("#success #tries").text(tries);
+        $("#success #totalGames").text(newStats.length);
+        $("#success #averageScore").text(totalScore / newStats.length);
+
+        $.get("/Wordle/GetActualUse", function (data) {
+            $("#success #actualUse").html(data);
+            $("#success").show();
+        });
+    </script>
+}
+
+<script type="text/javascript">
+    @* can always promot letters to the correct state, and once there, can never be changed *@
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.Correct)) {
+        @: SetAlphaLetter("@(guess.Letter)", "Correct");
+    }
+
+    @* can only mark letters as "wrong place" if they have not already been marked Correct *@
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.WrongPlace)) {
+        @: if (!$("#alphabet #letter-@(guess.Letter)").hasClass("Correct")) SetAlphaLetter("@(guess.Letter)", "WrongPlace");
+    }
+
+    @* can only mark letters as "incorrect" if they have not already been marked Correct or WrongPlace *@
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.Incorrect)) {
+        @: if (!$("#alphabet #letter-@(guess.Letter)").hasClass("Correct") && !$("#alphabet #letter-@(guess.Letter)").hasClass("WrongPlace")) SetAlphaLetter("@(guess.Letter)", "Incorrect");
+    }
+</script>
+
+<div class="guess">
+    @foreach (var guess in Model.Guesses) {
+        string resultCode = "";
+        switch (guess.State) {
+            case Webadel7.Controllers.WordleController.Check_Model.States.Correct: resultCode = "&#129001;"; break;
+            case Webadel7.Controllers.WordleController.Check_Model.States.Incorrect: resultCode = "&#129003;"; break;
+            case Webadel7.Controllers.WordleController.Check_Model.States.WrongPlace: resultCode = "&#129000;"; break;
+        }
+
+        <span class="@guess.State" data-result="@resultCode">@guess.Letter</span>
+    }
+</div>
