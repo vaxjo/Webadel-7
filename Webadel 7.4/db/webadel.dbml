@@ -197,6 +197,15 @@
       <Association Name="User_LoginToken" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.MessageVotes" Member="MessageVotes">
+    <Type Name="MessageVote">
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Divisiveness" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">
     <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
     <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />

@@ -36,7 +36,7 @@ namespace Webadel7.Controllers {
         public CallbackResult CopyBadge(int badgeId) {
             Badge badge = Badge.Load(badgeId);
 
-            Badge newBadge = Badge.Create(badge.Name + " (copy)", badge.BadgeText, badge.Description, Webadel7.SystemConfig.SysopId);
+            Badge newBadge = Badge.Create(badge.Name + " (copy)", badge.BadgeText, badge.Description, CurrentUser.Id);
             newBadge.PendingApproval = badge.PendingApproval;
             newBadge.Save();
 

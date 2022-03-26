@@ -175,10 +175,10 @@
     <Compile Include="Models\user.cs" />
     <Compile Include="Models\userroom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="webadel.cs">
+    <Compile Include="db\webadel.cs">
       <DependentUpon>webadel.dbml</DependentUpon>
     </Compile>
-    <Compile Include="webadel.designer.cs">
+    <Compile Include="db\webadel.designer.cs">
       <DependentUpon>webadel.dbml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -303,7 +303,7 @@
     <Content Include="Views\Room\Index_ViewProfile_Dialog.cshtml" />
     <Content Include="Views\Shared\_Favicons.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="webadel.dbml">
+    <Content Include="db\webadel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>webadel.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -317,7 +317,7 @@
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="webadel.dbml.layout">
+    <None Include="db\webadel.dbml.layout">
       <DependentUpon>webadel.dbml</DependentUpon>
     </None>
   </ItemGroup>

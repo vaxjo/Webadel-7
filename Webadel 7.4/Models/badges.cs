@@ -154,6 +154,25 @@ namespace Webadel7 {
             // 15-year accont badge (#7)
             var fifteenYearsAgo = new DateTime(DateTime.Now.Year - 15, DateTime.Now.Month, DateTime.Now.Day);
             foreach (var user in dc.Users.Where(o => o.created < fifteenYearsAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(7)).ToList()) Award(7, user.id);
+
+            DB.WebadelDataContext webDC = DB.WebadelDataContext.GetProfiledDC();
+
+            // Divisive Poster (#12)
+            IQueryable<Guid> divisiveAuthors = webDC.MessageVotes.Where(o => o.Divisiveness >= 3).Select(o => o.authorId).Distinct();
+            foreach (Guid userId in divisiveAuthors) Award(12, userId);
+
+            // unpopular opinion (#11)
+            foreach (Guid userId in webDC.MessageVotes.Where(o => o.Score <= -3).Select(o => o.authorId).Distinct()) Award(11, userId);
+
+            // popular post (#10)
+            foreach (Guid userId in webDC.MessageVotes.Where(o => o.Score >= 7).Select(o => o.authorId).Distinct()) Award(10, userId);
+
+            // very popular post (#17)
+            foreach (Guid userId in webDC.MessageVotes.Where(o => o.Score >= 12).Select(o => o.authorId).Distinct()) Award(17, userId);
+
+            // plonked (#9)
+            foreach (Guid userId in webDC.Plonks.Select(o => o.plonkedUserId).Distinct()) Award(9, userId);
+
         }
 
         /// <summary> Remove all badge/user associations. </summary>

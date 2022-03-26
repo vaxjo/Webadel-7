@@ -17,16 +17,6 @@
                 });
             });
 
-            $(".glyphicon-copy").click(function () {
-                $.post("CopyBadge?badgeId=" + $(this).closest("tr").attr("id"), function (result) {
-                    if (result.ResultCode > 0) {
-                        alert(result.Message);
-                        return;
-                    }
-                    OpenModal("/Badges/Index_Edit_Modal?id=" + result.Message);
-                });
-            });
-
             $(".glyphicon-edit").click(function () {
                 OpenModal("/Badges/Index_Edit_Modal?id=" + $(this).closest("tr").attr("id"));
             });
@@ -69,7 +59,6 @@
                 </td>
             }
 
-            <td class="text-center" style="cursor: pointer;" title="Copy Badge"><span class="glyphicon glyphicon-copy "></span></td>
             <td class="text-center" style="cursor: pointer;" title="Edit Badge"><span class="glyphicon glyphicon-edit text-primary"></span></td>
         </tr>
     }
