@@ -31,6 +31,10 @@
         @RenderBody()
     </div>
 
+    @* TODO: deprecate all "*Modal" divs and use this one, instead
+        - also have to refactor all the javascript in support of these modals *@
+    <div id="modal" class="modal fade" tabindex="-1"></div>
+
     @RenderSection("BottomNav", false)
 
     @* I have this idea about user-customizable text at the bottom of the page - but maybe it's just too noisy?

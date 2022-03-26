@@ -77,6 +77,8 @@ namespace Webadel7 {
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             Room.PostToSystem(SystemConfig.SystemName + " running Webadel " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version + " started.");
+
+            Badge.AutoAward();
         }
 
         protected void Application_BeginRequest() {

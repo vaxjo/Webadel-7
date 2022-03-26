@@ -1,0 +1,39 @@
+﻿@model Badge
+@{ Layout = null; }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+
+<div class="modal-dialog">
+    <form class="form-horizontal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">@Model.Name</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>@BadgeHelpers.RenderBadge(Model.Id)</p>
+
+                <p>@Model.Description</p>
+
+                <hr />
+                <p>Active users who have this badge:</p>
+
+                <div class="row">
+                    @foreach (var user in Webadel7.Badge.GetUsers(Model.Id)) {
+                        <div class="col-xs-6 col-sm-4 user" id="@user.Id" style="margin-bottom: 5px; text-decoration: underline;">
+                            @user.Username
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @*<div class="modal-footer">
+                </div>*@
+        </div>
+    </form>
+</div>

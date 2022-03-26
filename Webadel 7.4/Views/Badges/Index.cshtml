@@ -1,0 +1,76 @@
+﻿@{ ViewBag.Title = "Badges"; }
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/main.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".glyphicon-ok").click(function () {
+                $.post("ApproveBadge?id=" + $(this).closest("tr").attr("id"), function () { window.location.reload(); });
+            });
+
+            $(".awardBadgeTo").change(function () {
+                if ($(this).val() == "") return;
+
+                $.post("AwardBadge?badgeId=" + $(this).closest("tr").attr("id") + "&recipientId=" + $(this).val(), function (result) {
+                    if (result.ResultCode == 0) alert("Awarded");
+                    else alert("Failed. Probably already exists.");
+                });
+            });
+
+            $(".glyphicon-copy").click(function () {
+                $.post("CopyBadge?badgeId=" + $(this).closest("tr").attr("id"), function (result) {
+                    if (result.ResultCode > 0) {
+                        alert(result.Message);
+                        return;
+                    }
+                    OpenModal("/Badges/Index_Edit_Modal?id=" + result.Message);
+                });
+            });
+
+            $(".glyphicon-edit").click(function () {
+                OpenModal("/Badges/Index_Edit_Modal?id=" + $(this).closest("tr").attr("id"));
+            });
+
+            $("#removeAll").click(function () {
+                if (!confirm("are you sure you want to remove all badges from all users?")) return;
+
+                $(this).button("loading");
+                $.post("RemoveAllBadges", function () { window.location.reload(); });
+            });
+        });
+    </script>
+}
+
+<h2>
+    Microbadges
+
+    <button type="button" class="btn btn-xs btn-danger " id="removeAll" data-loading-text="Removing...">Remove All Badges</button>
+</h2>
+
+<table class="table">
+    @foreach (var badge in Badge.GetAll().OrderByDescending(o => o.PendingApproval).ThenBy(o => o.Name)) {
+        <tr id="@badge.Id">
+            <td>@badge.Id</td>
+            <td>@badge.Name</td>
+            <td style="padding: 7px 0 0 0;">@BadgeHelpers.RenderBadge(badge.Id)</td>
+            <td>@badge.Creator.Username</td>
+            <td>@badge.Added.ToShortDateString()</td>
+
+            @if (badge.PendingApproval) {
+                <td style="cursor: pointer;" title="Approve Badge"><span class="glyphicon glyphicon-ok"></span> Pending</td>
+            } else {
+                <td>
+                    <select name="awardBadgeTo" id="awardBadgeTo" class="form-control awardBadgeTo">
+                        <option value="">Award Badge to:</option>
+                        @foreach (var user in Webadel7.User.GetAll(true)) {
+                            <option value="@user.Id">@user.Username</option>
+                        }
+                    </select>
+                </td>
+            }
+
+            <td class="text-center" style="cursor: pointer;" title="Copy Badge"><span class="glyphicon glyphicon-copy "></span></td>
+            <td class="text-center" style="cursor: pointer;" title="Edit Badge"><span class="glyphicon glyphicon-edit text-primary"></span></td>
+        </tr>
+    }
+</table>

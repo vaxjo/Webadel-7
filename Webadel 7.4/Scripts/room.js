@@ -62,6 +62,11 @@ $(document).ready(function () {
         $("#helpModal").load("/Room/Index_Help_Dialog");
     });
 
+    $("#submitBadgeModal").on('show.bs.modal', function () {
+        CloseTopNav();
+        $("#submitBadgeModal").load("/Badges/Index_SubmitBadge_Dialog");
+    });
+
     $("#userListModal").on('show.bs.modal', function () {
         CloseTopNav();
         $("#userListModal").load("/Room/Index_UserList_Dialog");
@@ -143,11 +148,14 @@ function ShowDeletableMessages() {
 }
 
 function ViewProfile(id) {
-    $("#viewProfileModal").load("/Room/Index_ViewProfile_Dialog?userId=" + id, function () {
-        $("#viewProfileModal img").each(function () { $(this).addClass("img-responsive"); });
-        $("#viewProfileModal .bio").html(QuickFormat($("#viewProfileModal .bio").html()));
-        $(".modal").modal("hide"); // close any open modals (like the user list)
-        $("#viewProfileModal").modal("show");
+    var $openModal = $(".modal:visible");
+
+    CloseModal($openModal, function () {
+        $("#viewProfileModal").load("/Room/Index_ViewProfile_Dialog?userId=" + id, function () {
+            $("#viewProfileModal img").each(function () { $(this).addClass("img-responsive"); });
+            $("#viewProfileModal .bio").html(QuickFormat($("#viewProfileModal .bio").html()));
+            $("#viewProfileModal").modal("show");
+        });
     });
 }
 

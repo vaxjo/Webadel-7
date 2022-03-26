@@ -1,4 +1,6 @@
-﻿/* avoid using any typographic or color styles here; those should be handled entirely by the bootstrap themes [jj 13Aug28] */
+﻿@import "badges.css";
+
+/* avoid using any typographic or color styles here; those should be handled entirely by the bootstrap themes [jj 13Aug28] */
 
 /* offset content below the fixed navbar */
 body { padding: 20px 0 70px 0; }

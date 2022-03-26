@@ -1,0 +1,52 @@
+﻿@{ Layout = null; }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#submitBadgeModal form").submit(function (e) {
+            e.preventDefault();
+
+            $.post("/Badges/SubmitBadge", $("#submitBadgeModal form").serialize(), function (result) {
+                alert("Thank you for your submission. It has been noted. Feel free to submit additional microbadge suggestions.");
+                $("#submitBadgeModal").modal("hide");
+            });
+        });
+    });
+</script>
+
+<div class="modal-dialog">
+    <form class="form-horizontal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Submit Microbadge</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Have an idea for a fun microbadge? Submit it here and maybe it'll get formally implemented!</p>
+
+                <div class="form-group">
+                    <label for="name" class="control-label col-sm-3">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="name" name="name" class="form-control required" maxlength="255" placeholder="Best Badge in Webadel" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="badgeText" class="control-label col-sm-3">Badge Text</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="badgeText" name="badgeText" class="form-control required" maxlength="32" placeholder="BEST!!" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="control-label col-sm-3">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="description" name="description" class="form-control mousetrap" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="save">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

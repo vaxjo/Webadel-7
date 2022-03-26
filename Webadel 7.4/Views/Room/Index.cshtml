@@ -53,6 +53,7 @@
                             @* example of subnav
                                 <li class="dropdown-submenu"><a href="#">Change Theme</a><ul class="dropdown-menu themeMenu"><li><a href="#" theme="united">United</a></li></ul></li> *@
                             <li><a data-toggle="modal" href="#userListModal">User List</a></li>
+                            <li><a data-toggle="modal" href="#submitBadgeModal">Submit Microbadge</a></li>
                             <li><a data-toggle="modal" href="#helpModal">Help</a></li>
                             <li><a href="/Auth/Logout">Logout</a></li>
                             @if (Request.IsLocal) {
@@ -281,11 +282,10 @@
 
 <div id="userListModal" class="modal fade" tabindex="-1"></div>
 
-<div id="helpModal" class="modal fade" tabindex="-1"></div>
+<div id="submitBadgeModal" class="modal fade" tabindex="-1"></div>
+<div id="badgeModal" class="modal fade" tabindex="-1"></div>
 
-@* TODO: deprecate all "*Modal" divs and use this one, instead
-    - also have to refactor all the javascript in support of these modals *@
-<div id="modal" class="modal fade" tabindex="-1"></div>
+<div id="helpModal" class="modal fade" tabindex="-1"></div>
 
 @* this is the modal content that appears while waiting for a callback to resolve *@
 <div id="loadingModal" class="modal-dialog" style="display: none;">
@@ -359,6 +359,7 @@
     <script src="/Scripts/room_roomStuff.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
     <script src="/Scripts/room_postbox.js?_@(Webadel7.MvcApplication.AssemblyVersion)"></script>
     <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+    <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
 
     @if (DateTime.Now.ToShortDateString().StartsWith("11/25/2021")) {
         string y = Model.Misc.ContainsKey("thanksgivingPrayer") ? Model.Misc["thanksgivingPrayer"] : null;
