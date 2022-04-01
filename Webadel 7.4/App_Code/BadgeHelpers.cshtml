@@ -1,0 +1,8 @@
+﻿
+@helper RenderBadge(int id) {
+    Webadel7.Badge b = Webadel7.Badge.Load(id);
+
+    <span class="microbadge" data-id="@id" title="@b.Name" style="background-color: @b.BackgroundColor; border-color: @b.BorderColor;">
+        @b.BadgeText
+    </span>
+}

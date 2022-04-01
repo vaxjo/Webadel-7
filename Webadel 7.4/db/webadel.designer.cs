@@ -249,6 +249,14 @@ namespace Webadel7.DB
 			}
 		}
 		
+		public System.Data.Linq.Table<MessageVote> MessageVotes
+		{
+			get
+			{
+				return this.GetTable<MessageVote>();
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetUserRooms", IsComposable=true)]
 		public IQueryable<GetUserRoomsResult> GetUserRooms([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="UniqueIdentifier")] System.Nullable<System.Guid> userId, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includeNSFW)
 		{
@@ -4419,6 +4427,105 @@ namespace Webadel7.DB
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MessageVotes")]
+	public partial class MessageVote
+	{
+		
+		private System.Guid _messageId;
+		
+		private System.Guid _authorId;
+		
+		private System.Nullable<int> _Score;
+		
+		private System.Nullable<int> _Count;
+		
+		private System.Nullable<int> _Divisiveness;
+		
+		public MessageVote()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_messageId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid messageId
+		{
+			get
+			{
+				return this._messageId;
+			}
+			set
+			{
+				if ((this._messageId != value))
+				{
+					this._messageId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid authorId
+		{
+			get
+			{
+				return this._authorId;
+			}
+			set
+			{
+				if ((this._authorId != value))
+				{
+					this._authorId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Score", DbType="Int")]
+		public System.Nullable<int> Score
+		{
+			get
+			{
+				return this._Score;
+			}
+			set
+			{
+				if ((this._Score != value))
+				{
+					this._Score = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int")]
+		public System.Nullable<int> Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this._Count = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Divisiveness", DbType="Int")]
+		public System.Nullable<int> Divisiveness
+		{
+			get
+			{
+				return this._Divisiveness;
+			}
+			set
+			{
+				if ((this._Divisiveness != value))
+				{
+					this._Divisiveness = value;
+				}
 			}
 		}
 	}

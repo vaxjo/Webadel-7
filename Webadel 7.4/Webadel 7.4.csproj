@@ -147,8 +147,17 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\PredictController.cs" />
     <Compile Include="Controllers\ResController.cs" />
+    <Compile Include="Controllers\BadgesController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\webadelAuthorize.cs" />
+    <Compile Include="db\badges.cs">
+      <DependentUpon>badges.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="db\badges.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>badges.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\WordleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -157,6 +166,7 @@
     <Compile Include="Models\authToken.cs" />
     <Compile Include="Models\banishment.cs" />
     <Compile Include="Models\message.cs" />
+    <Compile Include="Models\badges.cs" />
     <Compile Include="Models\plonks.cs" />
     <Compile Include="Models\predictor.cs" />
     <Compile Include="Models\profile.cs" />
@@ -166,10 +176,10 @@
     <Compile Include="Models\user.cs" />
     <Compile Include="Models\userroom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="webadel.cs">
+    <Compile Include="db\webadel.cs">
       <DependentUpon>webadel.dbml</DependentUpon>
     </Compile>
-    <Compile Include="webadel.designer.cs">
+    <Compile Include="db\webadel.designer.cs">
       <DependentUpon>webadel.dbml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -182,6 +192,7 @@
     <Content Include="App_Data\Email\mailforward.xml" />
     <Content Include="App_Data\Email\logintoken.xml" />
     <Content Include="App_Data\newUserMail.htm" />
+    <Content Include="App_Code\BadgeHelpers.cshtml" />
     <None Include="Content\replacements.json" />
     <Content Include="App_Data\words_alpha_5.txt" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -207,6 +218,7 @@
     <Content Include="Content\themes\superhero.min.css" />
     <Content Include="Content\themes\united.min.css" />
     <Content Include="Content\themes\yeti.min.css" />
+    <Content Include="Content\badges.css" />
     <Content Include="Content\webadel.css" />
     <Content Include="favicon-16x16.png" />
     <Content Include="favicon-32x32.png" />
@@ -221,6 +233,14 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\favicons\eds fav.psd" />
     <Content Include="ConnectionStrings.config" />
+    <Content Include="db\badges.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>badges.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="db\badges.dbml.layout">
+      <DependentUpon>badges.dbml</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\WinHost.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -247,6 +267,7 @@
     <Content Include="Scripts\room.js" />
     <Content Include="Scripts\room_messageControls.js" />
     <Content Include="Scripts\room_postbox.js" />
+    <Content Include="Scripts\badges.js" />
     <Content Include="Scripts\room_predictive.js" />
     <Content Include="Scripts\room_roomStuff.js" />
     <Content Include="Scripts\room_userSettings.js" />
@@ -284,7 +305,7 @@
     <Content Include="Views\Room\Index_ViewProfile_Dialog.cshtml" />
     <Content Include="Views\Shared\_Favicons.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="webadel.dbml">
+    <Content Include="db\webadel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>webadel.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -294,10 +315,14 @@
     <Content Include="Views\Wordle\Index.cshtml" />
     <Content Include="Views\Wordle\ShowGuess.cshtml" />
     <Content Include="Views\Wordle\GetActualUse.cshtml" />
+    <Content Include="Views\Badges\Index_SubmitBadge_Dialog.cshtml" />
+    <Content Include="Views\Badges\Index.cshtml" />
+    <Content Include="Views\Badges\Badge_Modal.cshtml" />
+    <Content Include="Views\Badges\Index_Edit_Modal.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="webadel.dbml.layout">
+    <None Include="db\webadel.dbml.layout">
       <DependentUpon>webadel.dbml</DependentUpon>
     </None>
   </ItemGroup>

@@ -17,6 +17,9 @@ namespace Webadel7.Controllers {
 
         public ActionResult Index() {
             ViewBag.PageTitle = SystemConfig.SystemName;
+
+            if (CurrentUser.Profile.IsBirthday) Badge.Award(16, CurrentUser.Id); // #16 - it's your birthday
+
             return View(CurrentUser);
         }
 
@@ -174,6 +177,8 @@ namespace Webadel7.Controllers {
                     r.Save();
                 }
             }
+
+            Badge.AwardBadges(m);
 
             return JsonNet(m.ToJson);
         }
@@ -361,7 +366,10 @@ namespace Webadel7.Controllers {
             room.SetInvitees(invitees);
 
             if (roomId.HasValue) Room.PostToAide("Room (" + originalRoomDesc + ") modified to (" + room.ToString() + ") by " + CurrentUser.Username + ".");
-            else Room.PostToAide("New Room (" + room.ToString() + ") created by " + CurrentUser.Username + ".");
+            else {
+                Badge.Award(8, CurrentUser.Id); // #8 - created a room
+                Room.PostToAide("New Room (" + room.ToString() + ") created by " + CurrentUser.Username + ".");
+            }
 
             return JsonNet(room.Id);
         }

@@ -63,7 +63,6 @@ function CreateAlert(alertText, type, autoFade) {
 }
 
 function OpenModal(url, finished) {
-    CloseModal(); // necessary?
     $("#modal").css("cursor", "").html($("#loadingModal").clone().show()).modal("show");
     $("#modal").load(url, function (responseText, textStatus, jqXHR) {
         //console.log(responseText);
@@ -80,4 +79,19 @@ function OpenModal(url, finished) {
 
 function CloseModal() {
     $("#modal").modal("hide");
+}
+
+// close a modal that is open and, when it's finished closing, call the onFinished fn
+function CloseModal($openModal, onFinished) {
+    if ($openModal.length == 0) { // no modal currently open so just show it
+        onFinished();
+        return;
+    }
+
+    // watch for the hidden event
+    $openModal.on("hidden.bs.modal", function () {
+        $openModal.off("hidden.bs.modal"); // also unwatch so they don't stack up
+        onFinished();
+
+    }).modal("hide"); // trigger the hiding sequence
 }
