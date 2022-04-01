@@ -158,8 +158,14 @@ namespace Webadel7 {
             DB.WebadelDataContext webDC = DB.WebadelDataContext.GetProfiledDC();
 
             // Divisive Poster (#12)
-            IQueryable<Guid> divisiveAuthors = webDC.MessageVotes.Where(o => o.Divisiveness >= 3).Select(o => o.authorId).Distinct();
+            List<DB.MessageVote> divisivePosts = webDC.MessageVotes.Where(o => o.Divisiveness >= 3).ToList();
+            IEnumerable<Guid> divisiveAuthors = divisivePosts.Select(o => o.authorId).Distinct();
             foreach (Guid userId in divisiveAuthors) Award(12, userId);
+
+            // very divisive posted (#22)
+            foreach (Guid authorId in divisivePosts.Select(o => o.authorId).Distinct()) {
+                if (divisivePosts.Count(o => o.authorId == authorId) > 1) Award(22, authorId);
+            }
 
             // unpopular opinion (#11)
             foreach (Guid userId in webDC.MessageVotes.Where(o => o.Score <= -3).Select(o => o.authorId).Distinct()) Award(11, userId);
@@ -172,6 +178,15 @@ namespace Webadel7 {
 
             // plonked (#9)
             foreach (Guid userId in webDC.Plonks.Select(o => o.plonkedUserId).Distinct()) Award(9, userId);
+
+        }
+
+        /// <summary> Fires after a message has been posted. I imagine a number of badges might occur here. </summary>
+        public static void AwardBadges(Message message) {
+
+            // posted at 4:33 
+            if (message.Date.Hour == 4 && message.Date.Minute == 33) Badge.Award(23, message.AuthorId);
+            if (message.Date.Hour == 16 && message.Date.Minute == 33) Badge.Award(24, message.AuthorId);
 
         }
 

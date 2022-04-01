@@ -16,7 +16,10 @@ namespace Webadel7.Controllers {
             SystemActivity.Update(CurrentUser.Id);
         }
 
-        public ActionResult Index() => View();
+        public ActionResult Index() {
+            if (!CurrentUser.CoSysop) return Redirect("/");
+            return View();
+        }
 
         public ActionResult Index_Edit_Modal(int id) => View(Badge.Load(id));
 

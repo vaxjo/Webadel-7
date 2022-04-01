@@ -15,7 +15,7 @@
         });
 
         $("#modal #copy").click(function () {
-            $.post("CopyBadge?badgeId=@Model.Id", function (result) {
+            $.post("/Badges/CopyBadge?badgeId=@Model.Id", function (result) {
                 if (result.ResultCode > 0) {
                     alert(result.Message);
                 } else {

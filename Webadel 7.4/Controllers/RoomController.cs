@@ -178,6 +178,8 @@ namespace Webadel7.Controllers {
                 }
             }
 
+            Badge.AwardBadges(m);
+
             return JsonNet(m.ToJson);
         }
 
