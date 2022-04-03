@@ -77,21 +77,22 @@ function OpenModal(url, finished) {
     });
 }
 
-function CloseModal() {
-    $("#modal").modal("hide");
-}
-
 // close a modal that is open and, when it's finished closing, call the onFinished fn
 function CloseModal($openModal, onFinished) {
-    if ($openModal.length == 0) { // no modal currently open so just show it
-        onFinished();
+    if ($openModal == undefined && onFinished == undefined) {
+        $("#modal").modal("hide");
+        return;
+    }
+
+    if ($openModal == undefined || $openModal.length == 0) { // no modal currently open so just show it
+        if (onFinished != undefined) onFinished();
         return;
     }
 
     // watch for the hidden event
     $openModal.on("hidden.bs.modal", function () {
         $openModal.off("hidden.bs.modal"); // also unwatch so they don't stack up
-        onFinished();
+        if (onFinished != undefined) onFinished();
 
     }).modal("hide"); // trigger the hiding sequence
 }
