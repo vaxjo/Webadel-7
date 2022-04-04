@@ -31,6 +31,16 @@ namespace Webadel7 {
             bundles.Add(new StyleBundle("~/Content/styles").Include(
                 "~/Content/bootstrap.min.css",
                 "~/Content/webadel.css"));
+
+            bundles.Add(new ScriptBundle("~/public/roomscripts").Include(
+                "~/Scripts/room.js",
+                "~/Scripts/room_messageControls.js",
+                "~/Scripts/room_userSettings.js",
+                "~/Scripts/room_roomStuff.js",
+                "~/Scripts/room_postbox.js",
+                "~/Scripts/room_predictive.js",
+                "~/Scripts/badges.js"
+                ));
         }
     }
 

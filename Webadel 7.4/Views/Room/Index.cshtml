@@ -352,14 +352,18 @@
 </div>
 
 @* TODO: rebuild with bundling *@
+
+
 @section Scripts {
-    <script src="/Scripts/room.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/room_messageControls.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/room_userSettings.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/room_roomStuff.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/room_postbox.js?_@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-    <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+    @Scripts.Render("~/public/roomscripts")
+
+    @*<script src="/Scripts/room.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/room_messageControls.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/room_userSettings.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/room_roomStuff.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/room_postbox.js?_@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+        <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>*@
 
     @if (DateTime.Now.ToShortDateString().StartsWith("11/25/2021")) {
         string y = Model.Misc.ContainsKey("thanksgivingPrayer") ? Model.Misc["thanksgivingPrayer"] : null;
