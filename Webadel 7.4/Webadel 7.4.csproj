@@ -218,7 +218,6 @@
     <Content Include="Content\themes\superhero.min.css" />
     <Content Include="Content\themes\united.min.css" />
     <Content Include="Content\themes\yeti.min.css" />
-    <Content Include="Content\badges.css" />
     <Content Include="Content\webadel.css" />
     <Content Include="favicon-16x16.png" />
     <Content Include="favicon-32x32.png" />
