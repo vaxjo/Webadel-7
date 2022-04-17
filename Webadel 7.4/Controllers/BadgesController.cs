@@ -24,12 +24,13 @@ namespace Webadel7.Controllers {
         public ActionResult Index_Edit_Modal(int id) => View(Badge.Load(id));
 
         [ValidateInput(false)]
-        public CallbackResult UpdateBadge(int id, string name, string badgeText, string description, string pendingApproval) {
+        public CallbackResult UpdateBadge(int id, string name, string badgeText, string description, Badge.AssignmentTypes assignmentType, string pendingApproval) {
             Badge badge = Badge.Load(id);
 
             badge.Name = name;
             badge.BadgeText = badgeText;
             badge.Description = description;
+            badge.AssignmentType = assignmentType;
             badge.PendingApproval = (pendingApproval != null);
             badge.Save();
 
@@ -49,8 +50,6 @@ namespace Webadel7.Controllers {
         public CallbackResult ApproveBadge(int id) => Badge.Approve(id) ? CallbackResult.Success : CallbackResult.Failure;
 
         public CallbackResult RemoveBadge(int id) => Badge.Remove(id) ? CallbackResult.Success : CallbackResult.Failure;
-        
-        public CallbackResult RemoveAllBadges() => Badge.RemoveAll() ? CallbackResult.Success : CallbackResult.Failure;
         
         public CallbackResult AwardBadge(int badgeId, Guid recipientId) => Badge.Award(badgeId, recipientId) ? CallbackResult.Success : CallbackResult.Failure;
 

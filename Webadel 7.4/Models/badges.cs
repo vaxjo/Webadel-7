@@ -6,11 +6,14 @@ using System.Web;
 
 namespace Webadel7 {
     public class Badge {
+        public enum AssignmentTypes { Manual = 0, Automatic = 1 }
+
         public int Id;
         public string Name, BadgeText, Description;
         public Guid CreatorId;
         public DateTime Added;
         public bool PendingApproval;
+        public AssignmentTypes AssignmentType;
 
         public User Creator => User.Load(CreatorId);
 
@@ -33,6 +36,7 @@ namespace Webadel7 {
             CreatorId = dbItem.creator;
             Added = dbItem.added;
             PendingApproval = dbItem.pendingApproval;
+            AssignmentType = (AssignmentTypes)dbItem.assignmentTypes;
         }
 
         public void Save() {
@@ -44,6 +48,7 @@ namespace Webadel7 {
             b.text = BadgeText;
             b.description = Description;
             b.pendingApproval = PendingApproval;
+            b.assignmentTypes = (byte)AssignmentType;
 
             dc.SubmitChanges();
 
@@ -96,7 +101,7 @@ namespace Webadel7 {
 
             if (dc.Badges.Any(o => o.name == name)) return null; // already exists
 
-            var newBadge = new DB_Badges.Badge { name = name, text = badgeText, description = description, creator = creatorId, added = DateTime.Now, pendingApproval = true };
+            var newBadge = new DB_Badges.Badge { name = name, text = badgeText, description = description, creator = creatorId, added = DateTime.Now, pendingApproval = true, assignmentTypes = 0 };
             dc.Badges.InsertOnSubmit(newBadge);
             dc.SubmitChanges();
 
@@ -188,16 +193,6 @@ namespace Webadel7 {
             if (message.Date.Hour == 4 && message.Date.Minute == 33) Badge.Award(23, message.AuthorId);
             if (message.Date.Hour == 16 && message.Date.Minute == 33) Badge.Award(24, message.AuthorId);
 
-        }
-
-        /// <summary> Remove all badge/user associations. </summary>
-        public static bool RemoveAll() {
-            DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
-
-            dc.Badge_Users.DeleteAllOnSubmit(dc.Badge_Users);
-            dc.SubmitChanges();
-
-            return true;
         }
     }
 }

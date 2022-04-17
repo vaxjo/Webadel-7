@@ -42,11 +42,17 @@
 
                             <li class="divider" role="presentation"></li>
                             <li role="presentation" class="dropdown-header">User Settings</li>
-                            <li><a data-toggle="modal" href="#changePwModal">Change Password</a></li>
-                            <li><a data-toggle="modal" href="#sortRoomsModal">Reorder Room List</a></li>
                             <li><a data-toggle="modal" href="#userSettingsModal">Account Settings</a></li>
-                            <li><a data-toggle="modal" href="#plonkModal">Plonks</a></li>
                             <li><a data-toggle="modal" href="#profileModal">Profile</a></li>
+                            <li><a data-toggle="modal" href="#sortRoomsModal">Reorder Room List</a></li>
+                            <li><a data-toggle="modal" href="#plonkModal">Plonks</a></li>
+                            <li><a data-toggle="modal" href="#changePwModal">Change Password</a></li>
+
+                            @if (MvcApplication.CurrentUser.CoSysop) {
+                                <li class="divider" role="presentation"></li>
+                                <li role="presentation" class="dropdown-header">CoSysOp</li>
+                                <li><a href="/Badges">Badges</a></li>
+                            }
 
                             <li class="divider" role="presentation"></li>
                             <li role="presentation" class="dropdown-header">Potpourri</li>

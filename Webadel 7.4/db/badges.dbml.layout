@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="badges">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.125, 8.5" name="badges">
   <DataContextMoniker Name="/DataContext" />
   <nestedChildShapes>
-    <classShape Id="a4054c93-1713-4810-bb36-64cb10e57603" absoluteBounds="6.25, 3.25, 2, 1.5785953776041666">
+    <classShape Id="a4054c93-1713-4810-bb36-64cb10e57603" absoluteBounds="4.75, 3, 2, 1.5785953776041666">
       <DataClassMoniker Name="/DataContext/Badge_User" />
       <nestedChildShapes>
-        <elementListCompartment Id="4d8c1aa3-3021-40ba-81e8-d35fe2629e9d" absoluteBounds="6.265, 3.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="379787c8-9c98-455a-b3fa-a147cdf8e953" absoluteBounds="3.5, 4.5, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/DataContext/Badge" />
-      <nestedChildShapes>
-        <elementListCompartment Id="c93478c9-e0d2-4354-823c-d4e264545a31" absoluteBounds="3.515, 4.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="4d8c1aa3-3021-40ba-81e8-d35fe2629e9d" absoluteBounds="4.765, 3.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="fd6bb549-8f8a-4650-899d-f4d0c5045599" absoluteBounds="0.75, 1.375, 2, 3.8862125651041666">
@@ -20,25 +14,31 @@
         <elementListCompartment Id="fcd2b21b-20be-4db6-a6e8-ad690cb1e71d" absoluteBounds="0.765, 1.835, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.5 : 5.74204802604167); (7.25 : 5.74204802604167); (7.25 : 4.82859537760417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataContext/Badge/Badge_Badge_User" />
-      <nodes>
-        <classShapeMoniker Id="379787c8-9c98-455a-b3fa-a147cdf8e953" />
-        <classShapeMoniker Id="a4054c93-1713-4810-bb36-64cb10e57603" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 3.84375); (6.25 : 3.84375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 3.78929768880208); (4.75 : 3.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DataContext/User/User_Badge_User" />
       <nodes>
         <classShapeMoniker Id="fd6bb549-8f8a-4650-899d-f4d0c5045599" />
         <classShapeMoniker Id="a4054c93-1713-4810-bb36-64cb10e57603" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 4.88060628255208); (3.5 : 4.88060628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="cc3ec135-6742-4d30-b9ec-a62af228842a" absoluteBounds="8.875, 2, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/DataContext/Badge" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4adf5903-e658-4206-ba8f-310130b2d6ef" absoluteBounds="8.89, 2.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.875 : 3.67390055338542); (6.75 : 3.67390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataContext/Badge/Badge_Badge_User" />
+      <nodes>
+        <classShapeMoniker Id="cc3ec135-6742-4d30-b9ec-a62af228842a" />
+        <classShapeMoniker Id="a4054c93-1713-4810-bb36-64cb10e57603" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.46875); (8.875 : 2.46875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DataContext/User/User_Badge" />
       <nodes>
         <classShapeMoniker Id="fd6bb549-8f8a-4650-899d-f4d0c5045599" />
-        <classShapeMoniker Id="379787c8-9c98-455a-b3fa-a147cdf8e953" />
+        <classShapeMoniker Id="cc3ec135-6742-4d30-b9ec-a62af228842a" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

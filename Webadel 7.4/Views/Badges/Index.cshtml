@@ -4,6 +4,13 @@
     <script type="text/javascript" src="~/Scripts/main.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("table").tablesorter({
+                sortList: [[5, 1]], textExtraction: function (node) {
+                    // if a TD element has a data-sortval then use that as the sorting value
+                    return ($(node).data("sortval") == null ? $(node).text() : $(node).data("sortval"));
+                }
+            });
+
             $(".glyphicon-ok").click(function () {
                 $.post("/Badges/ApproveBadge?id=" + $(this).closest("tr").attr("id"), function () { window.location.reload(); });
             });
@@ -20,24 +27,28 @@
             $(".glyphicon-edit").click(function () {
                 OpenModal("/Badges/Index_Edit_Modal?id=" + $(this).closest("tr").attr("id"));
             });
-
-            $("#removeAll").click(function () {
-                if (!confirm("are you sure you want to remove all badges from all users?")) return;
-
-                $(this).button("loading");
-                $.post("/Badges/RemoveAllBadges", function () { window.location.reload(); });
-            });
         });
     </script>
 }
 
 <h2>
     Microbadges
-
-    <button type="button" class="btn btn-xs btn-danger " id="removeAll" data-loading-text="Removing...">Remove All Badges</button>
+    <span class="pull-right"><a href="/" class="btn btn-link">Back to @Webadel7.SystemConfig.SystemName</a></span>
 </h2>
 
-<table class="table">
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+            <th>Creator</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
     @foreach (var badge in Badge.GetAll().OrderByDescending(o => o.PendingApproval).ThenBy(o => o.Name)) {
         <tr id="@badge.Id">
             <td>@badge.Id</td>
@@ -45,6 +56,7 @@
             <td style="padding: 7px 0 0 0;">@BadgeHelpers.RenderBadge(badge.Id)</td>
             <td>@badge.Creator.Username</td>
             <td>@badge.Added.ToShortDateString()</td>
+            <td>@badge.AssignmentType</td>
 
             @if (badge.PendingApproval) {
                 <td style="cursor: pointer;" title="Approve Badge"><span class="glyphicon glyphicon-ok"></span> Pending</td>

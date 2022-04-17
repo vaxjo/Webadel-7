@@ -6,21 +6,8 @@
       <Column Name="badgeId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="awarded" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
       <Column Name="new" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Badge_Badge_User" Member="Badge" ThisKey="badgeId" OtherKey="id" Type="Badge" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="User_Badge_User" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Badge" Member="Badges">
-    <Type Name="Badge">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="text" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
-      <Column Name="description" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
-      <Column Name="added" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
-      <Column Name="creator" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="pendingApproval" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Badge_Badge_User" Member="Badge_Users" ThisKey="id" OtherKey="badgeId" Type="Badge_User" />
-      <Association Name="User_Badge" Member="User" ThisKey="creator" OtherKey="id" Type="User" IsForeignKey="true" />
+      <Association Name="Badge_Badge_User" Member="Badge" ThisKey="badgeId" OtherKey="id" Type="Badge" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.[User]" Member="Users">
@@ -43,6 +30,20 @@
       <Column Name="miscDictionary" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
       <Association Name="User_Badge_User" Member="Badge_Users" ThisKey="id" OtherKey="userId" Type="Badge_User" />
       <Association Name="User_Badge" Member="Badges" ThisKey="id" OtherKey="creator" Type="Badge" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Badge" Member="Badges">
+    <Type Name="Badge">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="text" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+      <Column Name="added" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="pendingApproval" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="assignmentTypes" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="Badge_Badge_User" Member="Badge_Users" ThisKey="id" OtherKey="badgeId" Type="Badge_User" />
+      <Association Name="User_Badge" Member="User" ThisKey="creator" OtherKey="id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
