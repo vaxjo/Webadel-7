@@ -94,7 +94,13 @@ namespace Webadel7 {
             return true;
         }
 
-        public static bool Submit(string name, string badgeText, string description, Guid creatorId) => Create(name, badgeText, description, creatorId) != null;
+        public static bool Submit(string name, string badgeText, string description, Guid creatorId) {
+            Badge b = Create(name, badgeText, description, creatorId);
+            if (b == null) return false;
+
+            Award(27, creatorId); // "badge creator"
+            return true;
+        }
 
         public static Badge Create(string name, string badgeText, string description, Guid creatorId) {
             DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
@@ -140,7 +146,7 @@ namespace Webadel7 {
             return dc.Badge_Users.Where(o => o.badgeId == badgeId).OrderByDescending(o => o.awarded).Select(o => User.Load(o.userId)).ToList().Where(o => o.IsActiveUser).ToList();
         }
 
-        /// <summary> Some badges are awarded automtically depending on timing. This method will execute several times a day. </summary>
+        /// <summary> Some badges are awarded automtically depending on timing. This method will execute whenever the system starts (~couple times a day). </summary>
         public static void AutoAward() {
             DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
 
@@ -183,16 +189,25 @@ namespace Webadel7 {
 
             // plonked (#9)
             foreach (Guid userId in webDC.Plonks.Select(o => o.plonkedUserId).Distinct()) Award(9, userId);
-
         }
 
         /// <summary> Fires after a message has been posted. I imagine a number of badges might occur here. </summary>
         public static void AwardBadges(Message message) {
+            DB.WebadelDataContext webDC = DB.WebadelDataContext.GetProfiledDC();
 
             // posted at 4:33 
-            if (message.Date.Hour == 4 && message.Date.Minute == 33) Badge.Award(23, message.AuthorId);
-            if (message.Date.Hour == 16 && message.Date.Minute == 33) Badge.Award(24, message.AuthorId);
+            if (message.Date.Hour == 4 && message.Date.Minute == 33) Award(23, message.AuthorId);
+            if (message.Date.Hour == 16 && message.Date.Minute == 33) Award(24, message.AuthorId);
 
+            // 433 length
+            if (message.Body.Length == 433) Award(28, message.AuthorId);
+
+            // novelist / multi-page
+            if (message.Body.Length > 3000) Award(26, message.AuthorId);
+
+            // photographer (#29) more than 10 photos in last 72 hours
+            int resourceCount = webDC.Resources.Count(o => o.uploaded > DateTime.Now.AddHours(-72) && o.Message.authorId == message.AuthorId);
+            if (resourceCount > 10) Award(29, message.AuthorId);
         }
     }
 }
