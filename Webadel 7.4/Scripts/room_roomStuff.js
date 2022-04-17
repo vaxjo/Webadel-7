@@ -17,18 +17,20 @@ $(document).ready(function () {
     $("#editRoomModal").on("click", "#delete", function () { EditRoom_Delete(); });
     $("#editRoomModal").on("click", "#private", function () { $("#editRoomModal #invitees").parent().toggle(); });
 
-    $("#searchModal").on('show.bs.modal', function () {
+    $("#searchModal").on("show.bs.modal", function () {
         CloseTopNav();
-        $("#searchModal").html("").load("/Room/Index_Search_Dialog", function () { });
-    });
-    $("#searchModal").on('shown.bs.modal', function () { $("#searchModal #q").focus(); });
-    $("#searchModal").on("click", "#search", function () { Search(); });
-    $("#searchModal").on("keypress", "input, select", function (event) {
+        $("#searchModal").html("").load("/Room/Index_Search_Dialog", function () { ScrollToTop(); });
+
+    }).on("click", "#search", function () {
+        Search();
+
+    }).on("keypress", "input, select", function (event) {
         if (event.keyCode == 13) {
             Search();
             return false;
         }
     });
+
     $("#messages").on("click", ".roomLink", function () { LoadRoom($(this).attr("id")); });
 
     $("#markNSFW").click(function () { if (_pageReady) MarkNSFW(); });
