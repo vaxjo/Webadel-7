@@ -21,6 +21,9 @@ $(document).ready(function () {
         CloseTopNav();
         $("#searchModal").html("").load("/Room/Index_Search_Dialog", function () { ScrollToTop(); });
 
+    }).on("shown.bs.modal", function () {
+        setTimeout(function () { $("#searchModal #q1").focus(); }, 100); // I don't know why we need a timeout here, but it won't work without it
+
     }).on("click", "#search", function () {
         Search();
 
