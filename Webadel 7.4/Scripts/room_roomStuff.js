@@ -167,7 +167,7 @@ function Search() {
     $("#messagesLoading").show();
 
     if ($("#searchModal input[name='global']:checked").val() == "False") {
-        $.get("/Room/Search?roomId=" + _roomId + "&userId=" + $("#searchModal #userId").val() + "&q=" + escape($("#searchModal #q").val()), function (data) {
+        $.get("/Room/Search?roomId=" + _roomId + "&userId=" + $("#searchModal #userId").val() + "&q=" + escape($("#searchModal #q1").val()), function (data) {
             $("#messagesLoading").hide();
             if (data.length == 0) {
                 $("#searchModal form").prepend(CreateAlert("No messages found that matched your search criteria.", "info"));
@@ -182,7 +182,7 @@ function Search() {
 
     } else {
         // global search
-        $.get("/Room/Search?userId=" + $("#searchModal #userId").val() + "&q=" + escape($("#searchModal #q").val()), function (data) {
+        $.get("/Room/Search?userId=" + $("#searchModal #userId").val() + "&q=" + escape($("#searchModal #q1").val()), function (data) {
             $("#messagesLoading").hide();
             if (data.length == 0) {
                 $("#messages").html("");
