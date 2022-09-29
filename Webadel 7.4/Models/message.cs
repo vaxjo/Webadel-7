@@ -78,6 +78,10 @@ namespace Webadel7 {
 
         public static void DeleteMessages(List<Guid> messageIds) {
             DB.WebadelDataContext dc = new DB.WebadelDataContext();
+
+            // explicitly remove vote records
+            dc.Votes.DeleteAllOnSubmit(dc.Votes.Where(o => messageIds.Contains(o.messageId)));
+
             dc.Messages.DeleteAllOnSubmit(dc.Messages.Where(o => messageIds.Contains(o.id)));
             dc.SubmitChanges();
 
