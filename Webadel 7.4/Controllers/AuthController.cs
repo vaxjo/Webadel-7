@@ -85,7 +85,7 @@ namespace Webadel7.Controllers {
 
             Webadel7.User newUser = Webadel7.User.NewUser(username, newPassword, email);
             newUser.RecordIP(Request.UserHostAddress);
-            Room.PostToAide("New user (" + newUser + ") created.");
+            Room.PostToAide($"New user ({newUser}) created [{Request.UserHostAddress}].");
 
             Room mail = Room.Load(SystemConfig.MailRoomId);
             mail.Post(System.IO.File.ReadAllText(Server.MapPath("~/App_Data/newUserMail.htm")), SystemConfig.SysopId, newUser.Id);
