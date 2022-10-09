@@ -39,6 +39,13 @@
                         <label><input type="checkbox" name="cosysop" @(Model.CoSysop ? "checked=checked" : "") /> CoSysop <small>- can't really do anything more than aide right now.</small></label>
                     </div>
                 }
+
+                <hr />
+
+                @foreach (Badge badge in Badge.GetBadges(Model.Id)) {
+                    @BadgeHelpers.RenderBadge(badge.Id)
+                    <span class="glyphicon glyphicon-remove-circle text-danger removeBadge" style="top: -4px; margin-right: 15px;" data-badgeid="@badge.Id"></span>                    
+                }
             </form>
 
         </div>

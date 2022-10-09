@@ -129,6 +129,18 @@ namespace Webadel7 {
             return true;
         }
 
+        public static bool Unaward(int badgeId, Guid userId) {
+            DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
+
+            var b = dc.Badge_Users.SingleOrDefault(o => o.badgeId == badgeId && o.userId == userId);
+            if (b == null) return false; // can't find
+
+            dc.Badge_Users.DeleteOnSubmit(b);
+            dc.SubmitChanges();
+
+            return true;
+        }
+
         /// <summary> Get badges for specified user. If onlyNew is null then return all badges; if true only new badges, if false only not-new badges. </summary>
         public static List<Badge> GetBadges(Guid userId, bool? onlyNew = null) {
             DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();

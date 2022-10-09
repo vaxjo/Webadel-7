@@ -124,6 +124,7 @@ $(document).ready(function () {
 
     $("#editUserModal").on("click", "#save", function () { EditUser_Save(); });
     $("#editUserModal").on("click", "#delete", function () { EditUser_Delete(); });
+    $("#editUserModal").on("click", ".removeBadge", function () { EditUser_RemoveBadge($(this)); });
 
     _frequentInterval = setTimeout(FrequentInterval, _intervalDelay); // many things need to happen with relative frequency; stick them all in here
 
@@ -161,6 +162,13 @@ function ViewProfile(id) {
 
 function EditUser(id) {
     $("#editUserModal").load("/Room/Index_EditUser_Dialog?userId=" + id, function () { $("#editUserModal").modal("show"); });
+}
+
+function EditUser_RemoveBadge($removeBadgeButton) {
+    $.post("/Room/RemoveBadge?badgeId=" + $removeBadgeButton.data("badgeid"), $("#editUserModal form").serialize(), function (response) {
+        $removeBadgeButton.prev().remove();
+        $removeBadgeButton.remove();
+    });
 }
 
 function EditUser_Save() {

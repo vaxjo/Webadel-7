@@ -383,6 +383,13 @@ namespace Webadel7.Controllers {
             return null;
         }
 
+        public Myriads.CallbackResult RemoveBadge(Guid userId, int badgeId) {
+            if (!CurrentUser.CoSysop) return Myriads.CallbackResult.Unauthorized;
+            
+            Badge.Unaward(badgeId, userId);
+            return Myriads.CallbackResult.Success;
+        }
+
         public ContentResult UpdateUser(Guid userId, string username, string email, string password, string trusted, string aide, string cosysop, string twit) {
             if (!CurrentUser.Aide && !CurrentUser.CoSysop) return Content("You shouldn't be here, you nerd.");
 
