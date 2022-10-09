@@ -210,6 +210,9 @@ namespace Webadel7 {
             // posted at 4:33 
             if (message.Date.Hour == 4 && message.Date.Minute == 33) Award(23, message.AuthorId);
             if (message.Date.Hour == 16 && message.Date.Minute == 33) Award(24, message.AuthorId);
+            
+            // 21:37 - pope death
+            if (message.Date.Hour == 21 && message.Date.Minute == 37) Award(33, message.AuthorId);
 
             // 433 length
             if (message.Body.Length == 433) Award(28, message.AuthorId);
