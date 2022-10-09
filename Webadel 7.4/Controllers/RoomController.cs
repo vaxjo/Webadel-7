@@ -227,9 +227,7 @@ namespace Webadel7.Controllers {
             return JsonNet(CurrentUser.GetMoreMessages(roomId, (lastMessageTicks.HasValue ? new DateTime(lastMessageTicks.Value) : MvcApplication.Now)).Select(o => o.ToJson));
         }
 
-        public Myriads.JsonNetResult Search(string q, Guid? roomId, Guid? userId) {
-            return JsonNet(CurrentUser.Search(q, roomId, userId).Select(o => o.ToJson));
-        }
+        public Myriads.JsonNetResult Search(string q, Guid? roomId, Guid? userId) => JsonNet(CurrentUser.Search(q, roomId, userId).OrderBy(o => o.Room.Name).ThenBy(o => o.Date).Select(o => o.ToJson));
 
         public ActionResult Forget(Guid roomId, bool forget) {
             UserRoom ur = UserRoom.Load(CurrentUser.Id, roomId);
