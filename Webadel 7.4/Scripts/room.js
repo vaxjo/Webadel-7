@@ -539,6 +539,7 @@ function QuickFormat(text) {
     domRep.find("img").not(".skip").each(function () {
         switch (_currentUser.attachmentDisplay) {
             case "Full": $(this).removeAttr("style").removeAttr("class").attr("class", "img-responsive"); break;
+            case "Half": $(this).removeAttr("style").removeAttr("class").attr("class", "img-responsive").css("width", "50%"); break;
             case "Thumbnail": $(this).replaceWith("<a href='" + $(this).attr("src") + "' target='_blank'><img src='" + $(this).attr("src") + "' class='thumbnail' /></a>"); break;
             case "Text": $(this).replaceWith("<a href='" + $(this).attr("src") + "' target='_blank'><button type='button' class='btn-sm btn btn-default'>" + $(this).attr("src") + "</button></a>"); break;
         }
