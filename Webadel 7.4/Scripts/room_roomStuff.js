@@ -34,14 +34,19 @@ $(document).ready(function () {
         }
     });
 
-    $("#messages").on("click", ".roomLink", function () { LoadRoom($(this).attr("id")); });
-
     $("#markNSFW").click(function () { if (_pageReady) MarkNSFW(); });
     $("#markSFW").click(function () { if (_pageReady) MarkSFW(); });
     $("#forgetRoom").click(function () { if (_pageReady) ForgetRoom(); });
     $("#unforgetRoom").click(function () { if (_pageReady) UnforgetRoom(); });
     $("#unforgetRoomAux").click(function () { $("#unforgetRoom").click(); $("#unforgetRoomAux").hide(); });
-    $("#messages").on("click", ".forgetExpiration button", function () { if (_pageReady) ExpireForget($(this).data("timeout")); });
+
+    $("#messages").on("click", ".forgetExpiration button", function () {
+        if (_pageReady) ExpireForget($(this).data("timeout"));
+
+    }).on("click", "a.roomLink", function (e) {
+        e.preventDefault();
+        LoadRoom($(this).attr("id"));
+    });
 
     $("#goto").click(function () { if (_pageReady) Goto(); });
     $("#skip").click(function () { if (_pageReady) Skip(); });
@@ -188,6 +193,7 @@ function Search() {
                 $("#messages").html("");
                 $("#searchModal form").prepend(CreateAlert("No messages found that matched your search criteria.", "info"));
                 _pageReady = true;
+
             } else {
                 // we're not really in a "room" anymore so we have to obscure a bunch of stuff
                 UpdatePageTitle("Global Search");
@@ -198,9 +204,11 @@ function Search() {
                 $("#searchModal").modal("hide");
                 $("#messages").html("<h3>Found " + data.length + " messages...</h3>");
                 var previousRoom = "";
+
                 for (i = 0; i < data.length; i++) {
                     if (data[i].roomName != previousRoom) {
-                        $("#messages").append("<h4 class='roomLink' id='" + data[i].roomId + "'>" + data[i].roomName + " &gt;</span></h4>");
+                        // mobile browser won't bubble events from anything other than A and INPUT (and BUTTON?), so we do a hack here
+                        $("#messages").append("<h4><a id='" + data[i].roomId + "' class='roomLink' style='color: inherit;'>" + data[i].roomName + " &gt;</a></h4>");
                         previousRoom = data[i].roomName;
                     }
                     $("#messages").append(CreateMessageDom(data[i]));

@@ -11,7 +11,7 @@ namespace Webadel7 {
         private static void PublicBundles(BundleCollection bundles) {
             ScriptBundle publicScriptsBundle = new ScriptBundle("~/public/scripts") { Orderer = new AsIsBundleOrderer() };
             publicScriptsBundle
-                .Include("~/Scripts/jquery-3.6.0.min.js")
+                .Include("~/Scripts/jquery-3.6.1.min.js")
                 .Include("~/Scripts/jquery-ui.js")              // core, widget, sortable - mostly so fileupload doesn't throw $.widget error
 
                 .Include("~/Scripts/bootstrap.min.js")
