@@ -3,9 +3,20 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         $("#modal #badgeText").keyup(function () {
             $("#modal .microbadge").text($("#modal #badgeText").val());
+        });
+
+        $("#modal .remove").click(function () {
+            if (!confirm("Are you sure you want to remove this badge from this user?")) return;
+
+            $.post("/Badges/UnawardBadge", { userId: $(this).closest("tr").attr("id"), badgeId: @Model.Id}, function (result) {
+                if (result.ResultCode > 0) {
+                    alert(result.Message);
+                } else {
+                    CloseModal($("#modal"), function () { OpenModal("/Badges/Index_Edit_Modal?id=@Model.Id"); });
+                }
+            });
         });
 
         $("#modal form").submit(function (e) {
@@ -19,11 +30,7 @@
                 if (result.ResultCode > 0) {
                     alert(result.Message);
                 } else {
-                    console.log(1);
-                    CloseModal($("#modal"), function () {
-                        console.log(2);
-                        OpenModal("/Badges/Index_Edit_Modal?id=" + result.Message);
-                    });
+                    CloseModal($("#modal"), function () { OpenModal("/Badges/Index_Edit_Modal?id=" + result.Message); });
                 }
             });
         });
@@ -106,7 +113,21 @@
                         </div>
                     </div>
                 </div>
+
+                <hr />
+                <p>Active users who have this badge:</p>
+
+                <table class="table table-condensed">
+                    @foreach (var user in Webadel7.Badge.GetUsers(Model.Id)) {
+                        <tr id="@user.Id">
+                            <td>@user.Username</td>
+                            <td><span class="glyphicon glyphicon-remove-circle text-danger remove" style="cursor: pointer;"></span></td>
+                        </tr>
+                    }
+                </table>
+
             </div>
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="copy">Copy</button>

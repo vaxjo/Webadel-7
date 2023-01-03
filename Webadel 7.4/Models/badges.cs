@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Webadel7.DB_Badges;
+using System.Web.UI;
+using Newtonsoft.Json.Schema;
 
 namespace Webadel7 {
     public class Badge {
@@ -95,8 +98,12 @@ namespace Webadel7 {
         }
 
         public static bool Submit(string name, string badgeText, string description, Guid creatorId) {
+            User creator = User.Load(creatorId);
+           
             Badge b = Create(name, badgeText, description, creatorId);
             if (b == null) return false;
+
+            Room.PostToAide($"{creator.Username} has submitted a new badge: \"{name}\".");
 
             Award(27, creatorId); // "badge creator"
             return true;
@@ -119,24 +126,32 @@ namespace Webadel7 {
         public static void ClearCache() => Myriads.Cache.Remove("Badges");
 
         public static bool Award(int badgeId, Guid recipientId) {
-            DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
+            DataContext dc = DataContext.GetProfiledDC();
+            User recipient = User.Load(recipientId);
+            Badge badge = Badge.Load(badgeId);
 
             if (dc.Badge_Users.Any(o => o.badgeId == badgeId && o.userId == recipientId)) return false; // already exists
 
             dc.Badge_Users.InsertOnSubmit(new DB_Badges.Badge_User { userId = recipientId, badgeId = badgeId, awarded = DateTime.Now, @new = true });
             dc.SubmitChanges();
 
+            Room.PostToAide($"The '{badge.Name}' badge has been awarded to '{recipient.Username}'.");
+
             return true;
         }
 
         public static bool Unaward(int badgeId, Guid userId) {
-            DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
+            DataContext dc = DataContext.GetProfiledDC();
+            User user = User.Load(userId);
+            Badge badge = Badge.Load(badgeId);
 
             var b = dc.Badge_Users.SingleOrDefault(o => o.badgeId == badgeId && o.userId == userId);
             if (b == null) return false; // can't find
 
             dc.Badge_Users.DeleteOnSubmit(b);
             dc.SubmitChanges();
+
+            Room.PostToAide($"The '{badge.Name}' badge has been removed from '{user.Username}'.");
 
             return true;
         }
@@ -201,6 +216,11 @@ namespace Webadel7 {
 
             // plonked (#9)
             foreach (Guid userId in webDC.Plonks.Select(o => o.plonkedUserId).Distinct()) Award(9, userId);
+
+            // 10-badges (#35)
+            foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(35)).ToList()) {
+                if (user.Badge_Users.Count() >= 10) Award(35, user.id);
+            }
         }
 
         /// <summary> Fires after a message has been posted. I imagine a number of badges might occur here. </summary>

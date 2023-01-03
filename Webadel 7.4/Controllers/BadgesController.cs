@@ -1,10 +1,6 @@
-﻿using System;
-using System.Data.Linq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Myriads;
+using System;
 using System.Web.Mvc;
-using Myriads;
 
 namespace Webadel7.Controllers {
     [WebadelAuthorize]
@@ -22,6 +18,15 @@ namespace Webadel7.Controllers {
         }
 
         public ActionResult Index_Edit_Modal(int id) => View(Badge.Load(id));
+
+        public ActionResult UnawardBadge(Guid userId, int badgeId) {
+            Badge badge = Badge.Load(badgeId);
+            User user = Webadel7.User.Load(userId);
+
+            if (Badge.Unaward(badgeId, userId)) return CallbackResult.Success;
+
+            return CallbackResult.Failure;
+        }
 
         [ValidateInput(false)]
         public CallbackResult UpdateBadge(int id, string name, string badgeText, string description, Badge.AssignmentTypes assignmentType, string pendingApproval) {
@@ -50,12 +55,21 @@ namespace Webadel7.Controllers {
         public CallbackResult ApproveBadge(int id) => Badge.Approve(id) ? CallbackResult.Success : CallbackResult.Failure;
 
         public CallbackResult RemoveBadge(int id) => Badge.Remove(id) ? CallbackResult.Success : CallbackResult.Failure;
-        
+
         public CallbackResult AwardBadge(int badgeId, Guid recipientId) => Badge.Award(badgeId, recipientId) ? CallbackResult.Success : CallbackResult.Failure;
 
         public ActionResult Index_SubmitBadge_Dialog() => View();
 
         public ActionResult Badge_Modal(int id) => View(Badge.Load(id));
+
+        public ActionResult NominateUser(Guid userId, int badgeId) {
+            Badge badge = Badge.Load(badgeId);
+            User user = Webadel7.User.Load(userId);
+
+            Room.PostToAide($"{MvcApplication.CurrentUser.Username} has nominated {user.Username} to receive the \"{badge.Name}\" badge.");
+
+            return CallbackResult.Success;
+        }
 
         [ValidateInput(false)]
         public CallbackResult SubmitBadge(string name, string badgeText, string description) => Badge.Submit(name, badgeText, description, MvcApplication.CurrentUser.Id) ? CallbackResult.Success : CallbackResult.Failure;
