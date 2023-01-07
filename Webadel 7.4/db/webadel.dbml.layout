@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.625" name="webadel">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10" name="webadel">
   <DataContextMoniker Name="/WebadelDataContext" />
   <nestedChildShapes>
     <classShape Id="05ebd9eb-d0ed-4f72-ad7f-ec165e860992" isExpanded="false" absoluteBounds="1, 4.875, 2, 0.45">
@@ -39,7 +39,7 @@
         <elementListCompartment Id="dc213d7c-28f8-4028-ac0b-b9e81d3dbb7b" absoluteBounds="1.1400000000000001, 7.2100000000000009, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.625 : 7.1); (3.125 : 7.1)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3.625 : 7.1); (3.125 : 7.1)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/WebadelDataContext/Message/Message_Resource" />
       <nodes>
         <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
@@ -103,7 +103,7 @@
         <classShapeMoniker Id="22e32d57-153c-43c7-8a51-73645e23803b" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(6.6875 : 7.125); (6.6875 : 6.575)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.6875 : 7.125); (6.6875 : 6.575)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/WebadelDataContext/Room/Room_Autosave" />
       <nodes>
         <classShapeMoniker Id="cba510c6-1bd9-4695-a3e5-a1d612359856" />
@@ -116,7 +116,7 @@
         <elementListCompartment Id="c198a539-eedf-4770-b731-356fc0157f0b" absoluteBounds="6.3900000000000006, 5.3350000000000009, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.71875 : 7.125); (7.71875 : 5.325)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.71875 : 7.125); (7.71875 : 5.325)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/WebadelDataContext/Room/Room_UserRoom" />
       <nodes>
         <classShapeMoniker Id="cba510c6-1bd9-4695-a3e5-a1d612359856" />
@@ -147,7 +147,7 @@
         <elementListCompartment Id="23328210-9f8d-448a-9638-a7243f43a29f" absoluteBounds="3.765, 5.335, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.75 : 5.1); (3 : 5.1)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3.75 : 5.09285115559896); (3 : 5.09285115559896)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/WebadelDataContext/User/User_Door" />
       <nodes>
         <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
@@ -203,7 +203,7 @@
         <classShapeMoniker Id="5120b5b3-ab05-4e31-a687-16e74fcf1548" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.0664065 : 4.875); (5.0664065 : 3.85); (5.75 : 3.85)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.0664065 : 4.875); (5.0664065 : 3.85); (5.32291666666667 : 3.85 : JumpStart); (5.48958333333333 : 3.85 : JumpEnd); (5.75 : 3.85)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/WebadelDataContext/User/User_User_PrevAlia" />
       <nodes>
         <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
@@ -230,14 +230,14 @@
         <elementListCompartment Id="80e7f895-9ad7-4bf2-8ae8-bff5ddd4bced" absoluteBounds="1.5150000000000006, 3.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.328126 : 4.875); (4.328126 : 3.475); (3.98958583333333 : 3.475 : JumpStart); (3.82291916666667 : 3.475 : JumpEnd); (3.5 : 3.475)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.328126 : 4.875); (4.328126 : 3.475); (3.5 : 3.475)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/WebadelDataContext/User/User_LoginToken" />
       <nodes>
         <classShapeMoniker Id="4156a725-8bd9-4665-bb34-a91dba682150" />
         <classShapeMoniker Id="66ba9d5d-724b-43ea-8b11-d85a0ab2aeea" />
       </nodes>
     </associationConnector>
-    <classShape Id="e0930c77-6486-4121-b422-8e859eafca17" isExpanded="false" absoluteBounds="6.75, 8, 2, 0.45">
+    <classShape Id="e0930c77-6486-4121-b422-8e859eafca17" absoluteBounds="6.75, 8, 2, 1.7708968098958344">
       <DataClassMoniker Name="/WebadelDataContext/MessageVote" />
       <nestedChildShapes>
         <elementListCompartment Id="4ff344c6-7107-4bef-8e9b-080ee9036148" absoluteBounds="6.765, 8.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />

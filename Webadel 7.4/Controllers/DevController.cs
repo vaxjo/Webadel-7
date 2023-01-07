@@ -99,6 +99,21 @@ namespace Webadel7.Controllers {
             }).ToList());
         }
 
+        public struct MessageVotes_Model {
+            public List<DB.Message> Messages;
+            public List<DB.User> Users;
+            public List<DB.Vote> Votes;
+        }
+        public ActionResult MessageVotes () {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+
+            return View(new MessageVotes_Model { 
+                Messages = dc.Messages.ToList(),
+                Users = dc.Users.ToList(),
+                Votes = dc.Votes.ToList()
+            });
+        }
+
         public ActionResult SaveAuthTokens () {
             AuthToken.SaveAuthTokens(System.Web.HttpContext.Current);
             return Content("AuthToken.SaveAuthTokens(): finished");

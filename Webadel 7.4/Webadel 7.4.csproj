@@ -1033,6 +1033,7 @@
     <Content Include="Views\Badges\Index.cshtml" />
     <Content Include="Views\Badges\Badge_Modal.cshtml" />
     <Content Include="Views\Badges\Index_Edit_Modal.cshtml" />
+    <Content Include="Views\Dev\MessageVotes.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

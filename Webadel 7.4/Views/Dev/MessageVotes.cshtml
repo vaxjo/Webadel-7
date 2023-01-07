@@ -1,0 +1,27 @@
+﻿@model Webadel7.Controllers.DevController.MessageVotes_Model
+@{ ViewBag.Title = "Message Votes"; }
+
+<h2>Message Votes</h2>
+
+<p>Total votes: @Model.Votes.Count.ToString("N0")</p>
+
+@foreach (var message in Model.Messages.OrderBy(o => o.date)) {
+    var votesForThisMessages = Model.Votes.Where(o => o.messageId == message.id);
+    if (votesForThisMessages.Count() == 0) { continue; }
+
+    <p>
+        @message.date - @message.id - @Model.Users.Single(o => o.id == message.authorId).username
+        [ @votesForThisMessages.Count() : @votesForThisMessages.Sum(o => (o.vote1 ? 1 : -1)) ]
+    </p>
+
+    <table class="table table-condensed">
+        <tbody>
+            @foreach (var vote in Model.Votes.Where(o => o.messageId == message.id)) {
+                <tr>
+                    <td>@(vote.vote1 ? "+" : "-")</td>
+                    <td class="@(vote.vote1 ? "" : "text-warning")"> @Model.Users.Single(o => o.id == vote.userId).username</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
