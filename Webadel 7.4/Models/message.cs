@@ -113,12 +113,15 @@ namespace Webadel7 {
             List<DB.Message> oldMessages = dc.Messages.Where(o => o.date < cullDate).ToList();
             if (oldMessages.Count == 0) return;
 
-            Room.PostToSystem("Messages culled: " + oldMessages.Count, httpContext);
-
             ArchiveMessages(oldMessages, httpContext);
 
             dc.Messages.DeleteAllOnSubmit(oldMessages);
             dc.SubmitChanges();
+
+            dc.Votes.DeleteAllOnSubmit(oldMessages.SelectMany(o => o.Votes));
+            dc.SubmitChanges();
+
+            Room.PostToSystem("Messages culled: " + oldMessages.Count, httpContext);
 
             Myriads.Cache.Remove("UserRooms", null, httpContext);
             Myriads.Cache.Remove("Rooms", null, httpContext);
