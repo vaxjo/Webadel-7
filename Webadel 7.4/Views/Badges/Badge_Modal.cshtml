@@ -40,20 +40,24 @@
                 </div>
 
                 <hr />
-                <p>Nominate a user (including yourself) to receive this badge:</p>
+                @if (Model.AssignmentType == Badge.AssignmentTypes.Automatic) {
+                    <p>This badge is automatically assigned whenever its criteria are met.</p>
 
-                <div class="form-group">
-                    <select class="form-control" name="userId" id="userId">
-                        @foreach (Webadel7.User user in Webadel7.User.GetAll(true)) {
-                            if (user.Id == Webadel7.SystemConfig.AnonymousId || user.Id == Webadel7.SystemConfig.SysopId) { continue; }
-                            <option value="@user.Id">@user.Username</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Nominate</button>
-                </div>
+                } else {
+                    <p>Nominate a user (including yourself) to receive this badge:</p>
 
+                    <div class="form-group">
+                        <select class="form-control" name="userId" id="userId">
+                            @foreach (Webadel7.User user in Webadel7.User.GetAll(true)) {
+                                if (user.Id == Webadel7.SystemConfig.AnonymousId || user.Id == Webadel7.SystemConfig.SysopId) { continue; }
+                                <option value="@user.Id">@user.Username</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Nominate</button>
+                    </div>
+                }
             </div>
 
             @*<div class="modal-footer">
