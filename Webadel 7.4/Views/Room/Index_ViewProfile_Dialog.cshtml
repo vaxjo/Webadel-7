@@ -79,7 +79,7 @@
                             <tr>
                                 <td>Badges</td>
                                 <td>
-                                    @foreach (var item in Badge.GetBadges(Model.User.Id)) {
+                                    @foreach (var item in Badge.GetBadges(Model.User.Id).OrderByDescending(o => o.Added)) {
                                         @BadgeHelpers.RenderBadge(item.Id)
                                     }
                                 </td>

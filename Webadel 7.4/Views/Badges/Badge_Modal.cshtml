@@ -32,7 +32,7 @@
                 <p>Active users who have this badge:</p>
 
                 <div class="row">
-                    @foreach (var user in Webadel7.Badge.GetUsers(Model.Id)) {
+                    @foreach (var user in Webadel7.Badge.GetUsers(Model.Id).OrderByDescending(o => o.LastActivity)) {
                         <div class="col-xs-6 col-sm-4 user" id="@user.Id" style="margin-bottom: 5px; text-decoration: underline;">
                             @user.Username
                         </div>
