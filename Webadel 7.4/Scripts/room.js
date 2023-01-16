@@ -622,6 +622,16 @@ function ReplaceURLWithHTMLLinks(text) {
         $(this).attr("src", srcDict[id]).removeAttr("xsrc");
     });
 
+    domRep.find("a").each(function () {
+        var href = $(this).attr("href")
+        //console.log(href);
+
+        if (href.indexOf("facebook.com") >= 0) {
+            $(this).attr("href", "#").addClass("fb-link");
+            $(this).attr("original", href);
+        }
+    });
+
     // finally de-obfuscate the previously obfuscated urls
     var body = domRep.html();
     // body = body.replace(new RegExp("ht_tp", "g"), "http");

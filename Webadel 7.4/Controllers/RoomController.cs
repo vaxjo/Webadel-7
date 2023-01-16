@@ -498,6 +498,11 @@ namespace Webadel7.Controllers {
             var usernames = dc.User_IPs.Where(o => o.ip == ip).Select(o => o.User.username).Distinct();
             return Content(ip + " - " + string.Join(", ", usernames));
         }
+
+        public ActionResult Facebook_Dialog(string url) {
+            ViewBag.Url = url;
+            return View();
+        }
     }
 }
 
