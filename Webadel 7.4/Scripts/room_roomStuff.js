@@ -17,6 +17,11 @@ $(document).ready(function () {
     $("#editRoomModal").on("click", "#delete", function () { EditRoom_Delete(); });
     $("#editRoomModal").on("click", "#private", function () { $("#editRoomModal #invitees").parent().toggle(); });
 
+    $("#messages").on("click", ".fb-link", function (e) {
+        e.preventDefault();
+        OpenModal("/Room/Facebook_Dialog?url=" + escape($(this).attr("original")));
+    });
+
     $("#searchModal").on("show.bs.modal", function () {
         CloseTopNav();
         $("#searchModal").html("").load("/Room/Index_Search_Dialog", function () { ScrollToTop(); });
