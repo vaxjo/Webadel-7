@@ -624,9 +624,9 @@ function ReplaceURLWithHTMLLinks(text) {
 
     domRep.find("a").each(function () {
         var href = $(this).attr("href")
-        //console.log(href);
+        //console.log($(this), href);
 
-        if (href.indexOf("facebook.com") >= 0) {
+        if (href != undefined && href.indexOf("facebook.com") >= 0) {
             $(this).attr("href", "#").addClass("fb-link");
             $(this).attr("original", href);
         }
