@@ -1,5 +1,5 @@
 ﻿@using StackExchange.Profiling
-    
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,9 +21,13 @@
     @Styles.Render("~/Content/styles")
     @* easy custom themeing from http://bootswatch.com/ *@
     <link id="linkTheme" href="/Content/themes/@(Webadel7.MvcApplication.ClientTheme).min.css" rel="stylesheet">
+
+    <style>
+        .flip { transform: rotate(180deg); }
+    </style>
 </head>
 
-<body>
+<body class="@(DateTime.Now.DayOfYear == 91 ? "flip" : "")">
     <!-- Fixed top navbar -->
     @RenderSection("Nav", false)
 
@@ -51,6 +55,14 @@
     @(MiniProfiler.Current?.RenderIncludes(StackExchange.Profiling.RenderPosition.Right, null, null, null, true))
 
     @RenderSection("Scripts", false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#unfool").click(function () {
+                $("body").removeClass("flip");
+            });
+        });
+    </script>
 </body>
 
 <!-- The major difference between a thing that might go wrong and a thing that cannot possibly go wrong is that when a thing that cannot possibly go wrong goes wrong it usually turns out to be impossible to get at or repair.  -->
