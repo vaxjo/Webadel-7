@@ -160,6 +160,11 @@ namespace Webadel7 {
             return (newMessages.Count == 1 && !newMessages.First().New ? new List<Message>() : newMessages);
         }
 
+        public List<Message> GetTodayMessages(Guid roomId) {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+            return dc.GetUserMessages(Id, true, true).Where(o => o.roomId == roomId && o.date >= DateTime.Now.Date).OrderBy(o => o.date).Select(o => new Message(o)).ToList();
+        }
+
         /// <summary> Get the newest messages after the specified date. </summary>
         public List<Message> GetNewestMessages(Guid roomId, DateTime lastMessageDate) {
             DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();

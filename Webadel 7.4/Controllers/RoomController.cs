@@ -46,7 +46,7 @@ namespace Webadel7.Controllers {
         public ActionResult Index_ModeratorControls() {
             return View(UserRoom.GetAll(CurrentUser.Id));
         }
-        
+
         public ActionResult Index_RoomList_Dialog() {
             return View(UserRoom.GetAll(CurrentUser.Id));
         }
@@ -219,6 +219,10 @@ namespace Webadel7.Controllers {
             return JsonNet(CurrentUser.GetNewMessages(roomId).Select(o => o.ToJson));
         }
 
+        public Myriads.JsonNetResult GetTodayMessages(Guid roomId) {
+            return JsonNet(CurrentUser.GetTodayMessages(roomId).Select(o => o.ToJson));
+        }
+
         public Myriads.JsonNetResult GetNewestMessages(Guid roomId, long newestMessageTicks) {
             return JsonNet(CurrentUser.GetNewestMessages(roomId, new DateTime(newestMessageTicks)).Select(o => o.ToJson));
         }
@@ -383,7 +387,7 @@ namespace Webadel7.Controllers {
 
         public Myriads.CallbackResult RemoveBadge(Guid userId, int badgeId) {
             if (!CurrentUser.CoSysop) return Myriads.CallbackResult.Unauthorized;
-            
+
             Badge.Unaward(badgeId, userId);
             return Myriads.CallbackResult.Success;
         }

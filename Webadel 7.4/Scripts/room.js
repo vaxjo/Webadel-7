@@ -25,6 +25,7 @@ $(document).ready(function () {
     Mousetrap.bind("u", function (e) { if (_pageReady && !_textareaHasFocus) Ungoto(); }); // it would be nice to catch the browser back button and make it work like this
     Mousetrap.bind("a", function (e) { if (_pageReady && !_textareaHasFocus) ShowAll(); });
     Mousetrap.bind("m", function (e) { if (_pageReady && !_textareaHasFocus) ShowMore(); });
+    Mousetrap.bind("t", function (e) { if (_pageReady && !_textareaHasFocus) ShowToday(); });
     Mousetrap.bind("n", function (e) { if (_pageReady && !_textareaHasFocus) ShowNew(); });
     Mousetrap.bind("e", function (e) { if (_pageReady && !_textareaHasFocus) $("#postbox").focus(); });
     Mousetrap.bind(". s", function (e) { if (_pageReady && !_textareaHasFocus) $("#searchModal").modal("show"); });
@@ -100,6 +101,7 @@ $(document).ready(function () {
 
     $("#showAll").click(function () { if (_pageReady) ShowAll(); });
     $("#showMore").click(function () { if (_pageReady) ShowMore(); });
+    $("#showToday").click(function () { if (_pageReady) ShowToday(); });
     $("#showNew").click(function () { if (_pageReady) ShowNew(); });
     $("#roomDisplay").on("click", "#getNewestMessages", function () { ShowNewest(); return false; });
 
@@ -378,6 +380,19 @@ function ShowMore() {
         $("#messagesLoading").hide();
         // run the loop backwards because we're "prepending"
         for (j = data.length - 1; j >= 0; j--) $("#messages").prepend(CreateMessageDom(data[j]));
+        PlonkMessages();
+        _pageReady = true;
+        $("#messages").trigger("loaded");
+    });
+}
+
+function ShowToday() {
+    _pageReady = false;
+    $("#messages").html("");
+    $("#messagesLoading").show();
+    $.get("/Room/GetTodayMessages?roomId=" + _roomId, function (data) {
+        $("#messagesLoading").hide();
+        for (j = 0; j < data.length; j++) $("#messages").append(CreateMessageDom(data[j]));
         PlonkMessages();
         _pageReady = true;
         $("#messages").trigger("loaded");
