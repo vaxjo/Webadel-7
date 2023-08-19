@@ -179,19 +179,19 @@ namespace Webadel7 {
 
             // 1-year accont badge (#2)
             var oneYearAgo = new DateTime(DateTime.Now.Year - 1, DateTime.Now.Month, DateTime.Now.Day);
-            foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(2)).ToList()) Award(2, user.id);
+            foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && o.lastActivity > SystemConfig.ActiveUserCutoff && !o.Badge_Users.Select(b => b.badgeId).Contains(2)).ToList()) Award(2, user.id);
 
             // 5-year accont badge (#3)
             var fiveYearsAgo = new DateTime(DateTime.Now.Year - 5, DateTime.Now.Month, DateTime.Now.Day);
-            foreach (var user in dc.Users.Where(o => o.created < fiveYearsAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(3)).ToList()) Award(3, user.id);
+            foreach (var user in dc.Users.Where(o => o.created < fiveYearsAgo && o.lastActivity > SystemConfig.ActiveUserCutoff && !o.Badge_Users.Select(b => b.badgeId).Contains(3)).ToList()) Award(3, user.id);
 
             // 10-year accont badge (#4)
             var tenYearsAgo = new DateTime(DateTime.Now.Year - 10, DateTime.Now.Month, DateTime.Now.Day);
-            foreach (var user in dc.Users.Where(o => o.created < tenYearsAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(4)).ToList()) Award(4, user.id);
+            foreach (var user in dc.Users.Where(o => o.created < tenYearsAgo && o.lastActivity > SystemConfig.ActiveUserCutoff && !o.Badge_Users.Select(b => b.badgeId).Contains(4)).ToList()) Award(4, user.id);
 
             // 15-year accont badge (#7)
             var fifteenYearsAgo = new DateTime(DateTime.Now.Year - 15, DateTime.Now.Month, DateTime.Now.Day);
-            foreach (var user in dc.Users.Where(o => o.created < fifteenYearsAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(7)).ToList()) Award(7, user.id);
+            foreach (var user in dc.Users.Where(o => o.created < fifteenYearsAgo && o.lastActivity > SystemConfig.ActiveUserCutoff && !o.Badge_Users.Select(b => b.badgeId).Contains(7)).ToList()) Award(7, user.id);
 
             DB.WebadelDataContext webDC = DB.WebadelDataContext.GetProfiledDC();
 
