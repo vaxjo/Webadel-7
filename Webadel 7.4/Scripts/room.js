@@ -641,9 +641,16 @@ function ReplaceURLWithHTMLLinks(text) {
         var href = $(this).attr("href")
         //console.log($(this), href);
 
+        // facebook warning dialog
         if (href != undefined && (href.indexOf("facebook.com") >= 0 || href.indexOf("fb.me") >= 0)) {
             $(this).attr("href", "#").addClass("fb-link");
             $(this).attr("original", href);
+        }
+
+        // remove tracking from amazon urls
+        if (href != undefined && href.indexOf("amazon.com") >= 0) {
+            href = href.replace(new RegExp("/ref=(.*)", "g"), "");
+            $(this).attr("href", href);
         }
     });
 
