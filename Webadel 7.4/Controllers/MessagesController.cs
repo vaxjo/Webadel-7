@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Data.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Webadel7.Controllers {
@@ -42,6 +40,28 @@ namespace Webadel7.Controllers {
             Message.DeleteMessages(new List<Guid> { messageId });
 
             return Content("0" + dbMessage.body);
+        }
+
+        public ActionResult Histogram() {
+            Dictionary<DateTime, int> histo = (Dictionary<DateTime, int>)Myriads.Cache.Get("Histogram", "", delegate () {
+                DB.WebadelDataContext dc = new DB.WebadelDataContext();
+                Dictionary<DateTime, int> histogram = new Dictionary<DateTime, int>();
+                TimeSpan interval = TimeSpan.FromHours(1);
+
+                var all = dc.Messages.Where(o => o.date > DateTime.Now.AddDays(-7)).Select(o => o.date).ToList();
+
+                DateTime block = all.Min().Date;
+                do {
+                    int n = all.Where(o => o >= block && o < block.Add(interval)).Count();
+                    histogram.Add(block, n);
+
+                    block = block.Add(interval);
+                } while (block < all.Max());
+
+                return histogram;
+            }, TimeSpan.FromHours(1));
+
+            return View(histo);
         }
     }
 }

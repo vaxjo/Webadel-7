@@ -1035,6 +1035,7 @@
     <Content Include="Views\Badges\Index_Edit_Modal.cshtml" />
     <Content Include="Views\Dev\MessageVotes.cshtml" />
     <Content Include="Views\Room\Facebook_Dialog.cshtml" />
+    <Content Include="Views\Messages\Histogram.cshtml" />
     <None Include="Web.WinHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

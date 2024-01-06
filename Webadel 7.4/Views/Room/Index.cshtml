@@ -75,14 +75,14 @@
 }
 
 @section BottomNav {
-    <nav class="navbar navbar-default navbar-fixed-bottom visible-xs" role="navigation" style="text-align: center;">
+    <div class="nav-bottom visible-xs">
         <div id="mobileControlButtons" class="btn-group navbar-btn">
             <button type="button" class="btn btn-default" id="mobileUngoto">Ungoto</button>
             <button type="button" class="btn btn-default" id="mobileGoto">Goto</button>
             <button type="button" class="btn btn-default" id="mobileSkip">Skip</button>
         </div>
-        <span id="totalNew2" class="badge "></span>
-    </nav>
+        <span id="totalNew2" class="badge"></span>
+    </div>
 }
 
 <div style="height:50px;"></div>
@@ -359,7 +359,6 @@
 </div>
 
 @* TODO: rebuild with bundling *@
-
 
 @section Scripts {
     @Scripts.Render("~/public/roomscripts")

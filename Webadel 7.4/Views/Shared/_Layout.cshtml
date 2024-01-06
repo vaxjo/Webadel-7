@@ -1,5 +1,5 @@
 ﻿@using StackExchange.Profiling
-    
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,33 +24,44 @@
 </head>
 
 <body>
-    <!-- Fixed top navbar -->
-    @RenderSection("Nav", false)
+    <div class="mainlayout">
+        <div>
+            <!-- Fixed top navbar -->
+            @RenderSection("Nav", false)
 
-    <div class="container">
-        @RenderBody()
+            <div class="container">@RenderBody()</div>
+
+            @* I have this idea about user-customizable text at the bottom of the page - but maybe it's just too noisy?
+                <nav class="navbar navbar-default navbar-fixed-bottom hidden-xs" role="navigation" style="height: 26px; min-height: 0;">
+                    <div class="container small">
+                        <p class="navbar-text" style="margin-top: 5px;">The major difference between a thing that might go wrong and a thing that cannot possibly go wrongsd</p>
+                        <a href="#" class="btn btn-link navbar-btn btn-xs pull-right" style="margin-top: 2px;">change</a>
+                    </div>
+                </nav>*@
+        </div>
+
+        <div id="histogram"></div>
     </div>
+
+    @RenderSection("BottomNav", false)
 
     @* TODO: deprecate all "*Modal" divs and use this one, instead
         - also have to refactor all the javascript in support of these modals *@
     <div id="modal" class="modal fade" tabindex="-1"></div>
 
-    @RenderSection("BottomNav", false)
-
-    @* I have this idea about user-customizable text at the bottom of the page - but maybe it's just too noisy?
-        <nav class="navbar navbar-default navbar-fixed-bottom hidden-xs" role="navigation" style="height: 26px; min-height: 0;">
-            <div class="container small">
-                <p class="navbar-text" style="margin-top: 5px;">The major difference between a thing that might go wrong and a thing that cannot possibly go wrongsd</p>
-                <a href="#" class="btn btn-link navbar-btn btn-xs pull-right" style="margin-top: 2px;">change</a>
-            </div>
-        </nav>*@
-
     @Scripts.Render("~/public/scripts")
 
-    @*@StackExchange.Profiling.MiniProfiler.RenderIncludes(StackExchange.Profiling.RenderPosition.Right, null, null, null, true)*@
     @(MiniProfiler.Current?.RenderIncludes(StackExchange.Profiling.RenderPosition.Right, null, null, null, true))
 
     @RenderSection("Scripts", false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#histogram").load("/Messages/Histogram");
+            }, 500);
+        });
+    </script>
 </body>
 
 <!-- The major difference between a thing that might go wrong and a thing that cannot possibly go wrong is that when a thing that cannot possibly go wrong goes wrong it usually turns out to be impossible to get at or repair.  -->

@@ -1,0 +1,8 @@
+﻿@model Dictionary<DateTime, int>
+@{ Layout = null; }
+
+<div>
+    @foreach (var item in Model) {
+        <div style="border-bottom-width: @(item.Value * 4)px;" title="@item.Key.ToString("ddd, M/d, ht").ToLower(): @item.Value"></div>
+    }
+</div>

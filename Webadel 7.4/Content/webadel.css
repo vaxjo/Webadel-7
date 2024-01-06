@@ -1,9 +1,13 @@
 ﻿/* avoid using any typographic or color styles here; those should be handled entirely by the bootstrap themes [jj 13Aug28] */
 
+html, body { height: 100%; }
+
 /* offset content below the fixed navbar */
-body { padding: 20px 0 70px 0; }
+body { padding: 20px 0 0 0; }
 /* fix safari's annoying tendency to slightly zoom in */
 body { -webkit-text-size-adjust: 100%; }
+
+.mainlayout { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
 
 /* I don't know why we need to specify these styles. this should be in the default bootstrap CSS. */
 .dropdown-submenu { position: relative; }
@@ -55,7 +59,7 @@ iframe, object, embed { max-width: 100%; }
 /* room info modal */
 #roomInfoModal .badge { margin-right: 5px; }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .profiler-results { display: none; }
 }
 
@@ -63,3 +67,12 @@ iframe, object, embed { max-width: 100%; }
 .showPlonk { opacity: .3; cursor: pointer; }
 
 .microbadge { border: 3px double #000; font-size: 10px; color: #fff; width: 50px; height: 22px; display: inline-block; text-align: center; overflow: hidden; word-break: break-all; }
+
+
+.nav-bottom { position: fixed; bottom: 20px; left: 0; right: 0; text-align: center; }
+    .nav-bottom #totalNew2 { position: absolute; top: 11px; margin-left: 5px; }
+
+
+#histogram { margin-top: 50px; }
+    #histogram > div { display: flex; }
+        #histogram > div > div { width: 100%; border-bottom: 1px solid #ddd; }
