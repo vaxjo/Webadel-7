@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web.Mvc;
 
 namespace Webadel7.Controllers {
-    [WebadelAuthorize]
     public class MessagesController : WebadelController {
 
+        [WebadelAuthorize]
         public Myriads.JsonNetResult GetLastMessage(Guid roomId) {
             DB.WebadelDataContext dc = new DB.WebadelDataContext();
 
@@ -17,6 +17,7 @@ namespace Webadel7.Controllers {
         }
 
         // this is more of an "undo" now
+        [WebadelAuthorize]
         public ContentResult DeleteLastMessage(Guid messageId) {
             DB.WebadelDataContext dc = new DB.WebadelDataContext();
 
@@ -43,6 +44,8 @@ namespace Webadel7.Controllers {
         }
 
         public ActionResult Histogram() {
+            if (MvcApplication.CurrentUser == null) return Content("");
+
             Dictionary<DateTime, int> histo = (Dictionary<DateTime, int>)Myriads.Cache.Get("Histogram", "", delegate () {
                 DB.WebadelDataContext dc = new DB.WebadelDataContext();
                 Dictionary<DateTime, int> histogram = new Dictionary<DateTime, int>();
