@@ -1,0 +1,13 @@
+﻿@model List<Webadel7.DB.User>
+@{ ViewBag.Title = "Invite Yourself"; }
+
+<h2>Invite Yourself</h2>
+
+<ul>
+    @foreach (var item in Room.GetAll().Where(o => o.Private)) {
+        <li>
+            <a href="?roomId=@item.Id">@item.Name</a><br />
+            (@string.Join(", ", item.Invitees.Select(o => Webadel7.User.Load(o).Username)))
+        </li>
+    }
+</ul>

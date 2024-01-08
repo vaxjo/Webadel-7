@@ -15,17 +15,13 @@ namespace Webadel7.Controllers {
             if (!CurrentUser.Aide && !CurrentUser.CoSysop) filterContext.HttpContext.Response.Close();
         }
 
-        public ActionResult GlyphTest () {
-            return View();
-        }
+        public ActionResult Index() => View();
 
-        public ActionResult DisplayPlonks () {
-            return View(Webadel7.User.GetAll());
-        }
+        public ActionResult GlyphTest() => View();
 
-        public ActionResult EmailTest () {
-            return View();
-        }
+        public ActionResult DisplayPlonks() => View(Webadel7.User.GetAll());
+
+        public ActionResult EmailTest() => View();
 
         public ActionResult SendEmail (string host,int port, string username, string password, string from, string to, string subject, string body) {
 
@@ -44,9 +40,7 @@ namespace Webadel7.Controllers {
             return View(dc.AuthTokens.ToList());
         }
 
-        public ActionResult DisplayResources () {
-            return View(Resource.GetAll());
-        }
+        public ActionResult DisplayResources() => View(Resource.GetAll());
 
         public ActionResult UserLastActivity() {
             DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
@@ -145,6 +139,19 @@ namespace Webadel7.Controllers {
             DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
             ViewBag.IP = ip;
             return View(dc.User_IPs.Where(o => o.ip == ip).Select(o => o.User.username).Distinct().ToList());
+        }
+
+        public ActionResult InviteYourself(Guid? roomId) {
+            if (roomId.HasValue) {
+                Room room = Room.Load(roomId.Value);
+
+                var inv = room.Invitees;
+                inv.Add(MvcApplication.CurrentUser.Id);
+
+                room.SetInvitees(inv);
+            }
+
+            return View();
         }
     }
 }
