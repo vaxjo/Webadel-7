@@ -25,6 +25,7 @@ namespace Webadel7 {
                 .Include("~/Scripts/jquery.touchSwipe.min.js")
                 .Include("~/Scripts/jquery.tablesorter.min.js")
                 .Include("~/Scripts/main.js")
+                .Include("~/Scripts/liled.js")
                 ;
             bundles.Add(publicScriptsBundle);
 

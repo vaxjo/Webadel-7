@@ -152,6 +152,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\LilEdController.cs" />
     <Compile Include="Controllers\baseController.cs" />
     <Compile Include="Controllers\DevController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
@@ -978,6 +979,7 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\mousetrap.min.js" />
+    <Content Include="Scripts\liled.js" />
     <Content Include="Scripts\room.js" />
     <Content Include="Scripts\room_messageControls.js" />
     <Content Include="Scripts\room_postbox.js" />

@@ -9,6 +9,7 @@ using StackExchange.Profiling;
 namespace Webadel7 {
     public class MvcApplication : System.Web.HttpApplication {
         public static readonly string AuthToken_CookieName;
+        public static Random Rnd = new Random();
 
         /// <summary> Canonical Now. That is: Central time. </summary>
         public static DateTime Now => TimeZoneInfo.ConvertTimeFromUtc(DateTime.Now.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));

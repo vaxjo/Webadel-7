@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using Webadel7.Controllers;
 
 namespace Webadel7 {
     public class Message {
@@ -60,7 +62,7 @@ namespace Webadel7 {
             AuthorId = dbMessage.authorId;
             RecipientId = dbMessage.recipientId;
             Date = dbMessage.date;
-            Body = dbMessage.body;
+            Body = LittleEd.ProcessMessageBody(dbMessage.body);
             New = dbMessage.isNew;
             OriginalRoomName = dbMessage.originalRoomName;
             //Score = dbMessage.score ?? 0;

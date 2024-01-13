@@ -311,6 +311,8 @@ function LoadRoom(roomId, afterLoadCallback) {
 
         $("#postbox").val(data.autosavedMessage).data("prev", data.autosavedMessage).trigger("autosize.resize");
 
+        $("#roomDisplay").trigger("roomloaded");
+
         if (afterLoadCallback != null) afterLoadCallback();
     });
 
