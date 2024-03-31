@@ -94,7 +94,7 @@
                 var msg = successful ? 'successful' : 'unsuccessful';
                 alert("Results copied to clipboard.");
             } catch (err) {
-                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+                alert("Error! Results could not be copied to your clipboard. \r\n\r\n" + err);
             }
 
             document.body.removeChild(textArea);
@@ -107,7 +107,7 @@
             navigator.clipboard.writeText(text).then(function () {
                 alert("Results copied to clipboard.");
             }, function (err) {
-                alert("Error! Results copied not be copied to your clipboard. \r\n\r\n" + err);
+                alert("Error! Results could not be copied to your clipboard. \r\n\r\n" + err);
             });
         }
     </script>

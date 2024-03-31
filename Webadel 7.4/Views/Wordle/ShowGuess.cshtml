@@ -1,4 +1,4 @@
-﻿@model Webadel7.Controllers.WordleController.Check_Model
+﻿@model Wordle.Guess.Result
 @{ Layout = null; }
 
 @if (Model.IsCorrect) {
@@ -36,17 +36,17 @@
 
 <script type="text/javascript">
     @* can always promot letters to the correct state, and once there, can never be changed *@
-    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.Correct)) {
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Wordle.Guess.LetterGuess.States.Correct)) {
         @: SetAlphaLetter("@(guess.Letter)", "Correct");
     }
 
     @* can only mark letters as "wrong place" if they have not already been marked Correct *@
-    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.WrongPlace)) {
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Wordle.Guess.LetterGuess.States.WrongPlace)) {
         @: if (!$("#alphabet #letter-@(guess.Letter)").hasClass("Correct")) SetAlphaLetter("@(guess.Letter)", "WrongPlace");
     }
 
     @* can only mark letters as "incorrect" if they have not already been marked Correct or WrongPlace *@
-    @foreach (var guess in Model.Guesses.Where(o => o.State == Webadel7.Controllers.WordleController.Check_Model.States.Incorrect)) {
+    @foreach (var guess in Model.Guesses.Where(o => o.State == Wordle.Guess.LetterGuess.States.Incorrect)) {
         @: if (!$("#alphabet #letter-@(guess.Letter)").hasClass("Correct") && !$("#alphabet #letter-@(guess.Letter)").hasClass("WrongPlace")) SetAlphaLetter("@(guess.Letter)", "Incorrect");
     }
 </script>
@@ -55,9 +55,9 @@
     @foreach (var guess in Model.Guesses) {
         string resultCode = "";
         switch (guess.State) {
-            case Webadel7.Controllers.WordleController.Check_Model.States.Correct: resultCode = "&#129001;"; break;
-            case Webadel7.Controllers.WordleController.Check_Model.States.Incorrect: resultCode = "&#129003;"; break;
-            case Webadel7.Controllers.WordleController.Check_Model.States.WrongPlace: resultCode = "&#129000;"; break;
+            case Wordle.Guess.LetterGuess.States.Correct: resultCode = "&#129001;"; break;
+            case Wordle.Guess.LetterGuess.States.Incorrect: resultCode = "&#129003;"; break;
+            case Wordle.Guess.LetterGuess.States.WrongPlace: resultCode = "&#129000;"; break;
         }
 
         <span class="@guess.State" data-result="@resultCode">@guess.Letter</span>

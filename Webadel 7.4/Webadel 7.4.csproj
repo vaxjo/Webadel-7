@@ -179,6 +179,7 @@
     <Compile Include="Models\message.cs" />
     <Compile Include="Models\badges.cs" />
     <Compile Include="Models\plonks.cs" />
+    <Compile Include="Models\wordle.cs" />
     <Compile Include="Models\predictor.cs" />
     <Compile Include="Models\profile.cs" />
     <Compile Include="Models\resource.cs" />

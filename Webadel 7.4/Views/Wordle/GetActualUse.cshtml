@@ -2,6 +2,6 @@
 @{ Layout = null; }
 
 <hr />
-<p>"@ViewBag.Word" was used by @Model.Author.username in @(Model.Room.name)&gt; on @Message.CitDate(Model.date) in this message:</p>
+<p>"@ViewBag.Word" might have been used by @Model.Author.username in @(Model.Room.name)&gt; on @Message.CitDate(Model.date) in this message:</p>
 <p><i>@Html.Raw(Model.body.Replace("\r", "<br>"))</i></p>
 
