@@ -654,6 +654,12 @@ function ReplaceURLWithHTMLLinks(text) {
             href = href.replace(new RegExp("/ref=(.*)", "g"), "");
             $(this).attr("href", href);
         }
+
+        // remove utm_ trackers
+        if (href != undefined && href.indexOf("utm_") >= 0) {
+            href = href.replace(new RegExp("utm_.+?=[a-zA-Z_0-9]+", "g"), "xxx");
+            $(this).attr("href", href);
+        }
     });
 
     // finally de-obfuscate the previously obfuscated urls
