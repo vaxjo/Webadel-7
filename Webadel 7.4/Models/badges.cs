@@ -221,6 +221,11 @@ namespace Webadel7 {
             foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(35)).ToList()) {
                 if (user.Badge_Users.Count() >= 10) Award(35, user.id);
             }
+
+            // 12-badges (#40)
+            foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(40)).ToList()) {
+                if (user.Badge_Users.Count() >= 11) Award(40, user.id);
+            }
         }
 
         /// <summary> Fires after a message has been posted. I imagine a number of badges might occur here. </summary>
