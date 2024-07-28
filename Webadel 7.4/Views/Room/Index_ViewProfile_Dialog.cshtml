@@ -88,6 +88,10 @@
                                 <td>Since</td>
                                 <td>@Model.User.Created.ToShortDateString()</td>
                             </tr>
+                            <tr>
+                                <td>Little Eds</td>
+                                <td>@(Webadel7.Controllers.LittleEd.LilEdFinders.ContainsKey(Model.User.Id) ? Webadel7.Controllers.LittleEd.LilEdFinders[Model.User.Id] : 0)</td>
+                            </tr>
                             @if (Model.User.PrevousAliases.Count > 0) {
                                 <tr>
                                     <td>A.K.A.</td>

@@ -72,6 +72,8 @@ namespace Webadel7.Controllers {
             if (n >= 5) Badge.Award(52, userId); // found a lil ed x 5
             if (n >= 10) Badge.Award(53, userId); // found a lil ed x 10
             if (n >= 37) Badge.Award(54, userId); // found a lil ed x 37
+            if (n >= 64) Badge.Award(57, userId); // found a lil ed x 64
+            if (n >= 209) Badge.Award(58, userId); 
 
             return n; 
         }
