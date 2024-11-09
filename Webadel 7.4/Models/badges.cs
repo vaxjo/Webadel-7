@@ -99,7 +99,7 @@ namespace Webadel7 {
 
         public static bool Submit(string name, string badgeText, string description, Guid creatorId) {
             User creator = User.Load(creatorId);
-           
+
             Badge b = Create(name, badgeText, description, creatorId);
             if (b == null) return false;
 
@@ -142,14 +142,15 @@ namespace Webadel7 {
 
         public static bool Unaward(int badgeId, Guid userId) {
             DataContext dc = DataContext.GetProfiledDC();
-            User user = User.Load(userId);
-            Badge badge = Badge.Load(badgeId);
 
             var b = dc.Badge_Users.SingleOrDefault(o => o.badgeId == badgeId && o.userId == userId);
             if (b == null) return false; // can't find
 
             dc.Badge_Users.DeleteOnSubmit(b);
             dc.SubmitChanges();
+
+            User user = User.Load(userId);
+            Badge badge = Badge.Load(badgeId);
 
             Room.PostToAide($"The '{badge.Name}' badge has been removed from '{user.Username}'.");
 
@@ -226,6 +227,13 @@ namespace Webadel7 {
             foreach (var user in dc.Users.Where(o => o.created < oneYearAgo && !o.Badge_Users.Select(b => b.badgeId).Contains(40)).ToList()) {
                 if (user.Badge_Users.Count() >= 11) Award(40, user.id);
             }
+
+            // no badges (61) - users with no badges get this one; users with badges do not
+            foreach (User user in User.GetAll(true)) {
+                var badges = GetBadges(user.Id);
+                if (!badges.Any()) Award(61, user.Id); // if no badges, then award 61
+                if (badges.Count > 1) Unaward(61, user.Id); // if more than 1 badge, remove 61
+            }
         }
 
         /// <summary> Fires after a message has been posted. I imagine a number of badges might occur here. </summary>
@@ -235,7 +243,7 @@ namespace Webadel7 {
             // posted at 4:33 
             if (message.Date.Hour == 4 && message.Date.Minute == 33) Award(23, message.AuthorId);
             if (message.Date.Hour == 16 && message.Date.Minute == 33) Award(24, message.AuthorId);
-            
+
             // 21:37 - pope death
             if (message.Date.Hour == 21 && message.Date.Minute == 37) Award(33, message.AuthorId);
 
