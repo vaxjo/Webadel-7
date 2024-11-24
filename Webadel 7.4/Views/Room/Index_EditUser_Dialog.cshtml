@@ -29,9 +29,6 @@
                     <label><input type="checkbox" name="trusted" @(Model.Trusted ? "checked=checked" : "" ) /> Trusted <small>- can view rooms that require trust.</small></label>
                 </div>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="twit" @(Model.Twit ? "checked=checked" : "") /> Twit <small>- their posts can only be seen by themselves.</small></label>
-                </div>
-                <div class="checkbox">
                     <label><input type="checkbox" name="aide" @(Model.Aide ? "checked=checked" : "") /> Aide <small>- can edit all rooms and users.</small></label>
                 </div>
                 @if (ViewBag.IsCoSysop || Request.IsLocal) {
@@ -40,11 +37,21 @@
                     </div>
                 }
 
+                <div class="checkbox">
+                    <label><input type="checkbox" name="twit" @(Model.Twit ? "checked=checked" : "") /> Twit <small>- their posts can only be seen by themselves.</small></label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="muted" @(Model.Muted ? "checked=checked" : "") /> Mute <small>- cannot post new messages.</small></label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="disabled" @(Model.Disabled ? "checked=checked" : "") /> Disabled <small>- behaves as if account doesn't exist.</small></label>
+                </div>
+
                 <hr />
 
                 @foreach (Badge badge in Badge.GetBadges(Model.Id)) {
                     @BadgeHelpers.RenderBadge(badge.Id)
-                    <span class="glyphicon glyphicon-remove-circle text-danger removeBadge" style="top: -4px; margin-right: 15px;" data-badgeid="@badge.Id"></span>                    
+                    <span class="glyphicon glyphicon-remove-circle text-danger removeBadge" style="top: -4px; margin-right: 15px;" data-badgeid="@badge.Id"></span>
                 }
             </form>
 

@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DB_121619_webadel" EntityNamespace="Webadel7.DB" ContextNamespace="Webadel7.DB" Class="WebadelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=tcp:s15.winhost.com;Initial Catalog=DB_121619_webadel;Integrated Security=False;User ID=DB_121619_webadel_user" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Webadel" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Door" Member="Doors">
     <Type Name="Door">
       <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -77,7 +76,7 @@
       <Column Name="vote" Member="vote1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="datetime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Message_Vote" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" />
+      <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.AuthToken" Member="AuthTokens">
@@ -157,6 +156,23 @@
       <Association Name="User_UserProfile" Member="User" ThisKey="id" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.LoginToken" Member="LoginTokens">
+    <Type Name="LoginToken">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="expiration" Type="System.DateTime" DbType="DateTime2 NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="token" Type="System.String" DbType="VarChar(36) NOT NULL" CanBeNull="false" />
+      <Association Name="User_LoginToken" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MessageVotes" Member="MessageVotes">
+    <Type Name="MessageVote">
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Divisiveness" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.[User]" Member="Users">
     <Type Name="User">
       <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -174,6 +190,8 @@
       <Column Name="created" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
       <Column Name="notes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="twit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="disabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="muted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="miscDictionary" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
       <Association Name="User_Door" Member="Doors" ThisKey="id" OtherKey="userId" Type="Door" />
       <Association Name="User_Message" Member="Messages" ThisKey="id" OtherKey="recipientId" Type="Message" />
@@ -187,23 +205,6 @@
       <Association Name="User_Plonk" Member="Plonks" ThisKey="id" OtherKey="userId" Type="Plonk" />
       <Association Name="User_UserProfile" Member="UserProfile" ThisKey="id" OtherKey="id" Type="UserProfile" Cardinality="One" />
       <Association Name="User_LoginToken" Member="LoginTokens" ThisKey="id" OtherKey="userId" Type="LoginToken" />
-    </Type>
-  </Table>
-  <Table Name="dbo.LoginToken" Member="LoginTokens">
-    <Type Name="LoginToken">
-      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="expiration" Type="System.DateTime" DbType="DateTime2 NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="token" Type="System.String" DbType="VarChar(36) NOT NULL" CanBeNull="false" />
-      <Association Name="User_LoginToken" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.MessageVotes" Member="MessageVotes">
-    <Type Name="MessageVote">
-      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="Score" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Count" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Divisiveness" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">

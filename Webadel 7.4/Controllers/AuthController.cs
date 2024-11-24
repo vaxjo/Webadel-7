@@ -65,6 +65,8 @@ namespace Webadel7.Controllers {
         }
 
         public Myriads.JsonNetResult NewUser(string username, string newPassword, string confirmPassword, string email) {
+            if (!Webadel7.User.CanCreateAccount(Request.UserHostAddress)) throw new Exception("User cannot create account.");
+
             if (username == null) return JsonNet("usernameempty"); // if this happens, an invalid request was made outside of the modal context (perhaps a crawler?)
 
             List<string> errors = new List<string>();
@@ -112,7 +114,7 @@ namespace Webadel7.Controllers {
                 MailMessage mail = Myriads.MailTemplate.CreateMailMessage(Server.MapPath("~/App_Data/Email/logintoken.xml"));
                 mail.To.Add(email);
                 Myriads.MailTemplate.MakeReplacements(mail, replacements);
-                
+
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mail);
 

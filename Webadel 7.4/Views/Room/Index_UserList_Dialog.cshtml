@@ -33,9 +33,31 @@
             <table class="table table-condensed ">
                 <thead><tr><th>User</th><th>Last Activity</th><th></th></tr></thead>
                 <tbody>
-                    @foreach (Webadel7.User user in Model.Where(o => isAide || o.IsActiveUser)) {
+                    @foreach (Webadel7.User user in Model.Where(o => isAide || o.IsActiveUser).Where(o => isAide || !o.Disabled)) {
                         <tr id="@user.Id" class="@(user.IsActiveUser ? "" : "inactive")">
-                            <td class="user" id="@user.Id">@user.Username</td>
+                            <td class="user" id="@user.Id">
+                                @user.Username
+                                @if (isAide) {
+                                    if (user.Twit) {
+                                        <span class="glyphicon glyphicon-baby-formula text-danger" title="Twitted"></span>
+                                    }
+                                    if (user.Muted) {
+                                        <span class="glyphicon glyphicon-volume-off text-danger" title="Muted"></span>
+                                    }
+                                    if (user.Disabled) {
+                                        <span class="glyphicon glyphicon-exclamation-sign text-danger" title="Disabled"></span>
+                                    }
+                                }
+                                @if (user.Trusted) {
+                                    <span class="glyphicon glyphicon-ok text-info" title="Aide"></span>
+                                }
+                                @if (user.Aide) {
+                                    <span class="glyphicon glyphicon-bishop text-success" title="Aide"></span>
+                                }
+                                @if (user.CoSysop) {
+                                    <span class="glyphicon glyphicon-queen text-success" title="CoSysop"></span>
+                                }
+                            </td>
                             <td data-sortval="@MvcApplication.Now.Subtract(user.LastActivity).TotalMinutes">@Webadel7.Banishment.NiceTimeSpanDisplay(MvcApplication.Now.Subtract(user.LastActivity))</td>
                         </tr>
                     }
@@ -45,7 +67,7 @@
 
         @if (isAide) {
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="showInactive">Show Inactive Users</button>
+                <button type="button" class="btn btn-default" id="showInactive">Show Inactive Users (Aides only)</button>
             </div>
         }
     </div>

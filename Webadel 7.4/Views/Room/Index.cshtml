@@ -146,58 +146,12 @@
 
         <div id="messagePreview" class="alert-success"></div>
 
-        <form id="postForm" role="form">
-            <input type="hidden" id="postAnonymously" name="postAnonymously" value="False" />
+        @if (Model.Muted) {
+            <p class="text-danger text-center" style="border: 1px solid #e6c1c1; padding: 15px; background-color: #fffafa; margin: 15px;">Your account has been muted. You will not be able to post messages until it has been unmuted.</p>
 
-            <div class="pull-right" style="opacity: 1; position: relative; top: -5px;">
-                <button type="button" class="btn btn-default btn-xs" id="anonymous">anonymity</button>
-                <span class="dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-xs" id="insertMenu" data-toggle="dropdown">insert <span class="caret"></span></button>
-                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="insertMenu">
-                        <li role="presentation" id="insertCutTag"><a role="menuitem" tabindex="-1" href="#">cut tag</a></li>
-                        <li role="presentation" id="insertSpoiler"><a role="menuitem" tabindex="-1" href="#">spoiler text</a></li>
-                        <li role="presentation" id="insertImageCode"><a role="menuitem" tabindex="-1" href="#">image code</a></li>
-                        <li role="presentation" id="insertHyperlink"><a role="menuitem" tabindex="-1" href="#">hyperlink</a></li>
-                        @*<li role="presentation" id="insertLmgtfy"><a role="menuitem" tabindex="-1" href="#">lmgtfy</a></li>*@
-                    </ul>
-                </span>
-            </div>
-            <div class="messageheader new">
-                <span class="time">@Webadel7.Message.CitDate(MvcApplication.Now)</span> from <span class="user author" id="@Model.Id" data-original="@Model.Username">@Model.Username</span>
-                <span style="display: none;"> to <select class="recipient" id="recipientId" name="recipientId">@* loaded dynamically *@</select></span>
-            </div>
-            <div class="form-group">
-                <label class="sr-only" for="postbox">Post Box</label>
-                <textarea id="postbox" name="message" class="form-control mousetrap" rows="3" tabindex="1"></textarea>
-
-                @* predictive text [jj 19Apr20] *@
-                @if (Model.EnablePredictiveText) {
-                    <div id="predictive" class="btn-group btn-group-justified btn-group-xs" style="display: none;" role="group" aria-label="Predictive Text">
-                        <div class="btn-group btn-group-xs" role="group">
-                            <button type="button" class="btn btn-default"></button>
-                        </div>
-                        <div class="btn-group btn-group-xs" role="group">
-                            <button type="button" class="btn btn-default"></button>
-                        </div>
-                        <div class="btn-group btn-group-xs" role="group">
-                            <button type="button" class="btn btn-default"></button>
-                        </div>
-                    </div>
-                }
-
-                <div class="btn-group btn-group-xs pull-right postButtons" style="margin-top: 3px;">
-                    <button type="button" class="btn btn-default" id="post" tabindex="2">Post</button>
-                    <button type="button" class="btn btn-default" id="postGoto" tabindex="3">Post & Goto</button>
-                    <button type="button" class="btn btn-default" id="preview" tabindex="4">Preview</button>
-                </div>
-
-                <div id="resources" style="margin-top: 3px;">
-                    <button type="button" class="btn btn-primary btn-xs" id="attachResource">Attach Files</button>
-                    <input type="file" id="uploadResource" name="file" style="display: none;" data-url="/Room/UploadResource" multiple="multiple" />
-                    <table class="table table-noborder" style="margin-top: 3px;"><tbody></tbody></table>
-                </div>
-            </div>
-        </form>
+        } else {
+            @RenderPostBox()
+        }
 
         @* TODO: only if profile is already empty *@
         @if (DateTime.Now.Subtract(Model.Created).TotalDays < 7 && Model.Profile.IsEmpty) {
@@ -213,6 +167,61 @@
         <div id="roomList" class="visible-md visible-lg">@* loaded dynamically *@</div>
     </div>
 </div>
+
+@helper RenderPostBox() {
+    <form id="postForm" role="form">
+        <input type="hidden" id="postAnonymously" name="postAnonymously" value="False" />
+
+        <div class="pull-right" style="opacity: 1; position: relative; top: -5px;">
+            <button type="button" class="btn btn-default btn-xs" id="anonymous">anonymity</button>
+            <span class="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle btn-xs" id="insertMenu" data-toggle="dropdown">insert <span class="caret"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="insertMenu">
+                    <li role="presentation" id="insertCutTag"><a role="menuitem" tabindex="-1" href="#">cut tag</a></li>
+                    <li role="presentation" id="insertSpoiler"><a role="menuitem" tabindex="-1" href="#">spoiler text</a></li>
+                    <li role="presentation" id="insertImageCode"><a role="menuitem" tabindex="-1" href="#">image code</a></li>
+                    <li role="presentation" id="insertHyperlink"><a role="menuitem" tabindex="-1" href="#">hyperlink</a></li>
+                    @*<li role="presentation" id="insertLmgtfy"><a role="menuitem" tabindex="-1" href="#">lmgtfy</a></li>*@
+                </ul>
+            </span>
+        </div>
+        <div class="messageheader new">
+            <span class="time">@Webadel7.Message.CitDate(MvcApplication.Now)</span> from <span class="user author" id="@Model.Id" data-original="@Model.Username">@Model.Username</span>
+            <span style="display: none;"> to <select class="recipient" id="recipientId" name="recipientId">@* loaded dynamically *@</select></span>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="postbox">Post Box</label>
+            <textarea id="postbox" name="message" class="form-control mousetrap" rows="3" tabindex="1"></textarea>
+
+            @* predictive text [jj 19Apr20] *@
+            @if (Model.EnablePredictiveText) {
+                <div id="predictive" class="btn-group btn-group-justified btn-group-xs" style="display: none;" role="group" aria-label="Predictive Text">
+                    <div class="btn-group btn-group-xs" role="group">
+                        <button type="button" class="btn btn-default"></button>
+                    </div>
+                    <div class="btn-group btn-group-xs" role="group">
+                        <button type="button" class="btn btn-default"></button>
+                    </div>
+                    <div class="btn-group btn-group-xs" role="group">
+                        <button type="button" class="btn btn-default"></button>
+                    </div>
+                </div>
+            }
+
+            <div class="btn-group btn-group-xs pull-right postButtons" style="margin-top: 3px;">
+                <button type="button" class="btn btn-default" id="post" tabindex="2">Post</button>
+                <button type="button" class="btn btn-default" id="postGoto" tabindex="3">Post & Goto</button>
+                <button type="button" class="btn btn-default" id="preview" tabindex="4">Preview</button>
+            </div>
+
+            <div id="resources" style="margin-top: 3px;">
+                <button type="button" class="btn btn-primary btn-xs" id="attachResource">Attach Files</button>
+                <input type="file" id="uploadResource" name="file" style="display: none;" data-url="/Room/UploadResource" multiple="multiple" />
+                <table class="table table-noborder" style="margin-top: 3px;"><tbody></tbody></table>
+            </div>
+        </div>
+    </form>
+}
 
 @*************** Modals *******************@
 

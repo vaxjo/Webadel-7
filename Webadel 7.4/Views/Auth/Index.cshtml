@@ -94,10 +94,12 @@
         </form>
 
         @if (!Webadel7.Banishment.IsBanished(Request.UserHostAddress)) {
-            <p>If this is your first visit, create a new account to join in (account creation takes only half a minute).</p>
-            <p><a class="btn btn-primary " data-toggle="modal" href="#newUserModal">Create New Account</a></p>
+            if (Webadel7.User.CanCreateAccount(Request.UserHostAddress)) {
+                <p>If this is your first visit, create a new account to join in (account creation takes only half a minute).</p>
+                <p><a class="btn btn-primary " data-toggle="modal" href="#newUserModal">Create New Account</a></p>
 
-            <hr />
+                <hr />
+            }
 
             <p>If you've forgotten your password, you can have a one-time login link emailed to you. If you have an email attached to your account, anyway.</p>
             <p><a class="btn btn-primary " data-toggle="modal" href="#loginTokenModal">Get One-Time Login Link</a></p>

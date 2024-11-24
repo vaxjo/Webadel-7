@@ -157,6 +157,8 @@ namespace Webadel7.Controllers {
 
         [ValidateInput(false)]
         public Myriads.JsonNetResult PreviewMessage(string message, Guid roomId, Guid? recipientId, Guid[] files, bool postAnonymously) {
+            if (CurrentUser.Muted) return JsonNet(null);
+
             JsonMessage previewMessage = JsonMessage.Create(message, roomId, (postAnonymously ? SystemConfig.AnonymousId : CurrentUser.Id), recipientId);
             if (files != null) foreach (Guid fileId in files) previewMessage.attachments.Add(new JsonResource(Resource.Load(fileId)));
             return JsonNet(previewMessage);
@@ -164,6 +166,8 @@ namespace Webadel7.Controllers {
 
         [ValidateInput(false)]
         public Myriads.JsonNetResult PostMessage(string message, Guid roomId, Guid? recipientId, Guid[] files, bool postAnonymously) {
+            if (CurrentUser.Muted) return JsonNet(null);
+
             Room room = Room.Load(roomId);
             if (!room.Anonymous && postAnonymously) throw new Exception("Can't post anonymously in a room that does not allow anonymous posting. Obvs.");
             if (roomId == SystemConfig.MailRoomId && !recipientId.HasValue) throw new Exception("Can't post mail without a recipient. Duh.");
@@ -392,7 +396,7 @@ namespace Webadel7.Controllers {
             return Myriads.CallbackResult.Success;
         }
 
-        public ContentResult UpdateUser(Guid userId, string username, string email, string password, string trusted, string aide, string cosysop, string twit) {
+        public ContentResult UpdateUser(Guid userId, string username, string email, string password, string trusted, string aide, string cosysop, string twit, string muted, string disabled) {
             if (!CurrentUser.Aide && !CurrentUser.CoSysop) return Content("You shouldn't be here, you nerd.");
 
             if (!string.IsNullOrWhiteSpace(password)) {
@@ -409,9 +413,11 @@ namespace Webadel7.Controllers {
             user.Aide = (aide != null);
             user.CoSysop = (cosysop != null);
             user.Twit = (twit != null);
+            user.Muted = (muted != null);
+            user.Disabled = (disabled != null);
             user.Save();
 
-            Room.PostToAide("User (" + originalUserDesc + ") modified to (" + user.ToString() + ") by " + CurrentUser.Username + ".");
+            Room.PostToAide($"User ({originalUserDesc}) modified to ({user}) by {CurrentUser.Username}.");
 
             if (!string.IsNullOrWhiteSpace(password)) user.ChangePassword(password);
 

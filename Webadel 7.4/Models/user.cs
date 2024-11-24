@@ -4,6 +4,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Transactions;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace Webadel7 {
     public class User {
@@ -11,7 +12,7 @@ namespace Webadel7 {
 
         public readonly Guid Id;
         public string Username;
-        public bool Trusted, Aide, CoSysop, Twit;
+        public bool Trusted, Aide, CoSysop, Twit, Muted, Disabled;
         public string Email, Notes;
         public AttachmentDisplayType AttachmentDisplay;
         public bool EnableSwipe, EnablePredictiveText;
@@ -50,6 +51,8 @@ namespace Webadel7 {
             Aide = dbUser.aide;
             CoSysop = dbUser.cosysop;
             Twit = dbUser.twit;
+            Muted = dbUser.muted;
+            Disabled = dbUser.disabled;
             Email = dbUser.email;
             Notes = dbUser.notes;
             AttachmentDisplay = (AttachmentDisplayType)dbUser.attachmentDisplay;
@@ -65,15 +68,15 @@ namespace Webadel7 {
             DB.User dbUser = dc.Users.Single(o => o.id == Id);
 
             // track old aliases
-            if (dbUser.username != Username) {
-                User_PrevAlias.Add(Id, dbUser.username);
-            }
+            if (dbUser.username != Username) User_PrevAlias.Add(Id, dbUser.username);
 
             dbUser.username = Username;
             dbUser.trusted = Trusted;
             dbUser.aide = Aide;
             dbUser.cosysop = CoSysop;
             dbUser.twit = Twit;
+            dbUser.muted = Muted;
+            dbUser.disabled = Disabled;
             dbUser.email = Email;
             dbUser.notes = Notes;
             dbUser.attachmentDisplay = (byte)AttachmentDisplay;
@@ -222,12 +225,12 @@ namespace Webadel7 {
                 // an attempt to prevent the rare "transaction deadlocked" error
                 using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted })) {
                     DB.WebadelDataContext dc = new DB.WebadelDataContext();
-                    return dc.Users.OrderByDescending(o => o.lastActivity).Select(o => new User(o)).ToList();
+                    return dc.Users.Where(o => !o.deleted).OrderByDescending(o => o.lastActivity).Select(o => new User(o)).ToList();
                 }
 
             }, TimeSpan.FromMinutes(10)); // kill this every ten minutes to keep the "lastActivity" value more or less accurate
 
-            if (onlyActive) all = all.Where(o => o.IsActiveUser).ToList();
+            if (onlyActive) all = all.Where(o => o.IsActiveUser && !o.Disabled).ToList();
 
             return all;
         }
@@ -249,7 +252,7 @@ namespace Webadel7 {
                 if (devUser != null) return User.Load(devUser.id);
             }
 
-            DB.User user = dc.Users.FirstOrDefault(o => o.password == Myriads.Hash.GetMD5HashString(password) && !o.deleted);
+            DB.User user = dc.Users.FirstOrDefault(o => o.password == Myriads.Hash.GetMD5HashString(password) && !o.deleted && !o.disabled);
             if (user == null) return null;
 
             return User.Load(user.id);
@@ -314,12 +317,22 @@ namespace Webadel7 {
             return User.Load(u.userId);
         }
 
+        /// <summary> True if IP address is allowed to create new accounts. </summary>
+        public static bool CanCreateAccount(string ip) {
+            DB.WebadelDataContext dc = new DB.WebadelDataContext();
+
+            // users associated with this IP address // invalid if muted, twitted, or disabled
+            return !dc.User_IPs.Where(o => o.ip == ip).Any(o => o.User.muted || o.User.twit || o.User.disabled);
+        }
+
         public override string ToString() {
             List<string> modifiers = new List<string>();
             if (Trusted) modifiers.Add("trusted"); else modifiers.Add("untrusted");
             if (Aide) modifiers.Add("aide");
             if (CoSysop) modifiers.Add("cosysop");
             if (Twit) modifiers.Add("twit");
+            if (Muted) modifiers.Add("muted");
+            if (Disabled) modifiers.Add("disabled");
 
             return Username + " [" + string.Join(", ", modifiers) + "]";
         }

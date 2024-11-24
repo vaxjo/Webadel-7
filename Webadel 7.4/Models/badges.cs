@@ -171,7 +171,7 @@ namespace Webadel7 {
         public static List<User> GetUsers(int badgeId) {
             DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();
 
-            return dc.Badge_Users.Where(o => o.badgeId == badgeId).OrderByDescending(o => o.awarded).Select(o => User.Load(o.userId)).ToList().Where(o => o.IsActiveUser).ToList();
+            return dc.Badge_Users.Where(o => o.badgeId == badgeId && !o.User.disabled).OrderByDescending(o => o.awarded).Select(o => User.Load(o.userId)).ToList().Where(o => o.IsActiveUser).ToList();
         }
 
         /// <summary> Some badges are awarded automtically depending on timing. This method will execute whenever the system starts (~couple times a day). </summary>

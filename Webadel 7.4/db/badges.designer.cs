@@ -33,21 +33,19 @@ namespace Webadel7.DB_Badges
     partial void InsertBadge_User(Badge_User instance);
     partial void UpdateBadge_User(Badge_User instance);
     partial void DeleteBadge_User(Badge_User instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void InsertBadge(Badge instance);
     partial void UpdateBadge(Badge instance);
     partial void DeleteBadge(Badge instance);
-    #endregion
-		
-		public DataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public DataContext(string connection) : 
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+        #endregion
+
+        public DataContext() :
+                base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource) {
+            OnCreated();
+        }
+        public DataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -79,19 +77,19 @@ namespace Webadel7.DB_Badges
 			}
 		}
 		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Badge> Badges
 		{
 			get
 			{
 				return this.GetTable<Badge>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 	}
@@ -110,9 +108,9 @@ namespace Webadel7.DB_Badges
 		
 		private bool _new;
 		
-		private EntityRef<User> _User;
-		
 		private EntityRef<Badge> _Badge;
+		
+		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -130,8 +128,8 @@ namespace Webadel7.DB_Badges
 		
 		public Badge_User()
 		{
-			this._User = default(EntityRef<User>);
 			this._Badge = default(EntityRef<Badge>);
+			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
 		
@@ -223,40 +221,6 @@ namespace Webadel7.DB_Badges
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Badge_User", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Badge_Users.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Badge_Users.Add(this);
-						this._userId = value.id;
-					}
-					else
-					{
-						this._userId = default(System.Guid);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Badge_Badge_User", Storage="_Badge", ThisKey="badgeId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Badge Badge
 		{
@@ -291,6 +255,40 @@ namespace Webadel7.DB_Badges
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Badge_User", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Badge_Users.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Badge_Users.Add(this);
+						this._userId = value.id;
+					}
+					else
+					{
+						this._userId = default(System.Guid);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -309,6 +307,305 @@ namespace Webadel7.DB_Badges
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Badge")]
+	public partial class Badge : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _name;
+		
+		private string _text;
+		
+		private string _description;
+		
+		private System.DateTime _added;
+		
+		private System.Guid _creator;
+		
+		private bool _pendingApproval;
+		
+		private byte _assignmentTypes;
+		
+		private EntitySet<Badge_User> _Badge_Users;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OntextChanging(string value);
+    partial void OntextChanged();
+    partial void OndescriptionChanging(string value);
+    partial void OndescriptionChanged();
+    partial void OnaddedChanging(System.DateTime value);
+    partial void OnaddedChanged();
+    partial void OncreatorChanging(System.Guid value);
+    partial void OncreatorChanged();
+    partial void OnpendingApprovalChanging(bool value);
+    partial void OnpendingApprovalChanged();
+    partial void OnassignmentTypesChanging(byte value);
+    partial void OnassignmentTypesChanged();
+    #endregion
+		
+		public Badge()
+		{
+			this._Badge_Users = new EntitySet<Badge_User>(new Action<Badge_User>(this.attach_Badge_Users), new Action<Badge_User>(this.detach_Badge_Users));
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_text", DbType="VarChar(32) NOT NULL", CanBeNull=false)]
+		public string text
+		{
+			get
+			{
+				return this._text;
+			}
+			set
+			{
+				if ((this._text != value))
+				{
+					this.OntextChanging(value);
+					this.SendPropertyChanging();
+					this._text = value;
+					this.SendPropertyChanged("text");
+					this.OntextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_description", DbType="VarChar(8000) NOT NULL", CanBeNull=false)]
+		public string description
+		{
+			get
+			{
+				return this._description;
+			}
+			set
+			{
+				if ((this._description != value))
+				{
+					this.OndescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._description = value;
+					this.SendPropertyChanged("description");
+					this.OndescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_added", DbType="DateTime2 NOT NULL")]
+		public System.DateTime added
+		{
+			get
+			{
+				return this._added;
+			}
+			set
+			{
+				if ((this._added != value))
+				{
+					this.OnaddedChanging(value);
+					this.SendPropertyChanging();
+					this._added = value;
+					this.SendPropertyChanged("added");
+					this.OnaddedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_creator", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid creator
+		{
+			get
+			{
+				return this._creator;
+			}
+			set
+			{
+				if ((this._creator != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OncreatorChanging(value);
+					this.SendPropertyChanging();
+					this._creator = value;
+					this.SendPropertyChanged("creator");
+					this.OncreatorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pendingApproval", DbType="Bit NOT NULL")]
+		public bool pendingApproval
+		{
+			get
+			{
+				return this._pendingApproval;
+			}
+			set
+			{
+				if ((this._pendingApproval != value))
+				{
+					this.OnpendingApprovalChanging(value);
+					this.SendPropertyChanging();
+					this._pendingApproval = value;
+					this.SendPropertyChanged("pendingApproval");
+					this.OnpendingApprovalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_assignmentTypes", DbType="TinyInt NOT NULL")]
+		public byte assignmentTypes
+		{
+			get
+			{
+				return this._assignmentTypes;
+			}
+			set
+			{
+				if ((this._assignmentTypes != value))
+				{
+					this.OnassignmentTypesChanging(value);
+					this.SendPropertyChanging();
+					this._assignmentTypes = value;
+					this.SendPropertyChanged("assignmentTypes");
+					this.OnassignmentTypesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Badge_Badge_User", Storage="_Badge_Users", ThisKey="id", OtherKey="badgeId")]
+		public EntitySet<Badge_User> Badge_Users
+		{
+			get
+			{
+				return this._Badge_Users;
+			}
+			set
+			{
+				this._Badge_Users.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Badge", Storage="_User", ThisKey="creator", OtherKey="id", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Badges.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Badges.Add(this);
+						this._creator = value.id;
+					}
+					else
+					{
+						this._creator = default(System.Guid);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Badge_Users(Badge_User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Badge = this;
+		}
+		
+		private void detach_Badge_Users(Badge_User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Badge = null;
 		}
 	}
 	
@@ -347,6 +644,10 @@ namespace Webadel7.DB_Badges
 		private string _notes;
 		
 		private bool _twit;
+		
+		private bool _disabled;
+		
+		private bool _muted;
 		
 		private string _miscDictionary;
 		
@@ -388,6 +689,10 @@ namespace Webadel7.DB_Badges
     partial void OnnotesChanged();
     partial void OntwitChanging(bool value);
     partial void OntwitChanged();
+    partial void OndisabledChanging(bool value);
+    partial void OndisabledChanged();
+    partial void OnmutedChanging(bool value);
+    partial void OnmutedChanged();
     partial void OnmiscDictionaryChanging(string value);
     partial void OnmiscDictionaryChanged();
     #endregion
@@ -699,6 +1004,46 @@ namespace Webadel7.DB_Badges
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_disabled", DbType="Bit NOT NULL")]
+		public bool disabled
+		{
+			get
+			{
+				return this._disabled;
+			}
+			set
+			{
+				if ((this._disabled != value))
+				{
+					this.OndisabledChanging(value);
+					this.SendPropertyChanging();
+					this._disabled = value;
+					this.SendPropertyChanged("disabled");
+					this.OndisabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_muted", DbType="Bit NOT NULL")]
+		public bool muted
+		{
+			get
+			{
+				return this._muted;
+			}
+			set
+			{
+				if ((this._muted != value))
+				{
+					this.OnmutedChanging(value);
+					this.SendPropertyChanging();
+					this._muted = value;
+					this.SendPropertyChanged("muted");
+					this.OnmutedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_miscDictionary", DbType="VarChar(8000)")]
 		public string miscDictionary
 		{
@@ -787,305 +1132,6 @@ namespace Webadel7.DB_Badges
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Badge")]
-	public partial class Badge : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private string _name;
-		
-		private string _text;
-		
-		private string _description;
-		
-		private System.DateTime _added;
-		
-		private System.Guid _creator;
-		
-		private bool _pendingApproval;
-		
-		private byte _assignmentTypes;
-		
-		private EntitySet<Badge_User> _Badge_Users;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void OntextChanging(string value);
-    partial void OntextChanged();
-    partial void OndescriptionChanging(string value);
-    partial void OndescriptionChanged();
-    partial void OnaddedChanging(System.DateTime value);
-    partial void OnaddedChanged();
-    partial void OncreatorChanging(System.Guid value);
-    partial void OncreatorChanged();
-    partial void OnpendingApprovalChanging(bool value);
-    partial void OnpendingApprovalChanged();
-    partial void OnassignmentTypesChanging(byte value);
-    partial void OnassignmentTypesChanged();
-    #endregion
-		
-		public Badge()
-		{
-			this._Badge_Users = new EntitySet<Badge_User>(new Action<Badge_User>(this.attach_Badge_Users), new Action<Badge_User>(this.detach_Badge_Users));
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this.OnnameChanging(value);
-					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_text", DbType="VarChar(32) NOT NULL", CanBeNull=false)]
-		public string text
-		{
-			get
-			{
-				return this._text;
-			}
-			set
-			{
-				if ((this._text != value))
-				{
-					this.OntextChanging(value);
-					this.SendPropertyChanging();
-					this._text = value;
-					this.SendPropertyChanged("text");
-					this.OntextChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_description", DbType="VarChar(8000) NOT NULL", CanBeNull=false)]
-		public string description
-		{
-			get
-			{
-				return this._description;
-			}
-			set
-			{
-				if ((this._description != value))
-				{
-					this.OndescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._description = value;
-					this.SendPropertyChanged("description");
-					this.OndescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_added", DbType="DateTime2 NOT NULL")]
-		public System.DateTime added
-		{
-			get
-			{
-				return this._added;
-			}
-			set
-			{
-				if ((this._added != value))
-				{
-					this.OnaddedChanging(value);
-					this.SendPropertyChanging();
-					this._added = value;
-					this.SendPropertyChanged("added");
-					this.OnaddedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_creator", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid creator
-		{
-			get
-			{
-				return this._creator;
-			}
-			set
-			{
-				if ((this._creator != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OncreatorChanging(value);
-					this.SendPropertyChanging();
-					this._creator = value;
-					this.SendPropertyChanged("creator");
-					this.OncreatorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pendingApproval", DbType="Bit NOT NULL")]
-		public bool pendingApproval
-		{
-			get
-			{
-				return this._pendingApproval;
-			}
-			set
-			{
-				if ((this._pendingApproval != value))
-				{
-					this.OnpendingApprovalChanging(value);
-					this.SendPropertyChanging();
-					this._pendingApproval = value;
-					this.SendPropertyChanged("pendingApproval");
-					this.OnpendingApprovalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_assignmentTypes", DbType="TinyInt NOT NULL")]
-		public byte assignmentTypes
-		{
-			get
-			{
-				return this._assignmentTypes;
-			}
-			set
-			{
-				if ((this._assignmentTypes != value))
-				{
-					this.OnassignmentTypesChanging(value);
-					this.SendPropertyChanging();
-					this._assignmentTypes = value;
-					this.SendPropertyChanged("assignmentTypes");
-					this.OnassignmentTypesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Badge_Badge_User", Storage="_Badge_Users", ThisKey="id", OtherKey="badgeId")]
-		public EntitySet<Badge_User> Badge_Users
-		{
-			get
-			{
-				return this._Badge_Users;
-			}
-			set
-			{
-				this._Badge_Users.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Badge", Storage="_User", ThisKey="creator", OtherKey="id", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Badges.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Badges.Add(this);
-						this._creator = value.id;
-					}
-					else
-					{
-						this._creator = default(System.Guid);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Badge_Users(Badge_User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Badge = this;
-		}
-		
-		private void detach_Badge_Users(Badge_User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Badge = null;
 		}
 	}
 }

@@ -75,21 +75,19 @@ namespace Webadel7.DB
     partial void InsertUserProfile(UserProfile instance);
     partial void UpdateUserProfile(UserProfile instance);
     partial void DeleteUserProfile(UserProfile instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void InsertLoginToken(LoginToken instance);
     partial void UpdateLoginToken(LoginToken instance);
     partial void DeleteLoginToken(LoginToken instance);
-    #endregion
-		
-		public WebadelDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public WebadelDataContext(string connection) : 
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+        #endregion
+
+        public WebadelDataContext() :
+                base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource) {
+            OnCreated();
+        }
+        public WebadelDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -233,14 +231,6 @@ namespace Webadel7.DB
 			}
 		}
 		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
-		}
-		
 		public System.Data.Linq.Table<LoginToken> LoginTokens
 		{
 			get
@@ -254,6 +244,14 @@ namespace Webadel7.DB
 			get
 			{
 				return this.GetTable<MessageVote>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 		
@@ -1873,7 +1871,7 @@ namespace Webadel7.DB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public User User
 		{
 			get
@@ -3518,6 +3516,256 @@ namespace Webadel7.DB
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LoginToken")]
+	public partial class LoginToken : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _userId;
+		
+		private System.DateTime _expiration;
+		
+		private string _token;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnuserIdChanging(System.Guid value);
+    partial void OnuserIdChanged();
+    partial void OnexpirationChanging(System.DateTime value);
+    partial void OnexpirationChanged();
+    partial void OntokenChanging(string value);
+    partial void OntokenChanged();
+    #endregion
+		
+		public LoginToken()
+		{
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnuserIdChanging(value);
+					this.SendPropertyChanging();
+					this._userId = value;
+					this.SendPropertyChanged("userId");
+					this.OnuserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_expiration", DbType="DateTime2 NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime expiration
+		{
+			get
+			{
+				return this._expiration;
+			}
+			set
+			{
+				if ((this._expiration != value))
+				{
+					this.OnexpirationChanging(value);
+					this.SendPropertyChanging();
+					this._expiration = value;
+					this.SendPropertyChanged("expiration");
+					this.OnexpirationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_token", DbType="VarChar(36) NOT NULL", CanBeNull=false)]
+		public string token
+		{
+			get
+			{
+				return this._token;
+			}
+			set
+			{
+				if ((this._token != value))
+				{
+					this.OntokenChanging(value);
+					this.SendPropertyChanging();
+					this._token = value;
+					this.SendPropertyChanged("token");
+					this.OntokenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_LoginToken", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.LoginTokens.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.LoginTokens.Add(this);
+						this._userId = value.id;
+					}
+					else
+					{
+						this._userId = default(System.Guid);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MessageVotes")]
+	public partial class MessageVote
+	{
+		
+		private System.Guid _messageId;
+		
+		private System.Guid _authorId;
+		
+		private System.Nullable<int> _Score;
+		
+		private System.Nullable<int> _Count;
+		
+		private System.Nullable<int> _Divisiveness;
+		
+		public MessageVote()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_messageId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid messageId
+		{
+			get
+			{
+				return this._messageId;
+			}
+			set
+			{
+				if ((this._messageId != value))
+				{
+					this._messageId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid authorId
+		{
+			get
+			{
+				return this._authorId;
+			}
+			set
+			{
+				if ((this._authorId != value))
+				{
+					this._authorId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Score", DbType="Int")]
+		public System.Nullable<int> Score
+		{
+			get
+			{
+				return this._Score;
+			}
+			set
+			{
+				if ((this._Score != value))
+				{
+					this._Score = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int")]
+		public System.Nullable<int> Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this._Count = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Divisiveness", DbType="Int")]
+		public System.Nullable<int> Divisiveness
+		{
+			get
+			{
+				return this._Divisiveness;
+			}
+			set
+			{
+				if ((this._Divisiveness != value))
+				{
+					this._Divisiveness = value;
+				}
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
 	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3553,6 +3801,10 @@ namespace Webadel7.DB
 		private string _notes;
 		
 		private bool _twit;
+		
+		private bool _disabled;
+		
+		private bool _muted;
 		
 		private string _miscDictionary;
 		
@@ -3614,6 +3866,10 @@ namespace Webadel7.DB
     partial void OnnotesChanged();
     partial void OntwitChanging(bool value);
     partial void OntwitChanged();
+    partial void OndisabledChanging(bool value);
+    partial void OndisabledChanged();
+    partial void OnmutedChanging(bool value);
+    partial void OnmutedChanged();
     partial void OnmiscDictionaryChanging(string value);
     partial void OnmiscDictionaryChanged();
     #endregion
@@ -3931,6 +4187,46 @@ namespace Webadel7.DB
 					this._twit = value;
 					this.SendPropertyChanged("twit");
 					this.OntwitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_disabled", DbType="Bit NOT NULL")]
+		public bool disabled
+		{
+			get
+			{
+				return this._disabled;
+			}
+			set
+			{
+				if ((this._disabled != value))
+				{
+					this.OndisabledChanging(value);
+					this.SendPropertyChanging();
+					this._disabled = value;
+					this.SendPropertyChanged("disabled");
+					this.OndisabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_muted", DbType="Bit NOT NULL")]
+		public bool muted
+		{
+			get
+			{
+				return this._muted;
+			}
+			set
+			{
+				if ((this._muted != value))
+				{
+					this.OnmutedChanging(value);
+					this.SendPropertyChanging();
+					this._muted = value;
+					this.SendPropertyChanged("muted");
+					this.OnmutedChanged();
 				}
 			}
 		}
@@ -4277,256 +4573,6 @@ namespace Webadel7.DB
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LoginToken")]
-	public partial class LoginToken : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _userId;
-		
-		private System.DateTime _expiration;
-		
-		private string _token;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnuserIdChanging(System.Guid value);
-    partial void OnuserIdChanged();
-    partial void OnexpirationChanging(System.DateTime value);
-    partial void OnexpirationChanged();
-    partial void OntokenChanging(string value);
-    partial void OntokenChanged();
-    #endregion
-		
-		public LoginToken()
-		{
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid userId
-		{
-			get
-			{
-				return this._userId;
-			}
-			set
-			{
-				if ((this._userId != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnuserIdChanging(value);
-					this.SendPropertyChanging();
-					this._userId = value;
-					this.SendPropertyChanged("userId");
-					this.OnuserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_expiration", DbType="DateTime2 NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime expiration
-		{
-			get
-			{
-				return this._expiration;
-			}
-			set
-			{
-				if ((this._expiration != value))
-				{
-					this.OnexpirationChanging(value);
-					this.SendPropertyChanging();
-					this._expiration = value;
-					this.SendPropertyChanged("expiration");
-					this.OnexpirationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_token", DbType="VarChar(36) NOT NULL", CanBeNull=false)]
-		public string token
-		{
-			get
-			{
-				return this._token;
-			}
-			set
-			{
-				if ((this._token != value))
-				{
-					this.OntokenChanging(value);
-					this.SendPropertyChanging();
-					this._token = value;
-					this.SendPropertyChanged("token");
-					this.OntokenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_LoginToken", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.LoginTokens.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.LoginTokens.Add(this);
-						this._userId = value.id;
-					}
-					else
-					{
-						this._userId = default(System.Guid);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MessageVotes")]
-	public partial class MessageVote
-	{
-		
-		private System.Guid _messageId;
-		
-		private System.Guid _authorId;
-		
-		private System.Nullable<int> _Score;
-		
-		private System.Nullable<int> _Count;
-		
-		private System.Nullable<int> _Divisiveness;
-		
-		public MessageVote()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_messageId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid messageId
-		{
-			get
-			{
-				return this._messageId;
-			}
-			set
-			{
-				if ((this._messageId != value))
-				{
-					this._messageId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid authorId
-		{
-			get
-			{
-				return this._authorId;
-			}
-			set
-			{
-				if ((this._authorId != value))
-				{
-					this._authorId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Score", DbType="Int")]
-		public System.Nullable<int> Score
-		{
-			get
-			{
-				return this._Score;
-			}
-			set
-			{
-				if ((this._Score != value))
-				{
-					this._Score = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int")]
-		public System.Nullable<int> Count
-		{
-			get
-			{
-				return this._Count;
-			}
-			set
-			{
-				if ((this._Count != value))
-				{
-					this._Count = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Divisiveness", DbType="Int")]
-		public System.Nullable<int> Divisiveness
-		{
-			get
-			{
-				return this._Divisiveness;
-			}
-			set
-			{
-				if ((this._Divisiveness != value))
-				{
-					this._Divisiveness = value;
-				}
-			}
 		}
 	}
 	

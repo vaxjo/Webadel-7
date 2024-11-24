@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <select class="form-control" name="userId" id="userId">
                             @foreach (Webadel7.User user in Webadel7.User.GetAll(true)) {
-                                if (user.Id == Webadel7.SystemConfig.AnonymousId || user.Id == Webadel7.SystemConfig.SysopId) { continue; }
+                                if (user.Id == Webadel7.SystemConfig.AnonymousId || user.Id == Webadel7.SystemConfig.SysopId || user.Disabled) { continue; }
                                 <option value="@user.Id">@user.Username</option>
                             }
                         </select>
