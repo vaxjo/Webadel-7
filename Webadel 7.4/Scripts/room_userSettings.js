@@ -47,7 +47,8 @@ function AccountSettings_Finished() {
         // some property changes require a reload
         if ($("#userSettingsModal #enableSwipe").data("original") != $("#userSettingsModal #enableSwipe").val() ||
             $("#userSettingsModal #enablePredictiveText").data("original") != $("#userSettingsModal #enablePredictiveText").val() ||
-			$("#userSettingsModal #username").data("original") != $("#userSettingsModal #username").val() ||
+            $("#userSettingsModal #enableVoting").data("original") != $("#userSettingsModal #enableVoting").val() ||
+            $("#userSettingsModal #username").data("original") != $("#userSettingsModal #username").val() ||
 			$("#userSettingsModal #attachmentDisplay").data("original") != $("#userSettingsModal #attachmentDisplay").val()) window.location.reload();
     });
 }

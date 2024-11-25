@@ -136,7 +136,7 @@ function PostGoto() {
 }
 
 function ResetPostbox() {
-    $("#postForm #postbox").val("").blur().css("height", ""); // remove the height proprerty to return a previously autosized textarea back to normal
+    $("#postForm #postbox").val("").blur().css("height", ""); // remove the height property to return a previously autosized textarea back to normal
     $("#postbox").data("prev", $("#postbox").val()) // reset autosave
     $("#resources tr").remove();
     $("#postForm").show();

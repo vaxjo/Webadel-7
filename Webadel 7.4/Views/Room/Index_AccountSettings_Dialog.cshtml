@@ -41,6 +41,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="enableVoting" class="control-label col-sm-3">Voting</label>
+                    <div class="col-sm-4">
+                        <select id="enableVoting" name="enableVoting" class="form-control" data-original="@Model.EnableVoting">
+                            <option value="True" @(Model.EnableVoting ? "selected=selected" : "" )>Enabled</option>
+                            <option value="False" @(!Model.EnableVoting ? "selected=selected" : "" )>Disabled</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 help-block">
+                        Participating in voting is not recommended for those of a sensitive nature.
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="enableSwipe" class="control-label col-sm-3">Swipe to Goto</label>
                     <div class="col-sm-4">
                         <select id="enableSwipe" name="enableSwipe" class="form-control" data-original="@Model.EnableSwipe">

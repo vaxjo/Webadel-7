@@ -83,6 +83,7 @@ namespace Webadel7.DB
     partial void DeleteUser(User instance);
         #endregion
 
+
         public WebadelDataContext() :
                 base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource) {
             OnCreated();
@@ -3792,6 +3793,8 @@ namespace Webadel7.DB
 		
 		private bool _enableSwipe;
 		
+		private bool _enableVoting;
+		
 		private bool _enablePredictiveText;
 		
 		private System.DateTime _lastActivity;
@@ -3856,6 +3859,8 @@ namespace Webadel7.DB
     partial void OnattachmentDisplayChanged();
     partial void OnenableSwipeChanging(bool value);
     partial void OnenableSwipeChanged();
+    partial void OnenableVotingChanging(bool value);
+    partial void OnenableVotingChanged();
     partial void OnenablePredictiveTextChanging(bool value);
     partial void OnenablePredictiveTextChanged();
     partial void OnlastActivityChanging(System.DateTime value);
@@ -4087,6 +4092,26 @@ namespace Webadel7.DB
 					this._enableSwipe = value;
 					this.SendPropertyChanged("enableSwipe");
 					this.OnenableSwipeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_enableVoting", DbType="Bit NOT NULL")]
+		public bool enableVoting
+		{
+			get
+			{
+				return this._enableVoting;
+			}
+			set
+			{
+				if ((this._enableVoting != value))
+				{
+					this.OnenableVotingChanging(value);
+					this.SendPropertyChanging();
+					this._enableVoting = value;
+					this.SendPropertyChanged("enableVoting");
+					this.OnenableVotingChanged();
 				}
 			}
 		}

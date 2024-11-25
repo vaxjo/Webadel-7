@@ -301,12 +301,13 @@ namespace Webadel7.Controllers {
         }
 
         [ValidateInput(false)]
-        public EmptyResult AccountSettings(string username, string email, User.AttachmentDisplayType attachmentDisplay, bool enableSwipe, bool enablePredictiveText) {
+        public EmptyResult AccountSettings(string username, string email, User.AttachmentDisplayType attachmentDisplay, bool enableSwipe, bool enablePredictiveText, bool enableVoting) {
             CurrentUser.Username = username;
             CurrentUser.Email = email;
             CurrentUser.AttachmentDisplay = attachmentDisplay;
             CurrentUser.EnableSwipe = enableSwipe;
             CurrentUser.EnablePredictiveText = enablePredictiveText;
+            CurrentUser.EnableVoting = enableVoting;
             CurrentUser.Save();
             return null;
         }

@@ -15,7 +15,7 @@ namespace Webadel7 {
         public bool Trusted, Aide, CoSysop, Twit, Muted, Disabled;
         public string Email, Notes;
         public AttachmentDisplayType AttachmentDisplay;
-        public bool EnableSwipe, EnablePredictiveText;
+        public bool EnableSwipe, EnablePredictiveText, EnableVoting;
         public DateTime LastActivity, Created;
         public Dictionary<string, string> Misc;
 
@@ -58,6 +58,7 @@ namespace Webadel7 {
             AttachmentDisplay = (AttachmentDisplayType)dbUser.attachmentDisplay;
             EnableSwipe = dbUser.enableSwipe;
             EnablePredictiveText = dbUser.enablePredictiveText;
+            EnableVoting = dbUser.enableVoting;
             LastActivity = dbUser.lastActivity;
             Created = dbUser.created;
             Misc = string.IsNullOrWhiteSpace(dbUser.miscDictionary) ? new Dictionary<string, string>() : Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(dbUser.miscDictionary);
@@ -82,6 +83,7 @@ namespace Webadel7 {
             dbUser.attachmentDisplay = (byte)AttachmentDisplay;
             dbUser.enableSwipe = EnableSwipe;
             dbUser.enablePredictiveText = EnablePredictiveText;
+            dbUser.enableVoting = EnableVoting;
             dbUser.miscDictionary = Newtonsoft.Json.JsonConvert.SerializeObject(Misc);
 
             dc.SubmitChanges();

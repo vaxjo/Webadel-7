@@ -411,9 +411,9 @@ function PlonkMessages() {
 function GetVotes() {
     if (_roomId == _mailRoomId) return;
 
-    // construct list of message ids
+    // construct list of message ids (only if participating in voting)
     var messageIds = "";
-    $("#messages .message").each(function () { messageIds += "," + $(this).attr("id"); });
+    $("#messages .message").has(".messageControls .votingButtons.enabled").each(function () { messageIds += "," + $(this).attr("id"); });
     if (messageIds.length == 0) return;
 
     $.post("/Room/GetVotes", { messageIds: messageIds.substring(1) }, function (data) {

@@ -185,6 +185,7 @@
       <Column Name="email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="attachmentDisplay" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="enableSwipe" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="enableVoting" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="enablePredictiveText" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="lastActivity" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
       <Column Name="created" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
