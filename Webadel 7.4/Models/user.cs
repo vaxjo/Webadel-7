@@ -4,6 +4,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Transactions;
 using System.Web;
+using System.Web.Caching;
 using System.Web.UI.WebControls;
 
 namespace Webadel7 {
@@ -20,6 +21,14 @@ namespace Webadel7 {
         public Dictionary<string, string> Misc;
 
         public UserProfile Profile => UserProfile.Load(Id);
+
+        /// <summary> Amount of time since this user used a login token to authenticate. Is MaxValue if they never have (within this session, anyway). </summary>
+        public TimeSpan TimeSinceLoginToken {
+            get {
+                DateTime? loginTokenLastUsed = (DateTime?)Myriads.Cache.Get("Login Token Last Used", Id);
+                return loginTokenLastUsed.HasValue ? DateTime.Now.Subtract(loginTokenLastUsed.Value) : TimeSpan.MaxValue;
+            }
+        }
 
         /// <summary> User is CoSysop and is local. This should only ever be Vaxjo. </summary>
         public bool SysOp => CoSysop && (HttpContext.Current.Request.IsLocal || HttpContext.Current.Request.UserHostAddress == "68.168.175.132");
@@ -309,14 +318,15 @@ namespace Webadel7 {
             dc.LoginTokens.DeleteAllOnSubmit(dc.LoginTokens.Where(o => o.expiration < DateTime.Now));
             dc.SubmitChanges();
 
-            var u = dc.LoginTokens.SingleOrDefault(o => o.token == loginToken);
-            if (u == null) return null;
+            var user = dc.LoginTokens.SingleOrDefault(o => o.token == loginToken);
+            if (user == null) return null;
 
             // remove token after it's used
-            dc.LoginTokens.DeleteOnSubmit(u);
+            dc.LoginTokens.DeleteOnSubmit(user);
             dc.SubmitChanges();
 
-            return User.Load(u.userId);
+            Myriads.Cache.Add("Login Token Last Used", user.userId, DateTime.Now);
+            return User.Load(user.userId);
         }
 
         /// <summary> True if IP address is allowed to create new accounts. </summary>

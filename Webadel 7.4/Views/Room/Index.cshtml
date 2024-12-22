@@ -254,11 +254,13 @@
             <div class="modal-body">
 
                 <form role="form">
-                    <div class="form-group">
-                        <label for="username" class="sr-only ">Current Password</label>
-                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current Password">
-                        <span class="help-block">For security purposes, enter your current password.</span>
-                    </div>
+                    @if (Model.TimeSinceLoginToken.TotalHours > 1) {
+                        <div class="form-group">
+                            <label for="username" class="sr-only ">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current Password">
+                            <span class="help-block">For security purposes, enter your current password.</span>
+                        </div>
+                    }
                     <div class="form-group">
                         <label for="newPassword" class="sr-only ">New Password</label>
                         <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">

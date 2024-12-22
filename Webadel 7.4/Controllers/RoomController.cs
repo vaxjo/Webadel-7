@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -274,12 +273,16 @@ namespace Webadel7.Controllers {
         }
 
         public Myriads.JsonNetResult ChangePassword(string currentPassword, string newPassword, string confirmPassword) {
+            bool skipCurrentPWCheck = CurrentUser.TimeSinceLoginToken.TotalHours < 1;
+
             List<string> errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(currentPassword)) errors.Add("currentpasswordempty");
+            if (!skipCurrentPWCheck && string.IsNullOrWhiteSpace(currentPassword)) errors.Add("currentpasswordempty");
             if (string.IsNullOrWhiteSpace(newPassword)) errors.Add("newpasswordempty");
 
-            Webadel7.User testUser = Webadel7.User.Load(currentPassword);
-            if (testUser == null || testUser.Id != CurrentUser.Id) errors.Add("passwordwrong");
+            if (!skipCurrentPWCheck) {
+                Webadel7.User testUser = Webadel7.User.Load(currentPassword);
+                if (testUser == null || testUser.Id != CurrentUser.Id) errors.Add("passwordwrong");
+            }
 
             if (newPassword != confirmPassword) errors.Add("confirm");
             if (CurrentUser.Username.Trim() == newPassword.Trim()) errors.Add("pwisusername");
