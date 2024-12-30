@@ -157,6 +157,7 @@ function ViewProfile(id) {
         $("#viewProfileModal").load("/Room/Index_ViewProfile_Dialog?userId=" + id, function () {
             $("#viewProfileModal img").each(function () { $(this).addClass("img-responsive"); });
             $("#viewProfileModal .bio").html(QuickFormat($("#viewProfileModal .bio").html()));
+            $("#viewProfileModal .bio").html(ReplaceURLWithHTMLLinks($("#viewProfileModal .bio").html()));            
             $("#viewProfileModal").modal("show");
         });
     });

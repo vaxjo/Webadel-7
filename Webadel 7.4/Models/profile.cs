@@ -11,7 +11,7 @@ namespace Webadel7 {
 
         public bool IsBirthday => Birthdate.HasValue && Birthdate.Value.Month == DateTime.Now.Month && Birthdate.Value.Day == DateTime.Now.Day;
 
-        public double? Age => Birthdate.HasValue ? Birthdate.Value.GetYears(DateTime.Now): (double?)null;
+        public double? Age => Birthdate.HasValue ? Birthdate.Value.GetYears(DateTime.Now) : (double?)null;
 
         public bool IsEmpty => string.IsNullOrWhiteSpace(Bio) && string.IsNullOrWhiteSpace(Website) && string.IsNullOrWhiteSpace(Email) && string.IsNullOrWhiteSpace(Location) && string.IsNullOrWhiteSpace(Pronouns);
 
@@ -19,12 +19,14 @@ namespace Webadel7 {
         internal UserProfile(DB.UserProfile dbUser) {
             Id = dbUser.id;
             Bio = dbUser.bio;
-            Website = dbUser.website;
+            Website = dbUser.website ?? "";
             Email = dbUser.email;
             Location = dbUser.location;
             Pronouns = dbUser.pronouns;
             Birthdate = dbUser.birthdate;
             BirthdayHasYear = (Birthdate.HasValue && Birthdate.Value.Year != 1900);
+
+            if (!Website.ToLower().StartsWith("http")) Website = "http://" + Website;
         }
 
         public void Save() {
