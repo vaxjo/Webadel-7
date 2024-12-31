@@ -42,6 +42,11 @@ function ChangeTheme(theme) {
 }
 
 function AccountSettings_Finished() {
+    if ($("#userSettingsModal #username").val().trim() == "") {
+        alert("You've got to have at least a little username.");
+        return;
+    }
+
     $.post("/Room/AccountSettings", $("#userSettingsModal form").serialize(), function () {
         $("#userSettingsModal").modal("hide");
         // some property changes require a reload

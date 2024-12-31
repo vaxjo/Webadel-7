@@ -305,8 +305,8 @@ namespace Webadel7.Controllers {
 
         [ValidateInput(false)]
         public EmptyResult AccountSettings(string username, string email, User.AttachmentDisplayType attachmentDisplay, bool enableSwipe, bool enablePredictiveText, bool enableVoting) {
-            CurrentUser.Username = username;
-            CurrentUser.Email = email;
+            if (username.Trim().Length > 0) CurrentUser.Username = username.Trim();
+            CurrentUser.Email = email.Trim();
             CurrentUser.AttachmentDisplay = attachmentDisplay;
             CurrentUser.EnableSwipe = enableSwipe;
             CurrentUser.EnablePredictiveText = enablePredictiveText;
