@@ -107,6 +107,30 @@
             </div>
         }
 
+        @if (It.Get().ItId == Model.Id && !It.Get().HasBeenAlerted) {
+            It.Get().AlertIt();
+
+            <div class="alert alert-warning alert-dismissible persist it">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>You are now It.</p>
+            </div>
+        }
+
+        @if (It.Get().ItId == Model.Id && It.Get().ItDuration.TotalHours > 30) {
+            <div class="alert alert-warning alert-dismissible persist">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>You've been It long enough. Tag someone else, now.</p>
+                <p>
+                    <select id="newIt" name="newIt" class="form-control">
+                        <option></option>
+                        @foreach (var item in Webadel7.User.GetAll(true).OrderByDescending(o => o.LastActivity)) {
+                            <option value="@item.Id">@item.Username</option>
+                        }
+                    </select>
+                </p>
+            </div>
+        }
+
         <div id="messagesLoading" style="display: none;">
             <div class="progress progress-striped active">
                 <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
@@ -135,6 +159,7 @@
             <div class="messageheader">
                 <span class="time"></span> from <span class="user author"></span>
                 <span class="glyphicon glyphicon-gift text-success birthday" style="display:none;" title="Happy Birthday!"></span>
+                <span class="glyphicon glyphicon-screenshot text-warning it" style="display:none;" title="Is It."></span>
                 <span style="display: none;"> to <span class="user recipient"></span></span>
                 <span style="display: none;"> in <span class="originalRoomName"></span>&gt;</span>
             </div>

@@ -197,7 +197,7 @@ namespace Webadel7 {
         public string authorName, recipientName, roomName;
         public string date, body, originalRoomName;
         public long ticks;
-        public bool isNew, isBirthday;
+        public bool isNew, isBirthday, isIt;
         //public int score;
         public List<JsonResource> attachments;
 
@@ -208,6 +208,7 @@ namespace Webadel7 {
             authorId = m.AuthorId;
             authorName = m.Author.Username;
             isBirthday = m.Author.Profile.IsBirthday;
+            isIt = It.Get().ItId == m.AuthorId;
             recipientId = m.RecipientId;
             recipientName = (m.RecipientId.HasValue ? m.Recipient.Username : null);
             date = m.ToCitDate;

@@ -517,6 +517,13 @@ namespace Webadel7.Controllers {
             ViewBag.Url = url;
             return View();
         }
+
+        public ActionResult NewIt(Guid newIt) {
+            if (MvcApplication.CurrentUser.Id != It.Get().ItId) return Content("You aren't It.");
+
+            It.SetIt(newIt);
+            
+            return null;
+        }
     }
 }
-

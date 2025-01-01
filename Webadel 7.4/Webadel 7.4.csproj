@@ -175,6 +175,7 @@
     </Compile>
     <Compile Include="Models\activity.cs" />
     <Compile Include="Models\authToken.cs" />
+    <Compile Include="Models\It.cs" />
     <Compile Include="Models\banishment.cs" />
     <Compile Include="Models\message.cs" />
     <Compile Include="Models\badges.cs" />

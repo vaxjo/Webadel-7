@@ -75,6 +75,11 @@
 
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="profile">
+
+                        @if (Model.User.Id == It.Get().ItId) {
+                            <p class="text-center text-info" style="margin:20px; font-weight:bold;">@Model.User.Username is currently It.</p>
+                        }
+
                         <table class="table table-noborder">
                             <tr>
                                 <td>Badges</td>

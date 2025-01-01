@@ -92,6 +92,8 @@ namespace Webadel7 {
             sched.AddScheduledEvent("Cull Empty Rooms", delegate { Room.CullEmptyRooms(Context); }, TimeSpan.FromHours(14));
             sched.AddScheduledEvent("Cull Orphaned Attachments", delegate { Resource.CullOrphanedResources(Context); }, TimeSpan.FromHours(15));
 
+            if (It.Get().ItDuration.TotalDays > 5) It.PickIt();
+
             MvcApplication.CurrentUser = WebadelAuthorize.GetUserFromCookie(Context);
         }
 

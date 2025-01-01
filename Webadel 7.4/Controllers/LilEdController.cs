@@ -25,6 +25,7 @@ namespace Webadel7.Controllers {
                 "Those little eds aren't too sneaky for you!",
                 "No little ed can hide from you!",
                 "You keep find little eds!",
+                "You know just where to find those little eds.",
                 "Little eds abound.",
                 "You found another little ed!",
                 "You've found so many little eds!",

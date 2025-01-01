@@ -157,6 +157,20 @@ namespace Webadel7 {
             return true;
         }
 
+        /// <summary> Unaward badge from everybody. </summary>
+        public static void Unaward(int badgeId) {
+            Badge badge = Badge.Load(badgeId);
+            DataContext dc = DataContext.GetProfiledDC();
+
+            var badgeHavers = dc.Badge_Users.Where(o => o.badgeId == badgeId);
+            if (badgeHavers.Count() == 0) return;
+
+            dc.Badge_Users.DeleteAllOnSubmit(badgeHavers);
+            dc.SubmitChanges();
+
+            Room.PostToAide($"The '{badge.Name}' badge has been removed from everyone.");
+        }
+
         /// <summary> Get badges for specified user. If onlyNew is null then return all badges; if true only new badges, if false only not-new badges. </summary>
         public static List<Badge> GetBadges(Guid userId, bool? onlyNew = null) {
             DB_Badges.DataContext dc = DB_Badges.DataContext.GetProfiledDC();

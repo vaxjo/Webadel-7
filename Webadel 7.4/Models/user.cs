@@ -20,6 +20,8 @@ namespace Webadel7 {
         public DateTime LastActivity, Created;
         public Dictionary<string, string> Misc;
 
+        public bool IsIt => It.Get().ItId == Id;
+
         public UserProfile Profile => UserProfile.Load(Id);
 
         /// <summary> Amount of time since this user used a login token to authenticate. Is MaxValue if they never have (within this session, anyway). </summary>

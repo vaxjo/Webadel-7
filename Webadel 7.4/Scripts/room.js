@@ -68,6 +68,12 @@ $(document).ready(function () {
         $("#submitBadgeModal").load("/Badges/Index_SubmitBadge_Dialog");
     });
 
+    $("#newIt").change(function () {
+        if ($(this).val() == "") return;
+
+        $.post("/Room/NewIt", { newIt: $(this).val() }, function () { $("#newIt").closest(".alert").remove(); });
+    });
+
     $("#userListModal").on('show.bs.modal', function () {
         CloseTopNav();
         $("#userListModal").load("/Room/Index_UserList_Dialog");
@@ -450,6 +456,7 @@ function CreateMessageDom(msg) {
     if (msg.originalRoomName != null) msgDom.find(".originalRoomName").text(msg.originalRoomName).parent().show();
 
     if (msg.isBirthday) msgDom.find(".birthday").show();
+    if (msg.isIt) msgDom.find(".it").show();
 
     // disallow message move/delete from mail
     if (_roomId == _mailRoomId || !_canEdit) msgDom.find("input.messageSelector").hide();

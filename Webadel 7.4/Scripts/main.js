@@ -9,6 +9,7 @@ $(document).ready(function () {
     $("body").on("blur", "textarea", function () { _textareaHasFocus = false; });
 
     setTimeout(function () { $("#welcomeback").fadeOut(); }, 5000);
+    setTimeout(function () { $(".alert.it").fadeOut(); }, 6000);
 
     $(document).ajaxError(function (event, jqxhr, settings, exception) {
         //  console.log("jqxhr.status: " + jqxhr.status);
