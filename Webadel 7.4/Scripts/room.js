@@ -499,6 +499,16 @@ function CreateMessageDom(msg) {
         msgDom.addClass("plonk");
     }
 
+    // 4/1/25
+    if ((new Date()).getMonth() == 3 && (new Date()).getDate() == 1) {
+        if (Math.random() < .05) {
+            const ads = ["altavista-2000.gif", "amazon-2000.gif", "apple-1997.jpg", "at-t-the-first-banner-1994.png", "buy-com-2000.gif", "buy-me-a-coffee.png", "cdnow-1998.gif", "coolsavings-1999.gif", "dice-2000.gif", "ebay-2000.gif", "elle-2000.gif", "excite-2000.gif", "frontpage-1996.gif", "get-flash-player-1996.gif", "hotmail-2000.gif", "hp-shopping-2000.gif", "ibm-1996.jpg", "ibm-1997.gif", "internet-explorer-1996.gif", "internet-explorer-2000.gif", "internet-study-1998.gif", "lowest-fare-1999.gif", "lycos-autos-2000.gif", "mac-mall-1998.gif", "macromedia-2000.gif", "macromedia-flash-3-1998.gif", "match-com-2000.gif", "microsoft-1999.gif", "microsoft-backoffice-1996.gif", "msn-1999.jpg", "ncaa-march-madness-1999.gif", "netscape-1995.gif", "netscape-1996.gif", "netscape-2000.gif", "netscape-netcenter-personal-finance-1999.gif", "nike-2000.gif", "panasonic-1998.gif", "patreon.png", "pentium-1999.gif", "pizza-hut-1998.gif", "postnet-1999.gif", "quicktime-4-0-2000.gif", "real-player-g2-2000.gif", "space-network-1998.gif", "the-street-2000.gif", "thomas-regional-1998.gif", "visa-1999.gif", "volkswagen-2000.gif", "windows-95-1996.gif", "winzip-8-0-2000.gif", "yahoo-pager-1998.gif"];
+            var unnecessaryContainer = document.createElement("div");
+            unnecessaryContainer.innerHTML = msgDom[0].outerHTML + `<p class="text-center" style="margin: 50px 0;"><img style="max-width: 100%;" src="/images/ads/${ads[parseInt(Math.random() * ads.length)]}"></p>`;
+            return unnecessaryContainer;
+        }
+    }
+
     return msgDom;
 }
 
