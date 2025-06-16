@@ -680,6 +680,12 @@ function ReplaceURLWithHTMLLinks(text) {
         }
     });
 
+    // add 12ft and archive.is alt links
+    domRep.find("a").wrap("<div class='linkContainer'></div>");
+    domRep.find("a").after(function() {
+        return `<span><a class="alt" target="_blank" href="https://12ft.io/${this.href}">12ft</a> <a class="alt" target="_blank" href="https://archive.is/${this.href}">archive.is</a></span>`;
+    });
+
     // finally de-obfuscate the previously obfuscated urls
     var body = domRep.html();
     // body = body.replace(new RegExp("ht_tp", "g"), "http");

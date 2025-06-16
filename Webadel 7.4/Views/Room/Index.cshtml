@@ -407,7 +407,7 @@
         <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
         <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>*@
 
-    @if (DateTime.Now.ToShortDateString().StartsWith("11/25/2021")) {
+    @if (DateTime.Now.ToShortDateString().StartsWith("11/27/2025")) {
         string y = Model.Misc.ContainsKey("thanksgivingPrayer") ? Model.Misc["thanksgivingPrayer"] : null;
         if (string.IsNullOrWhiteSpace(y) || Convert.ToInt32(y) < DateTime.Now.Year) {
             Model.Misc["thanksgivingPrayer"] = DateTime.Now.Year.ToString();

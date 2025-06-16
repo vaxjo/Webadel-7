@@ -57,7 +57,7 @@ iframe, object, embed { max-width: 100%; }
 #sortRoomsModal li { cursor: crosshair; }
 
 /* room info modal */
-#roomInfoModal .badge { margin-right: 5px;  }
+#roomInfoModal .badge { margin-right: 5px; }
 
 @media (max-width: 767px) {
     .profiler-results { display: none; }
@@ -86,3 +86,9 @@ iframe, object, embed { max-width: 100%; }
 }
 
 #viewProfileModal .bio { overflow-wrap: anywhere; }
+
+div.linkContainer { display: inline-block; }
+    div.linkContainer span { position: absolute; display: none; padding-left: 5px; font-size: .9em; white-space: nowrap; margin-top:2px; }
+    div.linkContainer:hover span { display: inline-block; }
+
+    div.linkContainer span .alt { background-color: #fff; border-radius: 5px; filter: brightness(.95); padding: 2px 6px 1px 5px; }
