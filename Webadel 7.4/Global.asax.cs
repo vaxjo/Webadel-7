@@ -95,6 +95,8 @@ namespace Webadel7 {
             if (It.Get().ItDuration.TotalDays > 5) It.PickIt();
 
             MvcApplication.CurrentUser = WebadelAuthorize.GetUserFromCookie(Context);
+
+            Response.Headers.Add("X-Clacks-Overhead", "GNU Terry Pratchett");
         }
 
         protected void Application_EndRequest() {
