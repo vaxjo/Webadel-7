@@ -163,7 +163,7 @@ function ViewProfile(id) {
         $("#viewProfileModal").load("/Room/Index_ViewProfile_Dialog?userId=" + id, function () {
             $("#viewProfileModal img").each(function () { $(this).addClass("img-responsive"); });
             $("#viewProfileModal .bio").html(QuickFormat($("#viewProfileModal .bio").html()));
-            $("#viewProfileModal .bio").html(ReplaceURLWithHTMLLinks($("#viewProfileModal .bio").html()));            
+            $("#viewProfileModal .bio").html(ReplaceURLWithHTMLLinks($("#viewProfileModal .bio").html()));
             $("#viewProfileModal").modal("show");
         });
     });
@@ -659,7 +659,8 @@ function ReplaceURLWithHTMLLinks(text) {
 
     domRep.find("a").each(function () {
         var href = $(this).attr("href")
-        //console.log($(this), href);
+
+        const textIsSame = href == $(this).text();
 
         // facebook warning dialog
         if (href != undefined && (href.indexOf("facebook.com") >= 0 || href.indexOf("fb.me") >= 0)) {
@@ -673,16 +674,25 @@ function ReplaceURLWithHTMLLinks(text) {
             $(this).attr("href", href);
         }
 
-        // remove utm_ trackers
+        // remove utm_* trackers
+        const utmRegEx = new RegExp("utm_.+?=[^&]+", "g");
         if (href != undefined && href.indexOf("utm_") >= 0) {
-            href = href.replace(new RegExp("utm_.+?=[a-zA-Z_0-9]+", "g"), "xxx");
+            href = href.replaceAll(utmRegEx, "x");
             $(this).attr("href", href);
         }
+
+        // remove bt_* trackers
+        if (href != undefined && href.indexOf("bt_") >= 0) {
+            href = href.replace(new RegExp("bt_.+?=[^&]+", "g"), "x");
+            $(this).attr("href", href);
+        }
+
+        if (textIsSame) $(this).text(href);
     });
 
     // add 12ft and archive.is alt links
     domRep.find("a:not(.revealCut)").wrap("<div class='linkContainer'></div>");
-    domRep.find("a:not(.revealCut)").after(function() {
+    domRep.find("a:not(.revealCut)").after(function () {
         return `<span><a class="alt" target="_blank" href="https://12ft.io/${this.href}">12ft</a> <a class="alt" target="_blank" href="https://archive.is/${this.href}">archive.is</a></span>`;
     });
 
