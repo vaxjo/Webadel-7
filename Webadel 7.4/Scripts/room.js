@@ -693,7 +693,7 @@ function ReplaceURLWithHTMLLinks(text) {
     // add 12ft and archive.is alt links
     domRep.find("a:not(.revealCut)").wrap("<div class='linkContainer'></div>");
     domRep.find("a:not(.revealCut)").after(function () {
-        return `<span><a class="alt" target="_blank" href="https://12ft.io/${this.href}">12ft</a> <a class="alt" target="_blank" href="https://archive.is/${this.href}">archive.is</a></span>`;
+        return `<span><a class="alt" target="_blank" href="https://removepaywalls.com/${this.href}">removepaywalls</a> <a class="alt" target="_blank" href="https://archive.is/${this.href}">archive.is</a></span>`;
     });
 
     // finally de-obfuscate the previously obfuscated urls
