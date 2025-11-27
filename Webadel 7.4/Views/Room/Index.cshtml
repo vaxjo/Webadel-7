@@ -117,19 +117,25 @@
         }
 
         @if (It.Get().ItId == Model.Id && It.Get().ItDuration.TotalHours > 30) {
+            Guid cookiepussId = new Guid("fcd3bcd3-dfa9-4950-ac57-96f06834fe0d");
+            Guid jeremyId = new Guid("b3d1b378-3328-4c22-a744-e54cdbbd4eed");
+
             <div class="alert alert-warning alert-dismissible persist">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <p>You've been It long enough. Tag someone else, now.</p>
-                <p>
-                    <select id="newIt" name="newIt" class="form-control">
-                        <option></option>
-                        @foreach (var item in Webadel7.User.GetAll(true).OrderByDescending(o => o.LastActivity)) {
-                            <option value="@item.Id">@item.Username</option>
-                        }
-                    </select>
-                </p>
-            </div>
-        }
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>You've been It long enough. Tag someone else, now.</p>
+            <p>
+                <select id="newIt" name="newIt" class="form-control">
+                    <option></option>
+                    @foreach (var item in Webadel7.User.GetAll(true).OrderByDescending(o => o.LastActivity)) {
+                        if (Model.Id == cookiepussId && item.Id == jeremyId) { continue; }
+                        if (Model.Id == jeremyId && item.Id == cookiepussId) { continue; }
+
+                        <option value="@item.Id">@item.Username</option>
+                    }
+                </select>
+            </p>
+        </div>
+    }
 
         <div id="messagesLoading" style="display: none;">
             <div class="progress progress-striped active">
@@ -191,233 +197,233 @@
     <div class="col-md-3">
         <div id="roomList" class="visible-md visible-lg">@* loaded dynamically *@</div>
     </div>
-</div>
-
-@helper RenderPostBox() {
-    <form id="postForm" role="form">
-        <input type="hidden" id="postAnonymously" name="postAnonymously" value="False" />
-
-        <div class="pull-right" style="opacity: 1; position: relative; top: -5px;">
-            <button type="button" class="btn btn-default btn-xs" id="anonymous">anonymity</button>
-            <span class="dropdown">
-                <button type="button" class="btn btn-default dropdown-toggle btn-xs" id="insertMenu" data-toggle="dropdown">insert <span class="caret"></span></button>
-                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="insertMenu">
-                    <li role="presentation" id="insertCutTag"><a role="menuitem" tabindex="-1" href="#">cut tag</a></li>
-                    <li role="presentation" id="insertSpoiler"><a role="menuitem" tabindex="-1" href="#">spoiler text</a></li>
-                    <li role="presentation" id="insertImageCode"><a role="menuitem" tabindex="-1" href="#">image code</a></li>
-                    <li role="presentation" id="insertHyperlink"><a role="menuitem" tabindex="-1" href="#">hyperlink</a></li>
-                    @*<li role="presentation" id="insertLmgtfy"><a role="menuitem" tabindex="-1" href="#">lmgtfy</a></li>*@
-                </ul>
-            </span>
-        </div>
-        <div class="messageheader new">
-            <span class="time">@Webadel7.Message.CitDate(MvcApplication.Now)</span> from <span class="user author" id="@Model.Id" data-original="@Model.Username">@Model.Username</span>
-            <span style="display: none;"> to <select class="recipient" id="recipientId" name="recipientId">@* loaded dynamically *@</select></span>
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="postbox">Post Box</label>
-            <textarea id="postbox" name="message" class="form-control mousetrap" rows="3" tabindex="1"></textarea>
-
-            @* predictive text [jj 19Apr20] *@
-            @if (Model.EnablePredictiveText) {
-                <div id="predictive" class="btn-group btn-group-justified btn-group-xs" style="display: none;" role="group" aria-label="Predictive Text">
-                    <div class="btn-group btn-group-xs" role="group">
-                        <button type="button" class="btn btn-default"></button>
-                    </div>
-                    <div class="btn-group btn-group-xs" role="group">
-                        <button type="button" class="btn btn-default"></button>
-                    </div>
-                    <div class="btn-group btn-group-xs" role="group">
-                        <button type="button" class="btn btn-default"></button>
-                    </div>
-                </div>
-            }
-
-            <div class="btn-group btn-group-xs pull-right postButtons" style="margin-top: 3px;">
-                <button type="button" class="btn btn-default" id="post" tabindex="2">Post</button>
-                <button type="button" class="btn btn-default" id="postGoto" tabindex="3">Post & Goto</button>
-                <button type="button" class="btn btn-default" id="preview" tabindex="4">Preview</button>
-            </div>
-
-            <div id="resources" style="margin-top: 3px;">
-                <button type="button" class="btn btn-primary btn-xs" id="attachResource">Attach Files</button>
-                <input type="file" id="uploadResource" name="file" style="display: none;" data-url="/Room/UploadResource" multiple="multiple" />
-                <table class="table table-noborder" style="margin-top: 3px;"><tbody></tbody></table>
-            </div>
-        </div>
-    </form>
-}
-
-@*************** Modals *******************@
-
-<div id="debugModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Debug</h4>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <tr><td>Current User Id</td><td>@Model.Id</td></tr>
-                </table>
-                <button class="btn" id="freqInt">Frequent Interval</button>
-                <button class="btn" id="fakeError">Fake Error</button>
-
-            </div>
-        </div>
     </div>
-</div>
 
-<div id="changePwModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Change Password</h4>
+    @helper RenderPostBox() {
+        <form id="postForm" role="form">
+            <input type="hidden" id="postAnonymously" name="postAnonymously" value="False" />
+
+            <div class="pull-right" style="opacity: 1; position: relative; top: -5px;">
+                <button type="button" class="btn btn-default btn-xs" id="anonymous">anonymity</button>
+                <span class="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-xs" id="insertMenu" data-toggle="dropdown">insert <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="insertMenu">
+                        <li role="presentation" id="insertCutTag"><a role="menuitem" tabindex="-1" href="#">cut tag</a></li>
+                        <li role="presentation" id="insertSpoiler"><a role="menuitem" tabindex="-1" href="#">spoiler text</a></li>
+                        <li role="presentation" id="insertImageCode"><a role="menuitem" tabindex="-1" href="#">image code</a></li>
+                        <li role="presentation" id="insertHyperlink"><a role="menuitem" tabindex="-1" href="#">hyperlink</a></li>
+                        @*<li role="presentation" id="insertLmgtfy"><a role="menuitem" tabindex="-1" href="#">lmgtfy</a></li>*@
+                    </ul>
+                </span>
             </div>
-            <div class="modal-body">
+            <div class="messageheader new">
+                <span class="time">@Webadel7.Message.CitDate(MvcApplication.Now)</span> from <span class="user author" id="@Model.Id" data-original="@Model.Username">@Model.Username</span>
+                <span style="display: none;"> to <select class="recipient" id="recipientId" name="recipientId">@* loaded dynamically *@</select></span>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="postbox">Post Box</label>
+                <textarea id="postbox" name="message" class="form-control mousetrap" rows="3" tabindex="1"></textarea>
 
-                <form role="form">
-                    @if (Model.TimeSinceLoginToken.TotalHours > 1) {
-                        <div class="form-group">
-                            <label for="username" class="sr-only ">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current Password">
-                            <span class="help-block">For security purposes, enter your current password.</span>
+                @* predictive text [jj 19Apr20] *@
+                @if (Model.EnablePredictiveText) {
+                    <div id="predictive" class="btn-group btn-group-justified btn-group-xs" style="display: none;" role="group" aria-label="Predictive Text">
+                        <div class="btn-group btn-group-xs" role="group">
+                            <button type="button" class="btn btn-default"></button>
                         </div>
-                    }
-                    <div class="form-group">
-                        <label for="newPassword" class="sr-only ">New Password</label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
-                        <span class="help-block">Now enter your new password.</span>
+                        <div class="btn-group btn-group-xs" role="group">
+                            <button type="button" class="btn btn-default"></button>
+                        </div>
+                        <div class="btn-group btn-group-xs" role="group">
+                            <button type="button" class="btn btn-default"></button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="confirmPassword" class="sr-only ">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
-                        <span class="help-block">Type your new password again, for good measure.</span>
-                    </div>
-                </form>
+                }
 
+                <div class="btn-group btn-group-xs pull-right postButtons" style="margin-top: 3px;">
+                    <button type="button" class="btn btn-default" id="post" tabindex="2">Post</button>
+                    <button type="button" class="btn btn-default" id="postGoto" tabindex="3">Post & Goto</button>
+                    <button type="button" class="btn btn-default" id="preview" tabindex="4">Preview</button>
+                </div>
+
+                <div id="resources" style="margin-top: 3px;">
+                    <button type="button" class="btn btn-primary btn-xs" id="attachResource">Attach Files</button>
+                    <input type="file" id="uploadResource" name="file" style="display: none;" data-url="/Room/UploadResource" multiple="multiple" />
+                    <table class="table table-noborder" style="margin-top: 3px;"><tbody></tbody></table>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="changePw">Change Password</button>
+        </form>
+    }
+
+    @*************** Modals *******************@
+
+    <div id="debugModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Debug</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr><td>Current User Id</td><td>@Model.Id</td></tr>
+                    </table>
+                    <button class="btn" id="freqInt">Frequent Interval</button>
+                    <button class="btn" id="fakeError">Fake Error</button>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="sortRoomsModal" class="modal fade" tabindex="-1"></div>
+    <div id="changePwModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body">
 
-<div id="userSettingsModal" class="modal fade" tabindex="-1"></div>
-<div id="plonkModal" class="modal fade" tabindex="-1"></div>
+                    <form role="form">
+                        @if (Model.TimeSinceLoginToken.TotalHours > 1) {
+                            <div class="form-group">
+                                <label for="username" class="sr-only ">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current Password">
+                                <span class="help-block">For security purposes, enter your current password.</span>
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label for="newPassword" class="sr-only ">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
+                            <span class="help-block">Now enter your new password.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="sr-only ">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                            <span class="help-block">Type your new password again, for good measure.</span>
+                        </div>
+                    </form>
 
-<div id="profileModal" class="modal fade" tabindex="-1"></div>
-
-<div id="viewProfileModal" class="modal fade" tabindex="-1"></div>
-<div id="editUserModal" class="modal fade" tabindex="-1"></div>
-
-<div id="roomInfoModal" class="modal fade" tabindex="-1"></div>
-
-<div id="createRoomModal" class="modal fade" tabindex="-1"></div>
-<div id="editRoomModal" class="modal fade" tabindex="-1"></div>
-
-<div id="searchModal" class="modal " tabindex="-1"></div>
-
-<div id="userListModal" class="modal fade" tabindex="-1"></div>
-
-<div id="submitBadgeModal" class="modal fade" tabindex="-1"></div>
-<div id="badgeModal" class="modal fade" tabindex="-1"></div>
-
-<div id="helpModal" class="modal fade" tabindex="-1"></div>
-
-@* this is the modal content that appears while waiting for a callback to resolve *@
-<div id="loadingModal" class="modal-dialog" style="display: none;">
-    <div class="modal-content">
-        <div class="modal-header"></div>
-        <div class="modal-body"><div class="progress progress-striped active" style="width: 70%; margin: 50px auto;"><div class="progress-bar" role="progressbar" style="width: 100%"></div></div></div>
-        <div class="modal-footer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="changePw">Change Password</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div id="errorModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
+    <div id="sortRoomsModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="userSettingsModal" class="modal fade" tabindex="-1"></div>
+    <div id="plonkModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="profileModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="viewProfileModal" class="modal fade" tabindex="-1"></div>
+    <div id="editUserModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="roomInfoModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="createRoomModal" class="modal fade" tabindex="-1"></div>
+    <div id="editRoomModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="searchModal" class="modal " tabindex="-1"></div>
+
+    <div id="userListModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="submitBadgeModal" class="modal fade" tabindex="-1"></div>
+    <div id="badgeModal" class="modal fade" tabindex="-1"></div>
+
+    <div id="helpModal" class="modal fade" tabindex="-1"></div>
+
+    @* this is the modal content that appears while waiting for a callback to resolve *@
+    <div id="loadingModal" class="modal-dialog" style="display: none;">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><span class="glyphicon glyphicon-exclamation-sign"></span> System Failure</h4>
-            </div>
-            <div class="modal-body">
-                <p>A server-side system failure has occurred.</p>
-                <h1><span id="errorStatus"></span> <small><span id="errorStatusText"></span></small></h1>
-                <p>Maybe it's just you? Try <a href="http://www.downforeveryoneorjustme.com/edsroom.com" target="_blank">downforeveryoneorjustme.com</a> or <a href="http://www.downforeveryone.com/edsroom.com" target="_blank">downforeveryone.com</a>.</p>
-                <p>Maybe <a href="https://www.facebook.com/groups/42287591801/" target="_blank">Facebook</a> has the answer?</p>
-                <p>Finally, you could check out the official <a href="https://twitter.com/edsroom" target="_blank">Ed's Room twitter feed</a>.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="abort">Abort</button>
-                <button type="button" class="btn" id="retry">Retry</button>
-                <button type="button" class="btn" id="fail">Fail</button>
+            <div class="modal-header"></div>
+            <div class="modal-body"><div class="progress progress-striped active" style="width: 70%; margin: 50px auto;"><div class="progress-bar" role="progressbar" style="width: 100%"></div></div></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><span class="glyphicon glyphicon-exclamation-sign"></span> System Failure</h4>
+                </div>
+                <div class="modal-body">
+                    <p>A server-side system failure has occurred.</p>
+                    <h1><span id="errorStatus"></span> <small><span id="errorStatusText"></span></small></h1>
+                    <p>Maybe it's just you? Try <a href="http://www.downforeveryoneorjustme.com/edsroom.com" target="_blank">downforeveryoneorjustme.com</a> or <a href="http://www.downforeveryone.com/edsroom.com" target="_blank">downforeveryone.com</a>.</p>
+                    <p>Maybe <a href="https://www.facebook.com/groups/42287591801/" target="_blank">Facebook</a> has the answer?</p>
+                    <p>Finally, you could check out the official <a href="https://twitter.com/edsroom" target="_blank">Ed's Room twitter feed</a>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="abort">Abort</button>
+                    <button type="button" class="btn" id="retry">Retry</button>
+                    <button type="button" class="btn" id="fail">Fail</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="thanksgivingPrayerModal" class="modal" tabindex="-1" role="dialog" data-keyboard="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="title">Thanksgiving Prayer</h3>
+    <div id="thanksgivingPrayerModal" class="modal" tabindex="-1" role="dialog" data-keyboard="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="title">Thanksgiving Prayer</h3>
+                </div>
+                <div class="modal-body">
+                    <p><i>"To John Dillinger and hope he is still alive. Thanksgiving Day November 28 1986"</i></p>
+                    <p>Thanks for the wild turkey and the passenger pigeons, destined to be shat out through wholesome American guts.</p>
+                    <p>Thanks for a continent to despoil and poison.</p>
+                    <p>Thanks for Indians to provide a modicum of challenge and danger.</p>
+                    <p>Thanks for vast herds of bison to kill and skin leaving the carcasses to rot.</p>
+                    <p> Thanks for bounties on wolves and coyotes. </p>
+                    <p> Thanks for the American dream, To vulgarize and falsify until the bare lies shine through. </p>
+                    <p> Thanks for the KKK. </p>
+                    <p> For nigger-killin' lawmen, feelin' their notches. </p>
+                    <p> For decent church-goin' women, with their mean, pinched, bitter, evil faces. </p>
+                    <p> Thanks for "Kill a Queer for Christ" stickers. </p>
+                    <p> Thanks for laboratory AIDS. </p>
+                    <p> Thanks for Prohibition and the war against drugs. </p>
+                    <p> Thanks for a country where nobody's allowed to mind his own business. </p>
+                    <p> Thanks for a nation of finks. </p>
+                    <p> Yes, thanks for all the memories -- all right let's see your arms! </p>
+                    <p> You always were a headache and you always were a bore. </p>
+                    <p> Thanks for the last and greatest betrayal of the last and greatest of human dreams. </p>
+                </div>
+                <div class="modal-footer">- William Burroughs</div>
             </div>
-            <div class="modal-body">
-                <p><i>"To John Dillinger and hope he is still alive. Thanksgiving Day November 28 1986"</i></p>
-                <p>Thanks for the wild turkey and the passenger pigeons, destined to be shat out through wholesome American guts.</p>
-                <p>Thanks for a continent to despoil and poison.</p>
-                <p>Thanks for Indians to provide a modicum of challenge and danger.</p>
-                <p>Thanks for vast herds of bison to kill and skin leaving the carcasses to rot.</p>
-                <p> Thanks for bounties on wolves and coyotes. </p>
-                <p> Thanks for the American dream, To vulgarize and falsify until the bare lies shine through. </p>
-                <p> Thanks for the KKK. </p>
-                <p> For nigger-killin' lawmen, feelin' their notches. </p>
-                <p> For decent church-goin' women, with their mean, pinched, bitter, evil faces. </p>
-                <p> Thanks for "Kill a Queer for Christ" stickers. </p>
-                <p> Thanks for laboratory AIDS. </p>
-                <p> Thanks for Prohibition and the war against drugs. </p>
-                <p> Thanks for a country where nobody's allowed to mind his own business. </p>
-                <p> Thanks for a nation of finks. </p>
-                <p> Yes, thanks for all the memories -- all right let's see your arms! </p>
-                <p> You always were a headache and you always were a bore. </p>
-                <p> Thanks for the last and greatest betrayal of the last and greatest of human dreams. </p>
-            </div>
-            <div class="modal-footer">- William Burroughs</div>
         </div>
     </div>
-</div>
 
-@* TODO: rebuild with bundling *@
+    @* TODO: rebuild with bundling *@
 
-@section Scripts {
-    @Scripts.Render("~/public/roomscripts")
+    @section Scripts {
+        @Scripts.Render("~/public/roomscripts")
 
-    @*<script src="/Scripts/room.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/room_messageControls.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/room_userSettings.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/room_roomStuff.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/room_postbox.js?_@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
-        <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>*@
+        @*<script src="/Scripts/room.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/room_messageControls.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/room_userSettings.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/room_roomStuff.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/room_postbox.js?_@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/room_predictive.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>
+            <script src="/Scripts/badges.js?@(Webadel7.MvcApplication.AssemblyVersion)"></script>*@
 
-    @if (DateTime.Now.ToShortDateString().StartsWith("11/27/2025")) {
-        string y = Model.Misc.ContainsKey("thanksgivingPrayer") ? Model.Misc["thanksgivingPrayer"] : null;
-        if (string.IsNullOrWhiteSpace(y) || Convert.ToInt32(y) < DateTime.Now.Year) {
-            Model.Misc["thanksgivingPrayer"] = DateTime.Now.Year.ToString();
-            Model.Save();
+        @if (DateTime.Now.ToShortDateString().StartsWith("11/27/2025")) {
+            string y = Model.Misc.ContainsKey("thanksgivingPrayer") ? Model.Misc["thanksgivingPrayer"] : null;
+            if (string.IsNullOrWhiteSpace(y) || Convert.ToInt32(y) < DateTime.Now.Year) {
+                Model.Misc["thanksgivingPrayer"] = DateTime.Now.Year.ToString();
+                Model.Save();
 
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#thanksgivingPrayerModal").modal("show");
-                });
-            </script>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#thanksgivingPrayerModal").modal("show");
+                    });
+                </script>
+            }
         }
     }
-}
