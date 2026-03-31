@@ -11,23 +11,6 @@
       <Association Name="User_Door" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Message" Member="Messages">
-    <Type Name="Message">
-      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="Message_Message_OriginalRoom" Member="Message_OriginalRoom" ThisKey="id" OtherKey="messageId" Type="Message_OriginalRoom" Cardinality="One" />
-      <Association Name="Message_Resource" Member="Resources" ThisKey="id" OtherKey="messageId" Type="Resource" />
-      <Association Name="Message_Upload" Member="Uploads" ThisKey="id" OtherKey="messageId" Type="Upload" />
-      <Association Name="Message_Vote" Member="Votes" ThisKey="id" OtherKey="messageId" Type="Vote" />
-      <Association Name="Room_Message" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="User_Message" Member="User" ThisKey="recipientId" OtherKey="id" Type="User" IsForeignKey="true" />
-      <Association Name="User_Message1" Member="User1" ThisKey="authorId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Message_OriginalRoom" Member="Message_OriginalRooms">
     <Type Name="Message_OriginalRoom">
       <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -60,23 +43,12 @@
       <Column Name="data" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="contentType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="created" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Message_Upload" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.Banishment" Member="Banishments">
     <Type Name="Banishment">
       <Column Name="ip" Type="System.String" DbType="VarChar(15) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="expiration" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Vote" Member="Votes">
-    <Type Name="Vote">
-      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="vote" Member="vote1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="datetime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Message_Vote" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.AuthToken" Member="AuthTokens">
@@ -106,9 +78,9 @@
       <Column Name="requiresTrust" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="hidden" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="[permanent]" Member="permanent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Room_Message" Member="Messages" ThisKey="id" OtherKey="roomId" Type="Message" />
       <Association Name="Room_Autosave" Member="Autosaves" ThisKey="id" OtherKey="roomId" Type="Autosave" />
       <Association Name="Room_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="roomId" Type="UserRoom" />
+      <Association Name="Room_Message" Member="Messages" ThisKey="id" OtherKey="roomId" Type="Message" />
     </Type>
   </Table>
   <Table Name="dbo.UserRoom" Member="UserRooms">
@@ -195,10 +167,7 @@
       <Column Name="muted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="miscDictionary" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
       <Association Name="User_Door" Member="Doors" ThisKey="id" OtherKey="userId" Type="Door" />
-      <Association Name="User_Message" Member="Messages" ThisKey="id" OtherKey="recipientId" Type="Message" />
-      <Association Name="User_Message1" Member="Messages1" ThisKey="id" OtherKey="authorId" Type="Message" />
       <Association Name="User_User_IP" Member="User_IPs" ThisKey="id" OtherKey="userId" Type="User_IP" />
-      <Association Name="User_Vote" Member="Votes" ThisKey="id" OtherKey="userId" Type="Vote" />
       <Association Name="User_AuthToken" Member="AuthTokens" ThisKey="id" OtherKey="userId" Type="AuthToken" />
       <Association Name="User_Autosave" Member="Autosaves" ThisKey="id" OtherKey="userId" Type="Autosave" />
       <Association Name="User_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="userId" Type="UserRoom" />
@@ -206,6 +175,37 @@
       <Association Name="User_Plonk" Member="Plonks" ThisKey="id" OtherKey="userId" Type="Plonk" />
       <Association Name="User_UserProfile" Member="UserProfile" ThisKey="id" OtherKey="id" Type="UserProfile" Cardinality="One" />
       <Association Name="User_LoginToken" Member="LoginTokens" ThisKey="id" OtherKey="userId" Type="LoginToken" />
+      <Association Name="User_Message" Member="Messages" ThisKey="id" OtherKey="recipientId" Type="Message" />
+      <Association Name="User_Message1" Member="Messages1" ThisKey="id" OtherKey="authorId" Type="Message" />
+      <Association Name="User_Vote" Member="Votes" ThisKey="id" OtherKey="userId" Type="Vote" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Message" Member="Messages">
+    <Type Name="Message">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="pinned" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Message_Message_OriginalRoom" Member="Message_OriginalRoom" ThisKey="id" OtherKey="messageId" Type="Message_OriginalRoom" Cardinality="One" />
+      <Association Name="Message_Resource" Member="Resources" ThisKey="id" OtherKey="messageId" Type="Resource" />
+      <Association Name="Message_Vote" Member="Votes" ThisKey="id" OtherKey="messageId" Type="Vote" />
+      <Association Name="User_Message" Member="User" ThisKey="recipientId" OtherKey="id" Type="User" IsForeignKey="true" />
+      <Association Name="Room_Message" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="User_Message1" Member="User1" ThisKey="authorId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vote" Member="Votes">
+    <Type Name="Vote">
+      <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vote" Member="vote1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="datetime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.Int32" DbType="Int" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Message_Vote" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" />
+      <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">
@@ -213,21 +213,6 @@
     <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
     <ElementType Name="GetUserRoomsResult">
       <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetUserMessages" Method="GetUserMessages" IsComposable="true">
-    <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
-    <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="includePlonks" Type="System.Boolean" DbType="Bit" />
-    <ElementType Name="GetUserMessagesResult">
-      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="date" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
-      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="isNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="originalRoomName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetNumNewMessages" Method="GetNumNewMessages" IsComposable="true">
@@ -245,6 +230,22 @@
       <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="messageId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="messageDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetUserMessages" Method="GetUserMessages" IsComposable="true">
+    <Parameter Name="userId" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="includeNSFW" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="includePlonks" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="GetUserMessagesResult">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="authorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="recipientId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="pinned" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="isNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="originalRoomName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

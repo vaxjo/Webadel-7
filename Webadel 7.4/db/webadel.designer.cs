@@ -33,9 +33,6 @@ namespace Webadel7.DB
     partial void InsertDoor(Door instance);
     partial void UpdateDoor(Door instance);
     partial void DeleteDoor(Door instance);
-    partial void InsertMessage(Message instance);
-    partial void UpdateMessage(Message instance);
-    partial void DeleteMessage(Message instance);
     partial void InsertMessage_OriginalRoom(Message_OriginalRoom instance);
     partial void UpdateMessage_OriginalRoom(Message_OriginalRoom instance);
     partial void DeleteMessage_OriginalRoom(Message_OriginalRoom instance);
@@ -51,9 +48,6 @@ namespace Webadel7.DB
     partial void InsertBanishment(Banishment instance);
     partial void UpdateBanishment(Banishment instance);
     partial void DeleteBanishment(Banishment instance);
-    partial void InsertVote(Vote instance);
-    partial void UpdateVote(Vote instance);
-    partial void DeleteVote(Vote instance);
     partial void InsertAuthToken(AuthToken instance);
     partial void UpdateAuthToken(AuthToken instance);
     partial void DeleteAuthToken(AuthToken instance);
@@ -81,11 +75,16 @@ namespace Webadel7.DB
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertMessage(Message instance);
+    partial void UpdateMessage(Message instance);
+    partial void DeleteMessage(Message instance);
+    partial void InsertVote(Vote instance);
+    partial void UpdateVote(Vote instance);
+    partial void DeleteVote(Vote instance);
         #endregion
 
-
         public WebadelDataContext() :
-                base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource) {
+               base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Webadel"].ConnectionString, mappingSource) {
             OnCreated();
         }
         public WebadelDataContext(string connection) : 
@@ -117,14 +116,6 @@ namespace Webadel7.DB
 			get
 			{
 				return this.GetTable<Door>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Message> Messages
-		{
-			get
-			{
-				return this.GetTable<Message>();
 			}
 		}
 		
@@ -165,14 +156,6 @@ namespace Webadel7.DB
 			get
 			{
 				return this.GetTable<Banishment>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Vote> Votes
-		{
-			get
-			{
-				return this.GetTable<Vote>();
 			}
 		}
 		
@@ -256,16 +239,26 @@ namespace Webadel7.DB
 			}
 		}
 		
+		public System.Data.Linq.Table<Message> Messages
+		{
+			get
+			{
+				return this.GetTable<Message>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Vote> Votes
+		{
+			get
+			{
+				return this.GetTable<Vote>();
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetUserRooms", IsComposable=true)]
 		public IQueryable<GetUserRoomsResult> GetUserRooms([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="UniqueIdentifier")] System.Nullable<System.Guid> userId, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includeNSFW)
 		{
 			return this.CreateMethodCallQuery<GetUserRoomsResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, includeNSFW);
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetUserMessages", IsComposable=true)]
-		public IQueryable<GetUserMessagesResult> GetUserMessages([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="UniqueIdentifier")] System.Nullable<System.Guid> userId, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includeNSFW, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includePlonks)
-		{
-			return this.CreateMethodCallQuery<GetUserMessagesResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, includeNSFW, includePlonks);
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetNumNewMessages", IsComposable=true)]
@@ -278,6 +271,12 @@ namespace Webadel7.DB
 		public IQueryable<GetLastMessagesResult> GetLastMessages()
 		{
 			return this.CreateMethodCallQuery<GetLastMessagesResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetUserMessages", IsComposable=true)]
+		public IQueryable<GetUserMessagesResult> GetUserMessages([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="UniqueIdentifier")] System.Nullable<System.Guid> userId, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includeNSFW, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> includePlonks)
+		{
+			return this.CreateMethodCallQuery<GetUserMessagesResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userId, includeNSFW, includePlonks);
 		}
 	}
 	
@@ -525,427 +524,6 @@ namespace Webadel7.DB
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Message")]
-	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _id;
-		
-		private System.Guid _roomId;
-		
-		private System.Guid _authorId;
-		
-		private System.Nullable<System.Guid> _recipientId;
-		
-		private System.DateTime _date;
-		
-		private string _body;
-		
-		private EntityRef<Message_OriginalRoom> _Message_OriginalRoom;
-		
-		private EntitySet<Resource> _Resources;
-		
-		private EntitySet<Upload> _Uploads;
-		
-		private EntitySet<Vote> _Votes;
-		
-		private EntityRef<Room> _Room;
-		
-		private EntityRef<User> _User;
-		
-		private EntityRef<User> _User1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(System.Guid value);
-    partial void OnidChanged();
-    partial void OnroomIdChanging(System.Guid value);
-    partial void OnroomIdChanged();
-    partial void OnauthorIdChanging(System.Guid value);
-    partial void OnauthorIdChanged();
-    partial void OnrecipientIdChanging(System.Nullable<System.Guid> value);
-    partial void OnrecipientIdChanged();
-    partial void OndateChanging(System.DateTime value);
-    partial void OndateChanged();
-    partial void OnbodyChanging(string value);
-    partial void OnbodyChanged();
-    #endregion
-		
-		public Message()
-		{
-			this._Message_OriginalRoom = default(EntityRef<Message_OriginalRoom>);
-			this._Resources = new EntitySet<Resource>(new Action<Resource>(this.attach_Resources), new Action<Resource>(this.detach_Resources));
-			this._Uploads = new EntitySet<Upload>(new Action<Upload>(this.attach_Uploads), new Action<Upload>(this.detach_Uploads));
-			this._Votes = new EntitySet<Vote>(new Action<Vote>(this.attach_Votes), new Action<Vote>(this.detach_Votes));
-			this._Room = default(EntityRef<Room>);
-			this._User = default(EntityRef<User>);
-			this._User1 = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roomId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid roomId
-		{
-			get
-			{
-				return this._roomId;
-			}
-			set
-			{
-				if ((this._roomId != value))
-				{
-					if (this._Room.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnroomIdChanging(value);
-					this.SendPropertyChanging();
-					this._roomId = value;
-					this.SendPropertyChanged("roomId");
-					this.OnroomIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid authorId
-		{
-			get
-			{
-				return this._authorId;
-			}
-			set
-			{
-				if ((this._authorId != value))
-				{
-					if (this._User1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnauthorIdChanging(value);
-					this.SendPropertyChanging();
-					this._authorId = value;
-					this.SendPropertyChanged("authorId");
-					this.OnauthorIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_recipientId", DbType="UniqueIdentifier")]
-		public System.Nullable<System.Guid> recipientId
-		{
-			get
-			{
-				return this._recipientId;
-			}
-			set
-			{
-				if ((this._recipientId != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnrecipientIdChanging(value);
-					this.SendPropertyChanging();
-					this._recipientId = value;
-					this.SendPropertyChanged("recipientId");
-					this.OnrecipientIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_date", DbType="DateTime NOT NULL")]
-		public System.DateTime date
-		{
-			get
-			{
-				return this._date;
-			}
-			set
-			{
-				if ((this._date != value))
-				{
-					this.OndateChanging(value);
-					this.SendPropertyChanging();
-					this._date = value;
-					this.SendPropertyChanged("date");
-					this.OndateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string body
-		{
-			get
-			{
-				return this._body;
-			}
-			set
-			{
-				if ((this._body != value))
-				{
-					this.OnbodyChanging(value);
-					this.SendPropertyChanging();
-					this._body = value;
-					this.SendPropertyChanged("body");
-					this.OnbodyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Message_OriginalRoom", Storage="_Message_OriginalRoom", ThisKey="id", OtherKey="messageId", IsUnique=true, IsForeignKey=false)]
-		public Message_OriginalRoom Message_OriginalRoom
-		{
-			get
-			{
-				return this._Message_OriginalRoom.Entity;
-			}
-			set
-			{
-				Message_OriginalRoom previousValue = this._Message_OriginalRoom.Entity;
-				if (((previousValue != value) 
-							|| (this._Message_OriginalRoom.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Message_OriginalRoom.Entity = null;
-						previousValue.Message = null;
-					}
-					this._Message_OriginalRoom.Entity = value;
-					if ((value != null))
-					{
-						value.Message = this;
-					}
-					this.SendPropertyChanged("Message_OriginalRoom");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Resource", Storage="_Resources", ThisKey="id", OtherKey="messageId")]
-		public EntitySet<Resource> Resources
-		{
-			get
-			{
-				return this._Resources;
-			}
-			set
-			{
-				this._Resources.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Upload", Storage="_Uploads", ThisKey="id", OtherKey="messageId")]
-		public EntitySet<Upload> Uploads
-		{
-			get
-			{
-				return this._Uploads;
-			}
-			set
-			{
-				this._Uploads.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Vote", Storage="_Votes", ThisKey="id", OtherKey="messageId")]
-		public EntitySet<Vote> Votes
-		{
-			get
-			{
-				return this._Votes;
-			}
-			set
-			{
-				this._Votes.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Message", Storage="_Room", ThisKey="roomId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Room Room
-		{
-			get
-			{
-				return this._Room.Entity;
-			}
-			set
-			{
-				Room previousValue = this._Room.Entity;
-				if (((previousValue != value) 
-							|| (this._Room.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Room.Entity = null;
-						previousValue.Messages.Remove(this);
-					}
-					this._Room.Entity = value;
-					if ((value != null))
-					{
-						value.Messages.Add(this);
-						this._roomId = value.id;
-					}
-					else
-					{
-						this._roomId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Room");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message", Storage="_User", ThisKey="recipientId", OtherKey="id", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Messages.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Messages.Add(this);
-						this._recipientId = value.id;
-					}
-					else
-					{
-						this._recipientId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message1", Storage="_User1", ThisKey="authorId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public User User1
-		{
-			get
-			{
-				return this._User1.Entity;
-			}
-			set
-			{
-				User previousValue = this._User1.Entity;
-				if (((previousValue != value) 
-							|| (this._User1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User1.Entity = null;
-						previousValue.Messages1.Remove(this);
-					}
-					this._User1.Entity = value;
-					if ((value != null))
-					{
-						value.Messages1.Add(this);
-						this._authorId = value.id;
-					}
-					else
-					{
-						this._authorId = default(System.Guid);
-					}
-					this.SendPropertyChanged("User1");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Resources(Resource entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = this;
-		}
-		
-		private void detach_Resources(Resource entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = null;
-		}
-		
-		private void attach_Uploads(Upload entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = this;
-		}
-		
-		private void detach_Uploads(Upload entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = null;
-		}
-		
-		private void attach_Votes(Vote entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = this;
-		}
-		
-		private void detach_Votes(Vote entity)
-		{
-			this.SendPropertyChanging();
-			entity.Message = null;
 		}
 	}
 	
@@ -1420,8 +998,6 @@ namespace Webadel7.DB
 		
 		private System.DateTime _created;
 		
-		private EntityRef<Message> _Message;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1442,7 +1018,6 @@ namespace Webadel7.DB
 		
 		public Upload()
 		{
-			this._Message = default(EntityRef<Message>);
 			OnCreated();
 		}
 		
@@ -1477,10 +1052,6 @@ namespace Webadel7.DB
 			{
 				if ((this._messageId != value))
 				{
-					if (this._Message.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnmessageIdChanging(value);
 					this.SendPropertyChanging();
 					this._messageId = value;
@@ -1570,40 +1141,6 @@ namespace Webadel7.DB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Upload", Storage="_Message", ThisKey="messageId", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public Message Message
-		{
-			get
-			{
-				return this._Message.Entity;
-			}
-			set
-			{
-				Message previousValue = this._Message.Entity;
-				if (((previousValue != value) 
-							|| (this._Message.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Message.Entity = null;
-						previousValue.Uploads.Remove(this);
-					}
-					this._Message.Entity = value;
-					if ((value != null))
-					{
-						value.Uploads.Add(this);
-						this._messageId = value.id;
-					}
-					else
-					{
-						this._messageId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("Message");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1686,222 +1223,6 @@ namespace Webadel7.DB
 					this._expiration = value;
 					this.SendPropertyChanged("expiration");
 					this.OnexpirationChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vote")]
-	public partial class Vote : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _messageId;
-		
-		private System.Guid _userId;
-		
-		private bool _vote1;
-		
-		private System.DateTime _datetime;
-		
-		private EntityRef<Message> _Message;
-		
-		private EntityRef<User> _User;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnmessageIdChanging(System.Guid value);
-    partial void OnmessageIdChanged();
-    partial void OnuserIdChanging(System.Guid value);
-    partial void OnuserIdChanged();
-    partial void Onvote1Changing(bool value);
-    partial void Onvote1Changed();
-    partial void OndatetimeChanging(System.DateTime value);
-    partial void OndatetimeChanged();
-    #endregion
-		
-		public Vote()
-		{
-			this._Message = default(EntityRef<Message>);
-			this._User = default(EntityRef<User>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_messageId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid messageId
-		{
-			get
-			{
-				return this._messageId;
-			}
-			set
-			{
-				if ((this._messageId != value))
-				{
-					if (this._Message.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnmessageIdChanging(value);
-					this.SendPropertyChanging();
-					this._messageId = value;
-					this.SendPropertyChanged("messageId");
-					this.OnmessageIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid userId
-		{
-			get
-			{
-				return this._userId;
-			}
-			set
-			{
-				if ((this._userId != value))
-				{
-					if (this._User.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnuserIdChanging(value);
-					this.SendPropertyChanging();
-					this._userId = value;
-					this.SendPropertyChanged("userId");
-					this.OnuserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="vote", Storage="_vote1", DbType="Bit NOT NULL")]
-		public bool vote1
-		{
-			get
-			{
-				return this._vote1;
-			}
-			set
-			{
-				if ((this._vote1 != value))
-				{
-					this.Onvote1Changing(value);
-					this.SendPropertyChanging();
-					this._vote1 = value;
-					this.SendPropertyChanged("vote1");
-					this.Onvote1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_datetime", DbType="DateTime NOT NULL")]
-		public System.DateTime datetime
-		{
-			get
-			{
-				return this._datetime;
-			}
-			set
-			{
-				if ((this._datetime != value))
-				{
-					this.OndatetimeChanging(value);
-					this.SendPropertyChanging();
-					this._datetime = value;
-					this.SendPropertyChanged("datetime");
-					this.OndatetimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Vote", Storage="_Message", ThisKey="messageId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Message Message
-		{
-			get
-			{
-				return this._Message.Entity;
-			}
-			set
-			{
-				Message previousValue = this._Message.Entity;
-				if (((previousValue != value) 
-							|| (this._Message.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Message.Entity = null;
-						previousValue.Votes.Remove(this);
-					}
-					this._Message.Entity = value;
-					if ((value != null))
-					{
-						value.Votes.Add(this);
-						this._messageId = value.id;
-					}
-					else
-					{
-						this._messageId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Message");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Votes.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Votes.Add(this);
-						this._userId = value.id;
-					}
-					else
-					{
-						this._userId = default(System.Guid);
-					}
-					this.SendPropertyChanged("User");
 				}
 			}
 		}
@@ -2292,11 +1613,11 @@ namespace Webadel7.DB
 		
 		private bool _permanent;
 		
-		private EntitySet<Message> _Messages;
-		
 		private EntitySet<Autosave> _Autosaves;
 		
 		private EntitySet<UserRoom> _UserRooms;
+		
+		private EntitySet<Message> _Messages;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2322,9 +1643,9 @@ namespace Webadel7.DB
 		
 		public Room()
 		{
-			this._Messages = new EntitySet<Message>(new Action<Message>(this.attach_Messages), new Action<Message>(this.detach_Messages));
 			this._Autosaves = new EntitySet<Autosave>(new Action<Autosave>(this.attach_Autosaves), new Action<Autosave>(this.detach_Autosaves));
 			this._UserRooms = new EntitySet<UserRoom>(new Action<UserRoom>(this.attach_UserRooms), new Action<UserRoom>(this.detach_UserRooms));
+			this._Messages = new EntitySet<Message>(new Action<Message>(this.attach_Messages), new Action<Message>(this.detach_Messages));
 			OnCreated();
 		}
 		
@@ -2488,19 +1809,6 @@ namespace Webadel7.DB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Message", Storage="_Messages", ThisKey="id", OtherKey="roomId")]
-		public EntitySet<Message> Messages
-		{
-			get
-			{
-				return this._Messages;
-			}
-			set
-			{
-				this._Messages.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Autosave", Storage="_Autosaves", ThisKey="id", OtherKey="roomId")]
 		public EntitySet<Autosave> Autosaves
 		{
@@ -2527,6 +1835,19 @@ namespace Webadel7.DB
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Message", Storage="_Messages", ThisKey="id", OtherKey="roomId")]
+		public EntitySet<Message> Messages
+		{
+			get
+			{
+				return this._Messages;
+			}
+			set
+			{
+				this._Messages.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2545,18 +1866,6 @@ namespace Webadel7.DB
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Messages(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.Room = this;
-		}
-		
-		private void detach_Messages(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.Room = null;
 		}
 		
 		private void attach_Autosaves(Autosave entity)
@@ -2578,6 +1887,18 @@ namespace Webadel7.DB
 		}
 		
 		private void detach_UserRooms(UserRoom entity)
+		{
+			this.SendPropertyChanging();
+			entity.Room = null;
+		}
+		
+		private void attach_Messages(Message entity)
+		{
+			this.SendPropertyChanging();
+			entity.Room = this;
+		}
+		
+		private void detach_Messages(Message entity)
 		{
 			this.SendPropertyChanging();
 			entity.Room = null;
@@ -3813,13 +3134,7 @@ namespace Webadel7.DB
 		
 		private EntitySet<Door> _Doors;
 		
-		private EntitySet<Message> _Messages;
-		
-		private EntitySet<Message> _Messages1;
-		
 		private EntitySet<User_IP> _User_IPs;
-		
-		private EntitySet<Vote> _Votes;
 		
 		private EntitySet<AuthToken> _AuthTokens;
 		
@@ -3834,6 +3149,12 @@ namespace Webadel7.DB
 		private EntityRef<UserProfile> _UserProfile;
 		
 		private EntitySet<LoginToken> _LoginTokens;
+		
+		private EntitySet<Message> _Messages;
+		
+		private EntitySet<Message> _Messages1;
+		
+		private EntitySet<Vote> _Votes;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -3882,10 +3203,7 @@ namespace Webadel7.DB
 		public User()
 		{
 			this._Doors = new EntitySet<Door>(new Action<Door>(this.attach_Doors), new Action<Door>(this.detach_Doors));
-			this._Messages = new EntitySet<Message>(new Action<Message>(this.attach_Messages), new Action<Message>(this.detach_Messages));
-			this._Messages1 = new EntitySet<Message>(new Action<Message>(this.attach_Messages1), new Action<Message>(this.detach_Messages1));
 			this._User_IPs = new EntitySet<User_IP>(new Action<User_IP>(this.attach_User_IPs), new Action<User_IP>(this.detach_User_IPs));
-			this._Votes = new EntitySet<Vote>(new Action<Vote>(this.attach_Votes), new Action<Vote>(this.detach_Votes));
 			this._AuthTokens = new EntitySet<AuthToken>(new Action<AuthToken>(this.attach_AuthTokens), new Action<AuthToken>(this.detach_AuthTokens));
 			this._Autosaves = new EntitySet<Autosave>(new Action<Autosave>(this.attach_Autosaves), new Action<Autosave>(this.detach_Autosaves));
 			this._UserRooms = new EntitySet<UserRoom>(new Action<UserRoom>(this.attach_UserRooms), new Action<UserRoom>(this.detach_UserRooms));
@@ -3893,6 +3211,9 @@ namespace Webadel7.DB
 			this._Plonks = new EntitySet<Plonk>(new Action<Plonk>(this.attach_Plonks), new Action<Plonk>(this.detach_Plonks));
 			this._UserProfile = default(EntityRef<UserProfile>);
 			this._LoginTokens = new EntitySet<LoginToken>(new Action<LoginToken>(this.attach_LoginTokens), new Action<LoginToken>(this.detach_LoginTokens));
+			this._Messages = new EntitySet<Message>(new Action<Message>(this.attach_Messages), new Action<Message>(this.detach_Messages));
+			this._Messages1 = new EntitySet<Message>(new Action<Message>(this.attach_Messages1), new Action<Message>(this.detach_Messages1));
+			this._Votes = new EntitySet<Vote>(new Action<Vote>(this.attach_Votes), new Action<Vote>(this.detach_Votes));
 			OnCreated();
 		}
 		
@@ -4289,32 +3610,6 @@ namespace Webadel7.DB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message", Storage="_Messages", ThisKey="id", OtherKey="recipientId")]
-		public EntitySet<Message> Messages
-		{
-			get
-			{
-				return this._Messages;
-			}
-			set
-			{
-				this._Messages.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message1", Storage="_Messages1", ThisKey="id", OtherKey="authorId")]
-		public EntitySet<Message> Messages1
-		{
-			get
-			{
-				return this._Messages1;
-			}
-			set
-			{
-				this._Messages1.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_User_IP", Storage="_User_IPs", ThisKey="id", OtherKey="userId")]
 		public EntitySet<User_IP> User_IPs
 		{
@@ -4325,19 +3620,6 @@ namespace Webadel7.DB
 			set
 			{
 				this._User_IPs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_Votes", ThisKey="id", OtherKey="userId")]
-		public EntitySet<Vote> Votes
-		{
-			get
-			{
-				return this._Votes;
-			}
-			set
-			{
-				this._Votes.Assign(value);
 			}
 		}
 		
@@ -4448,6 +3730,45 @@ namespace Webadel7.DB
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message", Storage="_Messages", ThisKey="id", OtherKey="recipientId")]
+		public EntitySet<Message> Messages
+		{
+			get
+			{
+				return this._Messages;
+			}
+			set
+			{
+				this._Messages.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message1", Storage="_Messages1", ThisKey="id", OtherKey="authorId")]
+		public EntitySet<Message> Messages1
+		{
+			get
+			{
+				return this._Messages1;
+			}
+			set
+			{
+				this._Messages1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_Votes", ThisKey="id", OtherKey="userId")]
+		public EntitySet<Vote> Votes
+		{
+			get
+			{
+				return this._Votes;
+			}
+			set
+			{
+				this._Votes.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -4480,30 +3801,6 @@ namespace Webadel7.DB
 			entity.User = null;
 		}
 		
-		private void attach_Messages(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Messages(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Messages1(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.User1 = this;
-		}
-		
-		private void detach_Messages1(Message entity)
-		{
-			this.SendPropertyChanging();
-			entity.User1 = null;
-		}
-		
 		private void attach_User_IPs(User_IP entity)
 		{
 			this.SendPropertyChanging();
@@ -4511,18 +3808,6 @@ namespace Webadel7.DB
 		}
 		
 		private void detach_User_IPs(User_IP entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Votes(Vote entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Votes(Vote entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -4599,6 +3884,699 @@ namespace Webadel7.DB
 			this.SendPropertyChanging();
 			entity.User = null;
 		}
+		
+		private void attach_Messages(Message entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Messages(Message entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Messages1(Message entity)
+		{
+			this.SendPropertyChanging();
+			entity.User1 = this;
+		}
+		
+		private void detach_Messages1(Message entity)
+		{
+			this.SendPropertyChanging();
+			entity.User1 = null;
+		}
+		
+		private void attach_Votes(Vote entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Votes(Vote entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Message")]
+	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _id;
+		
+		private System.Guid _roomId;
+		
+		private System.Guid _authorId;
+		
+		private System.Nullable<System.Guid> _recipientId;
+		
+		private System.DateTime _date;
+		
+		private string _body;
+		
+		private bool _pinned;
+		
+		private EntityRef<Message_OriginalRoom> _Message_OriginalRoom;
+		
+		private EntitySet<Resource> _Resources;
+		
+		private EntitySet<Vote> _Votes;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Room> _Room;
+		
+		private EntityRef<User> _User1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(System.Guid value);
+    partial void OnidChanged();
+    partial void OnroomIdChanging(System.Guid value);
+    partial void OnroomIdChanged();
+    partial void OnauthorIdChanging(System.Guid value);
+    partial void OnauthorIdChanged();
+    partial void OnrecipientIdChanging(System.Nullable<System.Guid> value);
+    partial void OnrecipientIdChanged();
+    partial void OndateChanging(System.DateTime value);
+    partial void OndateChanged();
+    partial void OnbodyChanging(string value);
+    partial void OnbodyChanged();
+    partial void OnpinnedChanging(bool value);
+    partial void OnpinnedChanged();
+    #endregion
+		
+		public Message()
+		{
+			this._Message_OriginalRoom = default(EntityRef<Message_OriginalRoom>);
+			this._Resources = new EntitySet<Resource>(new Action<Resource>(this.attach_Resources), new Action<Resource>(this.detach_Resources));
+			this._Votes = new EntitySet<Vote>(new Action<Vote>(this.attach_Votes), new Action<Vote>(this.detach_Votes));
+			this._User = default(EntityRef<User>);
+			this._Room = default(EntityRef<Room>);
+			this._User1 = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roomId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid roomId
+		{
+			get
+			{
+				return this._roomId;
+			}
+			set
+			{
+				if ((this._roomId != value))
+				{
+					if (this._Room.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnroomIdChanging(value);
+					this.SendPropertyChanging();
+					this._roomId = value;
+					this.SendPropertyChanged("roomId");
+					this.OnroomIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid authorId
+		{
+			get
+			{
+				return this._authorId;
+			}
+			set
+			{
+				if ((this._authorId != value))
+				{
+					if (this._User1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnauthorIdChanging(value);
+					this.SendPropertyChanging();
+					this._authorId = value;
+					this.SendPropertyChanged("authorId");
+					this.OnauthorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_recipientId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> recipientId
+		{
+			get
+			{
+				return this._recipientId;
+			}
+			set
+			{
+				if ((this._recipientId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnrecipientIdChanging(value);
+					this.SendPropertyChanging();
+					this._recipientId = value;
+					this.SendPropertyChanged("recipientId");
+					this.OnrecipientIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_date", DbType="DateTime2 NOT NULL")]
+		public System.DateTime date
+		{
+			get
+			{
+				return this._date;
+			}
+			set
+			{
+				if ((this._date != value))
+				{
+					this.OndateChanging(value);
+					this.SendPropertyChanging();
+					this._date = value;
+					this.SendPropertyChanged("date");
+					this.OndateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string body
+		{
+			get
+			{
+				return this._body;
+			}
+			set
+			{
+				if ((this._body != value))
+				{
+					this.OnbodyChanging(value);
+					this.SendPropertyChanging();
+					this._body = value;
+					this.SendPropertyChanged("body");
+					this.OnbodyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pinned", DbType="Bit NOT NULL")]
+		public bool pinned
+		{
+			get
+			{
+				return this._pinned;
+			}
+			set
+			{
+				if ((this._pinned != value))
+				{
+					this.OnpinnedChanging(value);
+					this.SendPropertyChanging();
+					this._pinned = value;
+					this.SendPropertyChanged("pinned");
+					this.OnpinnedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Message_OriginalRoom", Storage="_Message_OriginalRoom", ThisKey="id", OtherKey="messageId", IsUnique=true, IsForeignKey=false)]
+		public Message_OriginalRoom Message_OriginalRoom
+		{
+			get
+			{
+				return this._Message_OriginalRoom.Entity;
+			}
+			set
+			{
+				Message_OriginalRoom previousValue = this._Message_OriginalRoom.Entity;
+				if (((previousValue != value) 
+							|| (this._Message_OriginalRoom.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Message_OriginalRoom.Entity = null;
+						previousValue.Message = null;
+					}
+					this._Message_OriginalRoom.Entity = value;
+					if ((value != null))
+					{
+						value.Message = this;
+					}
+					this.SendPropertyChanged("Message_OriginalRoom");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Resource", Storage="_Resources", ThisKey="id", OtherKey="messageId")]
+		public EntitySet<Resource> Resources
+		{
+			get
+			{
+				return this._Resources;
+			}
+			set
+			{
+				this._Resources.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Vote", Storage="_Votes", ThisKey="id", OtherKey="messageId")]
+		public EntitySet<Vote> Votes
+		{
+			get
+			{
+				return this._Votes;
+			}
+			set
+			{
+				this._Votes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message", Storage="_User", ThisKey="recipientId", OtherKey="id", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Messages.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Messages.Add(this);
+						this._recipientId = value.id;
+					}
+					else
+					{
+						this._recipientId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_Message", Storage="_Room", ThisKey="roomId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Room Room
+		{
+			get
+			{
+				return this._Room.Entity;
+			}
+			set
+			{
+				Room previousValue = this._Room.Entity;
+				if (((previousValue != value) 
+							|| (this._Room.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Room.Entity = null;
+						previousValue.Messages.Remove(this);
+					}
+					this._Room.Entity = value;
+					if ((value != null))
+					{
+						value.Messages.Add(this);
+						this._roomId = value.id;
+					}
+					else
+					{
+						this._roomId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Room");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Message1", Storage="_User1", ThisKey="authorId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User1
+		{
+			get
+			{
+				return this._User1.Entity;
+			}
+			set
+			{
+				User previousValue = this._User1.Entity;
+				if (((previousValue != value) 
+							|| (this._User1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User1.Entity = null;
+						previousValue.Messages1.Remove(this);
+					}
+					this._User1.Entity = value;
+					if ((value != null))
+					{
+						value.Messages1.Add(this);
+						this._authorId = value.id;
+					}
+					else
+					{
+						this._authorId = default(System.Guid);
+					}
+					this.SendPropertyChanged("User1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Resources(Resource entity)
+		{
+			this.SendPropertyChanging();
+			entity.Message = this;
+		}
+		
+		private void detach_Resources(Resource entity)
+		{
+			this.SendPropertyChanging();
+			entity.Message = null;
+		}
+		
+		private void attach_Votes(Vote entity)
+		{
+			this.SendPropertyChanging();
+			entity.Message = this;
+		}
+		
+		private void detach_Votes(Vote entity)
+		{
+			this.SendPropertyChanging();
+			entity.Message = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vote")]
+	public partial class Vote : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _messageId;
+		
+		private System.Guid _userId;
+		
+		private bool _vote1;
+		
+		private System.DateTime _datetime;
+		
+		private System.Nullable<int> _value;
+		
+		private EntityRef<Message> _Message;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnmessageIdChanging(System.Guid value);
+    partial void OnmessageIdChanged();
+    partial void OnuserIdChanging(System.Guid value);
+    partial void OnuserIdChanged();
+    partial void Onvote1Changing(bool value);
+    partial void Onvote1Changed();
+    partial void OndatetimeChanging(System.DateTime value);
+    partial void OndatetimeChanged();
+    partial void OnvalueChanging(System.Nullable<int> value);
+    partial void OnvalueChanged();
+    #endregion
+		
+		public Vote()
+		{
+			this._Message = default(EntityRef<Message>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_messageId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid messageId
+		{
+			get
+			{
+				return this._messageId;
+			}
+			set
+			{
+				if ((this._messageId != value))
+				{
+					if (this._Message.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnmessageIdChanging(value);
+					this.SendPropertyChanging();
+					this._messageId = value;
+					this.SendPropertyChanged("messageId");
+					this.OnmessageIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnuserIdChanging(value);
+					this.SendPropertyChanging();
+					this._userId = value;
+					this.SendPropertyChanged("userId");
+					this.OnuserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="vote", Storage="_vote1", DbType="Bit NOT NULL")]
+		public bool vote1
+		{
+			get
+			{
+				return this._vote1;
+			}
+			set
+			{
+				if ((this._vote1 != value))
+				{
+					this.Onvote1Changing(value);
+					this.SendPropertyChanging();
+					this._vote1 = value;
+					this.SendPropertyChanged("vote1");
+					this.Onvote1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_datetime", DbType="DateTime NOT NULL")]
+		public System.DateTime datetime
+		{
+			get
+			{
+				return this._datetime;
+			}
+			set
+			{
+				if ((this._datetime != value))
+				{
+					this.OndatetimeChanging(value);
+					this.SendPropertyChanging();
+					this._datetime = value;
+					this.SendPropertyChanged("datetime");
+					this.OndatetimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_value", AutoSync=AutoSync.Always, DbType="Int", IsDbGenerated=true, UpdateCheck=UpdateCheck.Never)]
+		public System.Nullable<int> value
+		{
+			get
+			{
+				return this._value;
+			}
+			set
+			{
+				if ((this._value != value))
+				{
+					this.OnvalueChanging(value);
+					this.SendPropertyChanging();
+					this._value = value;
+					this.SendPropertyChanged("value");
+					this.OnvalueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_Vote", Storage="_Message", ThisKey="messageId", OtherKey="id", IsForeignKey=true)]
+		public Message Message
+		{
+			get
+			{
+				return this._Message.Entity;
+			}
+			set
+			{
+				Message previousValue = this._Message.Entity;
+				if (((previousValue != value) 
+							|| (this._Message.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Message.Entity = null;
+						previousValue.Votes.Remove(this);
+					}
+					this._Message.Entity = value;
+					if ((value != null))
+					{
+						value.Votes.Add(this);
+						this._messageId = value.id;
+					}
+					else
+					{
+						this._messageId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Message");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Vote", Storage="_User", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Votes.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Votes.Add(this);
+						this._userId = value.id;
+					}
+					else
+					{
+						this._userId = default(System.Guid);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
 	}
 	
 	public partial class GetUserRoomsResult
@@ -4622,158 +4600,6 @@ namespace Webadel7.DB
 				if ((this._roomId != value))
 				{
 					this._roomId = value;
-				}
-			}
-		}
-	}
-	
-	public partial class GetUserMessagesResult
-	{
-		
-		private System.Guid _id;
-		
-		private System.Guid _roomId;
-		
-		private System.Guid _authorId;
-		
-		private System.Nullable<System.Guid> _recipientId;
-		
-		private System.DateTime _date;
-		
-		private string _body;
-		
-		private bool _isNew;
-		
-		private string _originalRoomName;
-		
-		public GetUserMessagesResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this._id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roomId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid roomId
-		{
-			get
-			{
-				return this._roomId;
-			}
-			set
-			{
-				if ((this._roomId != value))
-				{
-					this._roomId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid authorId
-		{
-			get
-			{
-				return this._authorId;
-			}
-			set
-			{
-				if ((this._authorId != value))
-				{
-					this._authorId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_recipientId", DbType="UniqueIdentifier")]
-		public System.Nullable<System.Guid> recipientId
-		{
-			get
-			{
-				return this._recipientId;
-			}
-			set
-			{
-				if ((this._recipientId != value))
-				{
-					this._recipientId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_date", DbType="DateTime2 NOT NULL")]
-		public System.DateTime date
-		{
-			get
-			{
-				return this._date;
-			}
-			set
-			{
-				if ((this._date != value))
-				{
-					this._date = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string body
-		{
-			get
-			{
-				return this._body;
-			}
-			set
-			{
-				if ((this._body != value))
-				{
-					this._body = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isNew", DbType="Bit NOT NULL")]
-		public bool isNew
-		{
-			get
-			{
-				return this._isNew;
-			}
-			set
-			{
-				if ((this._isNew != value))
-				{
-					this._isNew = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_originalRoomName", DbType="VarChar(50)")]
-		public string originalRoomName
-		{
-			get
-			{
-				return this._originalRoomName;
-			}
-			set
-			{
-				if ((this._originalRoomName != value))
-				{
-					this._originalRoomName = value;
 				}
 			}
 		}
@@ -4898,6 +4724,176 @@ namespace Webadel7.DB
 				if ((this._messageDate != value))
 				{
 					this._messageDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetUserMessagesResult
+	{
+		
+		private System.Guid _id;
+		
+		private System.Guid _roomId;
+		
+		private System.Guid _authorId;
+		
+		private System.Nullable<System.Guid> _recipientId;
+		
+		private System.DateTime _date;
+		
+		private string _body;
+		
+		private bool _pinned;
+		
+		private bool _isNew;
+		
+		private string _originalRoomName;
+		
+		public GetUserMessagesResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this._id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roomId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid roomId
+		{
+			get
+			{
+				return this._roomId;
+			}
+			set
+			{
+				if ((this._roomId != value))
+				{
+					this._roomId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_authorId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid authorId
+		{
+			get
+			{
+				return this._authorId;
+			}
+			set
+			{
+				if ((this._authorId != value))
+				{
+					this._authorId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_recipientId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> recipientId
+		{
+			get
+			{
+				return this._recipientId;
+			}
+			set
+			{
+				if ((this._recipientId != value))
+				{
+					this._recipientId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_date", DbType="DateTime2 NOT NULL")]
+		public System.DateTime date
+		{
+			get
+			{
+				return this._date;
+			}
+			set
+			{
+				if ((this._date != value))
+				{
+					this._date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string body
+		{
+			get
+			{
+				return this._body;
+			}
+			set
+			{
+				if ((this._body != value))
+				{
+					this._body = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pinned", DbType="Bit NOT NULL")]
+		public bool pinned
+		{
+			get
+			{
+				return this._pinned;
+			}
+			set
+			{
+				if ((this._pinned != value))
+				{
+					this._pinned = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isNew", DbType="Bit NOT NULL")]
+		public bool isNew
+		{
+			get
+			{
+				return this._isNew;
+			}
+			set
+			{
+				if ((this._isNew != value))
+				{
+					this._isNew = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_originalRoomName", DbType="VarChar(50)")]
+		public string originalRoomName
+		{
+			get
+			{
+				return this._originalRoomName;
+			}
+			set
+			{
+				if ((this._originalRoomName != value))
+				{
+					this._originalRoomName = value;
 				}
 			}
 		}

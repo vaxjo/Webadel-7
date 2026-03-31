@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Web;
 using Webadel7.Controllers;
@@ -15,7 +16,7 @@ namespace Webadel7 {
         public Guid? RecipientId;
         public DateTime Date;
         public string Body, OriginalRoomName;
-        public bool New;
+        public bool New, Pinned;
 
         public Room Room => Room.Load(RoomId);
         public User Author => User.Load(AuthorId);
@@ -52,6 +53,7 @@ namespace Webadel7 {
             RecipientId = dbMessage.recipientId;
             Date = dbMessage.date;
             Body = dbMessage.body;
+            Pinned = dbMessage.pinned;
             New = isNew;
             OriginalRoomName = (dbMessage.Message_OriginalRoom != null ? dbMessage.Message_OriginalRoom.originalRoomName : null);
             // Score = dbMessage.Votes.Sum(o => (o.vote1 ? 1 : -1));
@@ -63,6 +65,7 @@ namespace Webadel7 {
             RecipientId = dbMessage.recipientId;
             Date = dbMessage.date;
             Body = LittleEd.ProcessMessageBody(dbMessage.body);
+            Pinned = dbMessage.pinned;
             New = dbMessage.isNew;
             OriginalRoomName = dbMessage.originalRoomName;
             //Score = dbMessage.score ?? 0;

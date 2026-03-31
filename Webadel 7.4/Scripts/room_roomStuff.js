@@ -62,6 +62,13 @@ $(document).ready(function () {
     $("#mobileGoto").click(function () { if (_pageReady) Goto(); });
     $("#mobileSkip").click(function () { if (_pageReady) Skip(); });
     $("#mobileUngoto").click(function () { if (_pageReady) Ungoto(); });
+
+    // unpin
+    $("#pinnedPosts").on("click", ".glyphicon-pushpin", function () {
+        var msgDom = $(this).closest(".message");
+        msgDom.remove();
+        $.post("/Room/PinPost?messageId=" + msgDom.attr("id"), (r) => UpdatePinnedPosts());
+    });
 });
 
 function Goto() {

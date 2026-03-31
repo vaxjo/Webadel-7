@@ -292,6 +292,8 @@ function LoadRoom(roomId, afterLoadCallback) {
     $.get("/Room/GetRoom?roomId=" + roomId, function (data) {
         if (data.error == "noroom") { Goto(); return; }
 
+        $("body").toggleClass("is-mail", data.isMail);
+
         UpdatePageTitle(data.name);
         _canEdit = data.canEdit;
         if (data.isMail) $("#postForm .recipient").parent().show(); else $("#postForm .recipient").val("").parent().hide();
@@ -318,6 +320,8 @@ function LoadRoom(roomId, afterLoadCallback) {
 
         $("#postbox").val(data.autosavedMessage).data("prev", data.autosavedMessage).trigger("autosize.resize");
 
+        UpdatePinnedPosts();
+
         $("#roomDisplay").trigger("roomloaded");
 
         if (afterLoadCallback != null) afterLoadCallback();
@@ -332,6 +336,14 @@ function LoadRoom(roomId, afterLoadCallback) {
     $("#messageButtons").show();
     FrequentInterval();
     ShowNew();
+}
+
+function UpdatePinnedPosts() {
+    $.get("/Room/GetPinned?roomId=" + _roomId, (data) => {
+        $("#pinnedPosts").html("");
+
+        for (j = 0; j < data.length; j++) $("#pinnedPosts").append(CreateMessageDom(data[j]));
+    });
 }
 
 function SetCurrentRoomId(roomId) {

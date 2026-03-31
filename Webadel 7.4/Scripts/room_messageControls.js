@@ -42,6 +42,10 @@
             msgDom.find(".score").text(data == null ? "" : data);
         });
 
+    }).on("click", ".glyphicon-pushpin", function () {
+        var msgDom = $(this).parents(".message");
+        $.post("/Room/PinPost?messageId=" + msgDom.attr("id"), (r) => UpdatePinnedPosts());
+
     }).on("click", ".unvote", function () {
         var msgDom = $(this).parents(".message");
         $.getJSON("/Room/Vote?messageId=" + msgDom.attr("id") + "&vote=None", function (data) {

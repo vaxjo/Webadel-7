@@ -525,5 +525,27 @@ namespace Webadel7.Controllers {
             
             return null;
         }
+
+        public ActionResult GetPinned(Guid roomId) {
+            Room room = Room.Load(roomId);
+
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+            return JsonNet(dc.Messages.Where(m => m.roomId == roomId && m.pinned).Select(o => new Message(o, false)).Select(o => o.ToJson));
+        }
+
+        public ActionResult PinPost(Guid messageId) {
+            DB.WebadelDataContext dc = DB.WebadelDataContext.GetProfiledDC();
+
+            Message m = new Message(messageId, false);
+            if (m.Room.Id == SystemConfig.MailRoomId) return Content("not in mail, nono.");
+
+            var msg = dc.Messages.SingleOrDefault(o => o.id == messageId);  
+            if (msg != null) {
+                msg.pinned = !msg.pinned;
+                dc.SubmitChanges();
+            }
+
+            return Content("");
+        }
     }
 }
