@@ -42,7 +42,7 @@
             msgDom.find(".score").text(data == null ? "" : data);
         });
 
-    }).on("click", ".glyphicon-pushpin", function () {
+    }).on("click", ".pinpost", function () {
         var msgDom = $(this).parents(".message");
         $.post("/Room/PinPost?messageId=" + msgDom.attr("id"), (r) => UpdatePinnedPosts());
 

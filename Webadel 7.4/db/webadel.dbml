@@ -79,25 +79,8 @@
       <Column Name="hidden" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="[permanent]" Member="permanent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Room_Autosave" Member="Autosaves" ThisKey="id" OtherKey="roomId" Type="Autosave" />
-      <Association Name="Room_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="roomId" Type="UserRoom" />
       <Association Name="Room_Message" Member="Messages" ThisKey="id" OtherKey="roomId" Type="Message" />
-    </Type>
-  </Table>
-  <Table Name="dbo.UserRoom" Member="UserRooms">
-    <Type Name="UserRoom">
-      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="hasAccess" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="forgotten" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="nsfw" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="moderator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="noticed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="sort" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="pointer" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="pointerLast" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="forgottenExpiration" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
-      <Association Name="Room_UserRoom" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="User_UserRoom" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Room_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="roomId" Type="UserRoom" />
     </Type>
   </Table>
   <Table Name="dbo.User_PrevAlias" Member="User_PrevAlias">
@@ -170,7 +153,6 @@
       <Association Name="User_User_IP" Member="User_IPs" ThisKey="id" OtherKey="userId" Type="User_IP" />
       <Association Name="User_AuthToken" Member="AuthTokens" ThisKey="id" OtherKey="userId" Type="AuthToken" />
       <Association Name="User_Autosave" Member="Autosaves" ThisKey="id" OtherKey="userId" Type="Autosave" />
-      <Association Name="User_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="userId" Type="UserRoom" />
       <Association Name="User_User_PrevAlia" Member="User_PrevAlias" ThisKey="id" OtherKey="userId" Type="User_PrevAlia" />
       <Association Name="User_Plonk" Member="Plonks" ThisKey="id" OtherKey="userId" Type="Plonk" />
       <Association Name="User_UserProfile" Member="UserProfile" ThisKey="id" OtherKey="id" Type="UserProfile" Cardinality="One" />
@@ -178,6 +160,7 @@
       <Association Name="User_Message" Member="Messages" ThisKey="id" OtherKey="recipientId" Type="Message" />
       <Association Name="User_Message1" Member="Messages1" ThisKey="id" OtherKey="authorId" Type="Message" />
       <Association Name="User_Vote" Member="Votes" ThisKey="id" OtherKey="userId" Type="Vote" />
+      <Association Name="User_UserRoom" Member="UserRooms" ThisKey="id" OtherKey="userId" Type="UserRoom" />
     </Type>
   </Table>
   <Table Name="dbo.Message" Member="Messages">
@@ -206,6 +189,23 @@
       <Column Name="value" Type="System.Int32" DbType="Int" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="Message_Vote" Member="Message" ThisKey="messageId" OtherKey="id" Type="Message" IsForeignKey="true" />
       <Association Name="User_Vote" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserRoom" Member="UserRooms">
+    <Type Name="UserRoom">
+      <Column Name="userId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="roomId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="hasAccess" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="forgotten" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="nsfw" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="moderator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="noticed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="sort" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="pointer" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="pointerLast" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+      <Column Name="forgottenExpiration" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+      <Association Name="Room_UserRoom" Member="Room" ThisKey="roomId" OtherKey="id" Type="Room" IsForeignKey="true" />
+      <Association Name="User_UserRoom" Member="User" ThisKey="userId" OtherKey="id" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.GetUserRooms" Method="GetUserRooms" IsComposable="true">

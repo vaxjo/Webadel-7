@@ -64,7 +64,7 @@ $(document).ready(function () {
     $("#mobileUngoto").click(function () { if (_pageReady) Ungoto(); });
 
     // unpin
-    $("#pinnedPosts").on("click", ".glyphicon-pushpin", function () {
+    $("#pinnedPosts").on("click", ".pinpost", function () {
         var msgDom = $(this).closest(".message");
         msgDom.remove();
         $.post("/Room/PinPost?messageId=" + msgDom.attr("id"), (r) => UpdatePinnedPosts());

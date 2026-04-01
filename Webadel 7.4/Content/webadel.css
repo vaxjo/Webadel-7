@@ -94,5 +94,5 @@ div.linkContainer { display: inline-block; }
 #pinnedPosts { display: none; }
     #pinnedPosts:has(.message) { display: block; }
 
-.glyphicon-pushpin { cursor:pointer; }
-.is-mail .glyphicon-pushpin { display: none; }
+.pinpost { cursor: pointer; }
+.is-mail .pinpost { display: none; }

@@ -259,7 +259,8 @@ namespace Webadel7.Controllers {
             if (!roomId.HasValue || !ticks.HasValue) return null; // sometimes there's nothing to set
 
             UserRoom ur = UserRoom.Load(CurrentUser.Id, roomId.Value);
-            ur.SetPointer(new DateTime(ticks.Value));
+            var d = new DateTime(ticks.Value);
+            ur.SetPointer(d);
 
             return null;
         }
